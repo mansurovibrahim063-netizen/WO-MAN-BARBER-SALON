@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VSM Admin Operations | Barbershop & Salon</title>
+  
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23090A0F'/%3E%3Cpolygon points='50,15 85,35 85,65 50,85 15,65 15,35' stroke='%230066FF' stroke-width='6' fill='none'/%3E%3Ccircle cx='50' cy='50' r='14' fill='%23FF2E93'/%3E%3C/svg%3E">
+
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Admin Specific Styling */
+    body {
+      background: #08090d;
+      color: #f1f5f9;
+      min-height: 100vh;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    .admin-layout {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .admin-nav {
+      height: 72px;
+      background: rgba(14, 16, 24, 0.95);
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px);
+    }
+
+    .admin-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .admin-badge-tag {
+      background: linear-gradient(135deg, rgba(0, 102, 255, 0.2), rgba(255, 46, 147, 0.2));
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      color: #fff;
+    }
+
+    .admin-nav-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    /* Language Switcher */
+    .lang-switcher-pills {
+      display: flex;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-full);
+      padding: 3px;
+      gap: 2px;
+    }
+
+    .lang-pill-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lang-pill-btn.active {
+      background: #ffffff;
+      color: #08090d;
+    }
+
+    .admin-content {
+      flex: 1;
+      max-width: 1440px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    /* Stats Grid */
+    .admin-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 1.25rem;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      backdrop-filter: blur(15px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+    }
+
+    .stat-card.card-total::before { background: #cbd5e1; }
+    .stat-card.card-homme::before { background: var(--blue-bright); }
+    .stat-card.card-femme::before { background: var(--pink-bright); }
+    .stat-card.card-today::before { background: #10b981; }
+    .stat-card.card-bot::before { background: #38bdf8; }
+
+    .stat-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .stat-number {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .stat-subtext {
+      font-size: 0.72rem;
+      color: var(--text-subtle);
+    }
+
+    /* Tabs Bar */
+    .admin-tabs-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 0.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .admin-tabs {
+      display: flex;
+      gap: 8px;
+    }
+
+    .admin-tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 9px 18px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .admin-tab-btn:hover { color: #fff; }
+    .admin-tab-btn.active {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .admin-actions-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* Filter Toolbar */
+    .filter-toolbar {
+      background: rgba(18, 20, 28, 0.6);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .search-input-wrap {
+      flex: 1;
+      min-width: 260px;
+      position: relative;
+    }
+
+    .search-input {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-subtle);
+      padding: 9px 14px 9px 38px;
+      border-radius: var(--radius-sm);
+      color: #fff;
+      font-size: 0.85rem;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--blue-bright);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-subtle);
+    }
+
+    .filter-controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .filter-select {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--border-subtle);
+      color: #e2e8f0;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      cursor: pointer;
+    }
+
+    /* Table */
+    .table-responsive {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      overflow-x: auto;
+      backdrop-filter: blur(20px);
+    }
+
+    .appointments-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.85rem;
+    }
+
+    .appointments-table th {
+      background: rgba(14, 16, 24, 0.8);
+      color: var(--text-muted);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-subtle);
+      font-weight: 700;
+    }
+
+    .appointments-table td {
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: #cbd5e1;
+      vertical-align: middle;
+    }
+
+    .appointments-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .booking-id-code {
+      font-family: monospace;
+      font-weight: 700;
+      color: #fff;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 3px 6px;
+      border-radius: 4px;
+    }
+
+    /* Status Badges */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .status-confirmed {
+      background: rgba(16, 185, 129, 0.12);
+      color: #34d399;
+      border: 1px solid rgba(52, 211, 153, 0.3);
+    }
+
+    .status-pending {
+      background: rgba(245, 158, 11, 0.12);
+      color: #fbbf24;
+      border: 1px solid rgba(251, 191, 36, 0.3);
+    }
+
+    .status-completed {
+      background: rgba(59, 130, 246, 0.12);
+      color: #60a5fa;
+      border: 1px solid rgba(96, 165, 250, 0.3);
+    }
+
+    .status-cancelled {
+      background: rgba(239, 68, 68, 0.12);
+      color: #f87171;
+      border: 1px solid rgba(248, 113, 113, 0.3);
+    }
+
+    .action-btns-cell {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-action-icon {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      width: 30px;
+      height: 30px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-action-icon:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    /* Specialists Cards */
+    .specialists-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .specialist-admin-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      position: relative;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .specialist-admin-card:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .specialist-admin-top {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .specialist-admin-avatar {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* Telegram Integration Tab Styling */
+    .integration-panel {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.75rem;
+    }
+
+    .integration-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      backdrop-filter: blur(15px);
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .integration-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.25rem;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .linking-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .linking-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      gap: 10px;
+    }
+
+    .linking-item-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .copy-chip-btn {
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .copy-chip-btn:hover {
+      background: rgba(56, 189, 248, 0.25);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .admin-stats-grid { grid-template-columns: repeat(3, 1fr); }
+      .specialists-grid { grid-template-columns: repeat(2, 1fr); }
+      .integration-panel { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .admin-stats-grid { grid-template-columns: 1fr; }
+      .specialists-grid { grid-template-columns: 1fr; }
+      .admin-nav { padding: 0 1rem; }
+      .admin-content { padding: 1.5rem 1rem; }
+    }
+  </style>
+</head>
+<body class="admin-layout">
+
+  <!-- TOP ADMIN NAVIGATION -->
+  <header class="admin-nav">
+    <div style="display: flex; align-items: center; gap: 14px;">
+      <a href="index.html" class="admin-brand">
+        <div class="brand-emblem" style="width: 32px; height: 32px;">
+          <svg viewBox="0 0 100 100" fill="none">
+            <polygon points="50,4 92,26 92,74 50,96 8,74 8,26" stroke="rgba(255,255,255,0.2)" stroke-width="3" fill="#0E1017"/>
+            <path d="M26 30 L45 72 L50 60 L38 34 Z" fill="#0066FF"/>
+            <path d="M74 30 L55 72 L50 60 L62 34 Z" fill="#FF2E93"/>
+          </svg>
+        </div>
+        <span class="brand-title" style="font-size: 1.1rem;">VSM</span>
+      </a>
+      <span class="admin-badge-tag" id="adminTag">Operations Portal</span>
+    </div>
+
+    <div class="admin-nav-right">
+      <!-- Language Switcher -->
+      <div class="lang-switcher-pills">
+        <button class="lang-pill-btn active" data-lang="uz">UZ</button>
+        <button class="lang-pill-btn" data-lang="en">EN</button>
+        <button class="lang-pill-btn" data-lang="ru">RU</button>
+      </div>
+
+      <!-- Quick Link to Live Site -->
+      <a href="index.html" class="nav-link-btn" id="btnBackSite">&larr; Saytga qaytish</a>
+    </div>
+  </header>
+
+  <!-- MAIN ADMIN CONTENT -->
+  <main class="admin-content">
+    
+    <!-- STATS OVERVIEW CARDS -->
+    <section class="admin-stats-grid">
+      <div class="stat-card card-total">
+        <span class="stat-label" id="statTotalLabel">Jami Buyurtmalar</span>
+        <span class="stat-number" id="metricTotal">0</span>
+        <span class="stat-subtext" id="statTotalSub">Barcha vaqtlar bo'yicha</span>
+      </div>
+
+      <div class="stat-card card-homme">
+        <span class="stat-label" id="statHommeLabel">♂ Homme Zali</span>
+        <span class="stat-number" id="metricHomme" style="color: var(--blue-bright);">0</span>
+        <span class="stat-subtext">Erkaklar sartaroshxonasi</span>
+      </div>
+
+      <div class="stat-card card-femme">
+        <span class="stat-label" id="statFemmeLabel">♀ Femme Zali</span>
+        <span class="stat-number" id="metricFemme" style="color: var(--pink-bright);">0</span>
+        <span class="stat-subtext">Ayollar go'zallik studiyasi</span>
+      </div>
+
+      <div class="stat-card card-today">
+        <span class="stat-label" id="statTodayLabel">Bugungi Slotlar</span>
+        <span class="stat-number" id="metricToday" style="color: #34d399;">0</span>
+        <span class="stat-subtext" id="statTodaySub">Faol band qilingan</span>
+      </div>
+
+      <div class="stat-card card-bot">
+        <span class="stat-label" id="statBotLabel">Sartaroshlar</span>
+        <span class="stat-number" id="metricBarbers" style="color: #38bdf8;">0</span>
+        <span class="stat-subtext">Faol ustalar ro'yxati</span>
+      </div>
+    </section>
+
+    <!-- SECTION TABS -->
+    <div class="admin-tabs-bar">
+      <div class="admin-tabs">
+        <button class="admin-tab-btn active" data-tab="appointments">
+          <span>📅</span> <span id="tabAppointmentsText">Vaqt Slotlari & Buyurtmalar</span>
+        </button>
+        <button class="admin-tab-btn" data-tab="specialists">
+          <span>✂️</span> <span id="tabSpecialistsText">Sartaroshlarni Boshqarish</span>
+        </button>
+        <button class="admin-tab-btn" data-tab="telegram">
+          <span>🤖</span> <span id="tabTelegramText">Telegram Bot Integratsiyasi</span>
+        </button>
+      </div>
+
+      <div class="admin-actions-group">
+        <button class="btn-panel btn-panel-secondary" id="btnExportJSON" style="font-size: 0.8rem; padding: 8px 16px;">
+          📥 Export (JSON)
+        </button>
+        <button class="btn-panel btn-homme-primary" id="btnHeaderAction" style="font-size: 0.8rem; padding: 8px 18px;">
+          + Yangi Buyurtma Qo'shish
+        </button>
+      </div>
+    </div>
+
+    <!-- VIEW 1: APPOINTMENTS TABLE -->
+    <div id="viewAppointments">
+      <!-- Toolbar Filters -->
+      <div class="filter-toolbar" style="margin-bottom: 1.25rem;">
+        <div class="search-input-wrap">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="searchAppointments" class="search-input" placeholder="Mijoz ismi, telefon yoki ID bo'yicha qidirish...">
+        </div>
+
+        <div class="filter-controls">
+          <select id="filterSalon" class="filter-select">
+            <option value="all">Barcha zallar (Homme & Femme)</option>
+            <option value="homme">♂ Homme (Erkaklar)</option>
+            <option value="femme">♀ Femme (Ayollar)</option>
+          </select>
+
+          <select id="filterStatus" class="filter-select">
+            <option value="all">Barcha holatlar</option>
+            <option value="Confirmed">Tasdiqlangan</option>
+            <option value="Pending">Kutilmoqda</option>
+            <option value="Completed">Yakunlangan</option>
+            <option value="Cancelled">Bekor qilingan</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Main Appointments Table -->
+      <div class="table-responsive">
+        <table class="appointments-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th id="thClient">Mijoz</th>
+              <th id="thSalon">Zal</th>
+              <th id="thService">Xizmat</th>
+              <th id="thMaster">Sartarosh / Usta</th>
+              <th id="thDateTime">Sana & Vaqt Sloti</th>
+              <th id="thSource">Manba</th>
+              <th id="thStatus">Holat</th>
+              <th id="thActions">Amallar</th>
+            </tr>
+          </thead>
+          <tbody id="appointmentsTableBody">
+            <!-- Dynamic rows populated by admin.js -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- VIEW 2: SPECIALISTS / BARBERS MANAGEMENT (ADD, EDIT, DELETE) -->
+    <div id="viewSpecialists" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <div>
+          <h3 style="font-family: 'Syne', sans-serif; font-size: 1.4rem; color: #fff;">Sartaroshlar va Stillistlar Ro'yxati</h3>
+          <p style="color: var(--text-muted); font-size: 0.85rem;">Sayt va Telegram botda mijozlarni qabul qiluvchi mutaxassislar tarkibi.</p>
+        </div>
+        <button class="btn-panel btn-homme-primary" id="btnOpenAddBarberModal" style="padding: 10px 20px;">
+          + Yangi Sartarosh Qo'shish
+        </button>
+      </div>
+
+      <div class="specialists-grid" id="specialistsGrid">
+        <!-- Rendered by admin.js with Edit & Delete options -->
+      </div>
+    </div>
+
+    <!-- VIEW 3: TELEGRAM BOT INTEGRATION SECTION -->
+    <div id="viewTelegram" style="display: none;">
+      <div class="integration-panel">
+        
+        <!-- Left: Bot Connection Configuration -->
+        <div class="integration-card">
+          <div class="integration-title">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+            <span>Telegram Bot Parametrlari</span>
+          </div>
+          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6;">
+            Sartaroshlar saytdan tushgan yangi buyurtmalarni o'z Telegramlarida qabul qilishlari uchun bot tokeni va sozlamalarini bu yerda boshqaring.
+          </p>
+
+          <div class="booking-form-group">
+            <label class="booking-label">Telegram Bot Token (HTTP API)</label>
+            <div style="display: flex; gap: 8px;">
+              <input type="password" id="tgBotTokenInput" class="search-input" placeholder="7123456789:AAFlkBj..." style="font-family: monospace;">
+              <button class="btn-panel btn-panel-secondary" id="btnToggleTokenVisibility" style="padding: 8px 12px; font-size: 0.75rem;">Ko'rish</button>
+            </div>
+            <span style="font-size: 0.7rem; color: var(--text-subtle);">@BotFather dan olingan bot tokeni.</span>
+          </div>
+
+          <div class="booking-form-group">
+            <label class="booking-label">Admin / Kanal Chat ID (Ixtiyoriy)</label>
+            <input type="text" id="tgAdminChatInput" class="search-input" placeholder="-100123456789 yoki @vsm_reception">
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border-subtle); padding-top: 1.25rem;">
+            <div id="tgConnectionStatusBadge" class="status-badge status-pending">
+              ⚪ Ulanmagan / Not Tested
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn-panel btn-panel-secondary" id="btnTestTgConnection" style="padding: 8px 16px; font-size: 0.8rem;">
+                ⚡ Ulanishni Tekshirish
+              </button>
+              <button class="btn-panel btn-homme-primary" id="btnSaveTgConfig" style="padding: 8px 18px; font-size: 0.8rem;">
+                Saqlash
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Barber Linking & Live Simulation -->
+        <div class="integration-card">
+          <div class="integration-title">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#34D399" stroke-width="2">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="8.5" cy="7" r="4"></circle>
+              <polyline points="17 11 19 13 23 9"></polyline>
+            </svg>
+            <span>Sartaroshlarni Botga Bog'lash</span>
+          </div>
+          <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6;">
+            Har bir sartaroshga uning shaxsiy havolasini yuboring. U havolani ochishi bilan barcha yangi mijozlar uning Telegramiga kelib tushadi.
+          </p>
+
+          <div class="linking-list" id="barberLinkingList">
+            <!-- Rendered by admin.js with deep link copier -->
+          </div>
+
+          <div style="background: rgba(56, 189, 248, 0.08); border: 1px dashed rgba(56, 189, 248, 0.3); border-radius: var(--radius-md); padding: 1rem;">
+            <h5 style="color: #38bdf8; font-size: 0.85rem; margin-bottom: 4px;">🧪 Test Bildirishnomasi Yuborish</h5>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">
+              Sartarosh Telegramiga test buyurtma yuborib, uning qabul qilish (Accept) tugmasini sinab ko'ring.
+            </p>
+            <div style="display: flex; gap: 8px;">
+              <select id="testBarberSelect" class="filter-select" style="flex: 1;"></select>
+              <button class="btn-panel btn-homme-primary" id="btnSendTestAlert" style="padding: 8px 14px; font-size: 0.78rem;">
+                🚀 Test Yuborish
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL 1: ADD / EDIT BARBER MODAL -->
+  <div class="modal-backdrop" id="barberModal">
+    <div class="modal-container" style="max-width: 620px;">
+      <div class="modal-header">
+        <h3 class="modal-title" id="barberModalTitle">Sartarosh Ma'lumotlarini Kiritish</h3>
+        <button class="modal-close-btn" id="closeBarberModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="barberEditId">
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="booking-form-group">
+            <label class="booking-label">F.I.SH (Ism va Familiya)</label>
+            <input type="text" id="barberNameInput" class="search-input" placeholder="Marcus Vance" required>
+          </div>
+          <div class="booking-form-group">
+            <label class="booking-label">Zal</label>
+            <select id="barberSalonSelect" class="filter-select" style="width: 100%;">
+              <option value="homme">VSM Homme (Erkaklar zali)</option>
+              <option value="femme">VSM Femme (Ayollar zali)</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="booking-form-group">
+            <label class="booking-label">Mutaxassislik / Mansabi</label>
+            <input type="text" id="barberRoleInput" class="search-input" placeholder="Master Fade Specialist" required>
+          </div>
+          <div class="booking-form-group">
+            <label class="booking-label">Telefon Raqami</label>
+            <input type="text" id="barberPhoneInput" class="search-input" placeholder="+998 90 123-45-67">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="booking-form-group">
+            <label class="booking-label">Telegram Username</label>
+            <input type="text" id="barberTelegramInput" class="search-input" placeholder="@marcus_vance">
+          </div>
+          <div class="booking-form-group">
+            <label class="booking-label">Telegram Chat ID (ixtiyoriy)</label>
+            <input type="text" id="barberChatIdInput" class="search-input" placeholder="78219401">
+          </div>
+        </div>
+
+        <div class="booking-form-group">
+          <label class="booking-label">Surat URL (Avatar rasm havolasi)</label>
+          <input type="url" id="barberImgInput" class="search-input" placeholder="https://images.unsplash.com/...">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+          <div class="booking-form-group">
+            <label class="booking-label">Tajriba / Staj</label>
+            <input type="text" id="barberExpInput" class="search-input" placeholder="8 yil">
+          </div>
+          <div class="booking-form-group">
+            <label class="booking-label">Ish Holati</label>
+            <select id="barberDutySelect" class="filter-select" style="width: 100%;">
+              <option value="true">🟢 Ishda (On Duty)</option>
+              <option value="false">🔴 Dam olishda (Off Duty)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-panel btn-panel-secondary" id="cancelBarberModal">Bekor qilish</button>
+        <button class="btn-panel btn-homme-primary" id="saveBarberBtn">Saqlash</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: MANUAL BOOKING ENTRY -->
+  <div class="modal-backdrop" id="manualBookingModal">
+    <div class="modal-container" style="max-width: 580px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Yangi Buyurtma Qo'shish</h3>
+        <button class="modal-close-btn" id="closeManualModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="booking-form-group">
+          <label class="booking-label">Mijoz Ismi va Familiyasi</label>
+          <input type="text" id="manualName" class="search-input" placeholder="Sardor Rustamov" required>
+        </div>
+        <div class="booking-form-group">
+          <label class="booking-label">Telefon Raqami</label>
+          <input type="text" id="manualPhone" class="search-input" placeholder="+998 (90) 000-00-00" required>
+        </div>
+        <div class="booking-form-group">
+          <label class="booking-label">Zal</label>
+          <select id="manualSalon" class="filter-select" style="width: 100%;">
+            <option value="homme">VSM Homme (Erkaklar zali)</option>
+            <option value="femme">VSM Femme (Ayollar zali)</option>
+          </select>
+        </div>
+        <div class="booking-form-group">
+          <label class="booking-label">Sartarosh / Mutaxassis</label>
+          <select id="manualSpecialist" class="filter-select" style="width: 100%;"></select>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+          <div class="booking-form-group">
+            <label class="booking-label">Sana</label>
+            <input type="date" id="manualDate" class="search-input">
+          </div>
+          <div class="booking-form-group">
+            <label class="booking-label">Vaqt Sloti</label>
+            <select id="manualTimeSlot" class="filter-select" style="width: 100%;">
+              <option value="10:00 AM">10:00 AM</option>
+              <option value="11:30 AM">11:30 AM</option>
+              <option value="1:00 PM">1:00 PM</option>
+              <option value="2:30 PM">2:30 PM</option>
+              <option value="4:00 PM">4:00 PM</option>
+              <option value="5:30 PM">5:30 PM</option>
+              <option value="7:00 PM">7:00 PM</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-panel btn-panel-secondary" id="cancelManualBooking">Bekor qilish</button>
+        <button class="btn-panel btn-homme-primary" id="saveManualBooking">Saqlash</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="translations.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
