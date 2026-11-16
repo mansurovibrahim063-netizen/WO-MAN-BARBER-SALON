@@ -18,41 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
     try { specialists = JSON.parse(storedSpecs); } catch (e) {}
   }
 
-  // Initial load if empty
-  if (!specialists || specialists.length === 0) {
-    fetch('specialists.json')
-      .then(res => res.json())
-      .then(data => {
-        specialists = data;
-        saveSpecialists();
-        renderAll();
-      })
-      .catch(() => {
-        specialists = [
-          { id: "sp-m1", name: "Marcus Vance", role: "Master Fade Specialist", salon: "homme", phone: "+998 90 111-22-33", telegram: "@marcus_vance", chatId: "78219401", onDuty: true, rating: "4.98", experience: "8 yil", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" },
-          { id: "sp-m2", name: "Julian Drake", role: "Beard & Shave Master", salon: "homme", phone: "+998 90 222-33-44", telegram: "@julian_drake", chatId: "89312042", onDuty: true, rating: "4.97", experience: "10 yil", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80" },
-          { id: "sp-f1", name: "Elena Rostova", role: "Creative Color Director", salon: "femme", phone: "+998 90 444-55-66", telegram: "@elena_rostova", chatId: "65192034", onDuty: true, rating: "4.99", experience: "12 yil", img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80" }
-        ];
-        saveSpecialists();
-        renderAll();
-      });
-  }
-
-  if (!appointments || appointments.length === 0) {
-    fetch('appointments.json')
-      .then(res => res.json())
-      .then(data => {
-        appointments = data;
-        saveAppointments();
-        renderAll();
-      })
-      .catch(() => {
-        renderAll();
-      });
-  } else {
-    renderAll();
-  }
-
   function saveAppointments() {
     localStorage.setItem('vsm_appointments', JSON.stringify(appointments));
   }
@@ -824,4 +789,42 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   applyLanguage(currentLang);
+
+  // --- Initial data load ---
+  // Must stay at the end: renderAll() touches the const/let DOM refs declared above,
+  // and calling it earlier (e.g. when localStorage already has data) throws a
+  // "Cannot access ... before initialization" ReferenceError that kills the whole panel.
+  if (!specialists || specialists.length === 0) {
+    fetch('specialists.json')
+      .then(res => res.json())
+      .then(data => {
+        specialists = data;
+        saveSpecialists();
+        renderAll();
+      })
+      .catch(() => {
+        specialists = [
+          { id: "sp-m1", name: "Marcus Vance", role: "Master Fade Specialist", salon: "homme", phone: "+998 90 111-22-33", telegram: "@marcus_vance", chatId: "78219401", onDuty: true, rating: "4.98", experience: "8 yil", img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" },
+          { id: "sp-m2", name: "Julian Drake", role: "Beard & Shave Master", salon: "homme", phone: "+998 90 222-33-44", telegram: "@julian_drake", chatId: "89312042", onDuty: true, rating: "4.97", experience: "10 yil", img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80" },
+          { id: "sp-f1", name: "Elena Rostova", role: "Creative Color Director", salon: "femme", phone: "+998 90 444-55-66", telegram: "@elena_rostova", chatId: "65192034", onDuty: true, rating: "4.99", experience: "12 yil", img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80" }
+        ];
+        saveSpecialists();
+        renderAll();
+      });
+  }
+
+  if (!appointments || appointments.length === 0) {
+    fetch('appointments.json')
+      .then(res => res.json())
+      .then(data => {
+        appointments = data;
+        saveAppointments();
+        renderAll();
+      })
+      .catch(() => {
+        renderAll();
+      });
+  } else {
+    renderAll();
+  }
 });
