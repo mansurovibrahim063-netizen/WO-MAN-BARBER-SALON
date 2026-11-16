@@ -1,453 +1,380 @@
 #!/usr/bin/env python3
 """
-VSM Barbershop & Salon - Dedicated Barber Workspace Telegram Bot
-EXCLUSIVELY FOR BARBERS & STYLISTS TO ACCEPT / DECLINE CLIENT BOOKINGS
+WO&MAN Beauty Studio - Telegram bot for staff (masters) and the salon admin.
 
-Features:
-- Barber Authentication & Account Binding (/start barber_id)
-- Instant Booking Dispatch with [ ✅ Qabul qilish / Accept ] & [ ❌ Rad etish / Decline ] buttons
-- Live Appointment Schedule (/today, /upcoming)
-- On-Duty / Off-Duty status switcher
-- Shared sync with appointments.json & specialists.json
-- Zero external dependencies required (Pure Python 3 standard library: urllib, json, time, os)
+What it does:
+- Sends every new booking to the chosen master (with Accept / Decline buttons)
+  and to the admin chat.
+- Masters link their Telegram with a private link from the admin panel
+  (/start b_<id>_<code>). Nobody can pick a master's name and read their clients.
+- The admin links the admin chat the same way (/start admin_<code>).
+- Masters can see today's / tomorrow's queue and switch on/off duty.
+
+Normally this runs inside server.py (one process). Pure Python 3 standard library.
 """
 
-import os
-import sys
+import html
 import json
+import os
+import secrets
 import time
+import urllib.error
 import urllib.request
-import urllib.parse
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
-# Configuration
-CONFIG_FILE = os.path.join(os.path.dirname(__file__), "bot_config.json")
-SPECIALISTS_FILE = os.path.join(os.path.dirname(__file__), "specialists.json")
-APPOINTMENTS_FILE = os.path.join(os.path.dirname(__file__), "appointments.json")
+import storage
 
-def load_config():
-    if os.path.exists(CONFIG_FILE):
-        try:
-            with open(CONFIG_FILE, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        except Exception:
-            pass
-    return {
-        "bot_token": os.environ.get("VSM_BOT_TOKEN", "YOUR_BOT_TOKEN_HERE"),
-        "admin_chat_id": os.environ.get("VSM_ADMIN_CHAT_ID", ""),
-        "auto_notify": True
-    }
+BRAND_HTML = "WO&amp;MAN"
+TZ = timezone(timedelta(hours=int(os.environ.get("WOMAN_TZ_OFFSET_HOURS", "5"))))  # Tashkent
 
-def save_config(cfg):
-    with open(CONFIG_FILE, 'w', encoding='utf-8') as f:
-        json.dump(cfg, f, ensure_ascii=False, indent=2)
+_bot_username = None
 
-config = load_config()
-BOT_TOKEN = config.get("bot_token", "YOUR_BOT_TOKEN_HERE")
-BASE_URL = f"https://api.telegram.org/bot{BOT_TOKEN}"
 
-def api_call(method, payload=None):
-    """Make HTTP request to Telegram Bot API without third-party dependencies."""
-    url = f"{BASE_URL}/{method}"
+def log(msg):
+    print(f"[{datetime.now().strftime('%H:%M:%S')}] {msg}", flush=True)
+
+
+def esc(value):
+    return html.escape(str(value if value is not None else ""), quote=False)
+
+
+# --------------------------------------------------------------------------
+# Telegram API
+# --------------------------------------------------------------------------
+def get_token():
+    return (os.environ.get("WOMAN_BOT_TOKEN") or storage.load_config().get("bot_token") or "").strip()
+
+
+def api_call(method, payload=None, token=None, timeout=30):
+    token = token or get_token()
+    if not token:
+        return None
+    url = f"https://api.telegram.org/bot{token}/{method}"
+    data = json.dumps(payload or {}).encode("utf-8")
+    req = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json"})
     try:
-        if payload:
-            data = json.dumps(payload).encode('utf-8')
-            req = urllib.request.Request(url, data=data, headers={'Content-Type': 'application/json'})
-        else:
-            req = urllib.request.Request(url)
-        with urllib.request.urlopen(req, timeout=30) as resp:
-            return json.loads(resp.read().decode('utf-8'))
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            return json.loads(resp.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        try:
+            return json.loads(e.read().decode("utf-8"))
+        except Exception:
+            log(f"Telegram API error ({method}): HTTP {e.code}")
+            return None
     except Exception as e:
-        print(f"[{datetime.now().strftime('%H:%M:%S')}] Telegram API Error ({method}): {e}")
+        log(f"Telegram API error ({method}): {e}")
         return None
 
-def send_message(chat_id, text, reply_markup=None, parse_mode="HTML"):
-    payload = {
-        "chat_id": chat_id,
-        "text": text,
-        "parse_mode": parse_mode
-    }
+
+def get_me(token=None):
+    """Returns the bot's @username, or None if the token is missing/invalid."""
+    global _bot_username
+    resp = api_call("getMe", token=token, timeout=15)
+    if resp and resp.get("ok"):
+        if token is None or token == get_token():
+            _bot_username = resp["result"]["username"]
+        return resp["result"]["username"]
+    return None
+
+
+def bot_username():
+    return _bot_username
+
+
+def send_message(chat_id, text, reply_markup=None):
+    payload = {"chat_id": chat_id, "text": text, "parse_mode": "HTML", "disable_web_page_preview": True}
     if reply_markup:
         payload["reply_markup"] = reply_markup
     return api_call("sendMessage", payload)
 
-def edit_message(chat_id, message_id, text, reply_markup=None, parse_mode="HTML"):
-    payload = {
-        "chat_id": chat_id,
-        "message_id": message_id,
-        "text": text,
-        "parse_mode": parse_mode
-    }
-    if reply_markup:
-        payload["reply_markup"] = reply_markup
-    return api_call("editMessageText", payload)
+
+def edit_message(chat_id, message_id, text):
+    return api_call("editMessageText", {"chat_id": chat_id, "message_id": message_id, "text": text, "parse_mode": "HTML"})
+
 
 def answer_callback(callback_query_id, text, show_alert=False):
-    payload = {
-        "callback_query_id": callback_query_id,
-        "text": text,
-        "show_alert": show_alert
-    }
-    return api_call("answerCallbackQuery", payload)
+    return api_call("answerCallbackQuery", {"callback_query_id": callback_query_id, "text": text, "show_alert": show_alert})
 
-# Data helpers
-def load_specialists():
-    if os.path.exists(SPECIALISTS_FILE):
-        try:
-            with open(SPECIALISTS_FILE, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        except Exception:
-            pass
-    return []
 
-def save_specialists(specialists):
-    with open(SPECIALISTS_FILE, 'w', encoding='utf-8') as f:
-        json.dump(specialists, f, ensure_ascii=False, indent=2)
+# --------------------------------------------------------------------------
+# Private link codes (so only the real master / admin can link a chat)
+# --------------------------------------------------------------------------
+def ensure_link_codes():
+    with storage.lock:
+        specs = storage.load_specialists()
+        changed = False
+        for s in specs:
+            if not s.get("linkCode"):
+                s["linkCode"] = secrets.token_hex(6)
+                changed = True
+        if changed:
+            storage.save_specialists(specs)
+        cfg = storage.load_config()
+        if not cfg.get("admin_link_code"):
+            storage.update_config(admin_link_code=secrets.token_hex(8))
 
-def load_appointments():
-    if os.path.exists(APPOINTMENTS_FILE):
-        try:
-            with open(APPOINTMENTS_FILE, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        except Exception:
-            pass
-    return []
 
-def save_appointments(appointments):
-    with open(APPOINTMENTS_FILE, 'w', encoding='utf-8') as f:
-        json.dump(appointments, f, ensure_ascii=False, indent=2)
+def barber_link(spec):
+    if not _bot_username or not spec.get("linkCode"):
+        return ""
+    return f"https://t.me/{_bot_username}?start=b_{spec['id']}_{spec['linkCode']}"
+
+
+def admin_link():
+    code = storage.load_config().get("admin_link_code")
+    if not _bot_username or not code:
+        return ""
+    return f"https://t.me/{_bot_username}?start=admin_{code}"
+
 
 def find_barber_by_chat_id(chat_id):
-    specialists = load_specialists()
-    for s in specialists:
+    for s in storage.load_specialists():
         if str(s.get("chatId", "")) == str(chat_id):
             return s
     return None
 
-def find_barber_by_id(b_id):
-    specialists = load_specialists()
-    for s in specialists:
-        if s.get("id") == b_id:
-            return s
-    return None
 
-def link_barber_chat_id(b_id, chat_id, username=""):
-    specialists = load_specialists()
-    for s in specialists:
-        if s.get("id") == b_id:
-            s["chatId"] = str(chat_id)
-            if username:
-                s["telegram"] = f"@{username}"
-            save_specialists(specialists)
-            return s
-    return None
+def is_admin_chat(chat_id):
+    admin_id = str(storage.load_config().get("admin_chat_id", "")).strip()
+    return bool(admin_id) and admin_id == str(chat_id)
 
-# Notifications to Barbers
-def notify_barber_new_booking(appointment):
-    """Dispatches a booking alert directly to the assigned barber's Telegram."""
-    b_name = appointment.get("specialistName", "")
-    b_id = appointment.get("specialistId", "")
 
-    specialists = load_specialists()
-    target_barber = None
-    for s in specialists:
-        if s.get("name") == b_name or s.get("id") == b_id:
-            target_barber = s
-            break
-
-    if not target_barber or not target_barber.get("chatId"):
-        print(f"[!] Notification skipped: Barber '{b_name}' has no registered Telegram chatId.")
-        return False
-
-    chat_id = target_barber["chatId"]
-    appt_id = appointment.get("id", "VSM-0000")
-    client_name = appointment.get("clientName", "")
-    client_phone = appointment.get("clientPhone", "")
-    service_title = appointment.get("serviceTitle", "")
-    appt_date = appointment.get("date", "")
-    appt_slot = appointment.get("timeSlot", "")
-    notes_val = appointment.get("notes") or "Yo'q"
-    phone_clean = client_phone.replace(" ", "")
-
-    text = (
-        f"🚨 <b>YANGI BUYURTMA! / НОВАЯ ЗАПИСЬ!</b>\n\n"
-        f"🆔 <b>Buyurtma ID:</b> <code>{appt_id}</code>\n"
-        f"👤 <b>Mijoz:</b> {client_name} ({client_phone})\n"
-        f"✂️ <b>Xizmat:</b> {service_title}\n"
-        f"📅 <b>Sana:</b> {appt_date}\n"
-        f"⏰ <b>Vaqt Sloti:</b> <b>{appt_slot}</b>\n"
-        f"📝 <b>Izoh:</b> {notes_val}\n\n"
-        f"<i>Iltimos, ushbu mijozni qabul qilasizmi yoki rad etasizmi?</i>"
+# --------------------------------------------------------------------------
+# Booking notifications
+# --------------------------------------------------------------------------
+def booking_text(appt, title):
+    return (
+        f"{title}\n\n"
+        f"🆔 <b>ID:</b> <code>{esc(appt.get('id'))}</code>\n"
+        f"👤 <b>Mijoz:</b> {esc(appt.get('clientName'))} ({esc(appt.get('clientPhone'))})\n"
+        f"✂️ <b>Xizmat:</b> {esc(appt.get('serviceTitle'))}\n"
+        f"💇 <b>Usta:</b> {esc(appt.get('specialistName'))}\n"
+        f"📅 <b>Sana:</b> {esc(appt.get('date'))}\n"
+        f"⏰ <b>Vaqt:</b> <b>{esc(appt.get('timeSlot'))}</b>\n"
+        f"📝 <b>Izoh:</b> {esc(appt.get('notes') or '—')}"
     )
 
-    keyboard = {
-        "inline_keyboard": [
-            [
-                {"text": "✅ Qabul qilish (Accept)", "callback_data": f"accept_{appt_id}"},
-                {"text": "❌ Rad etish (Decline)", "callback_data": f"decline_{appt_id}"}
-            ],
-            [
-                {"text": "📞 Mijozga qo'ng'iroq", "url": f"tel:{phone_clean}"}
-            ]
-        ]
-    }
 
-    resp = send_message(chat_id, text, keyboard)
-    return bool(resp and resp.get("ok"))
-
-# Handlers
-def handle_update(update):
-    if "message" in update:
-        msg = update["message"]
-        chat_id = msg["chat"]["id"]
-        text = msg.get("text", "").strip()
-        username = msg.get("from", {}).get("username", "")
-
-        # 1. /start command
-        if text.startswith("/start"):
-            parts = text.split()
-            # Deep link: /start barber_sp-m1 or /start sp-m1
-            if len(parts) > 1:
-                param = parts[1].replace("barber_", "")
-                barber = link_barber_chat_id(param, chat_id, username)
-                if barber:
-                    welcome = (
-                        f"💈 <b>Xush kelibsiz, {barber['name']}!</b>\n\n"
-                        f"Siz muvaffaqiyatli <b>VSM Barbershop</b> tizimiga ulandingiz.\n"
-                        f"Mansabingiz: <b>{barber['role']}</b>\n"
-                        f"Zal: <b>{barber['salon'].upper()}</b>\n\n"
-                        f"⚡ Endi saytdan tushgan barcha yangi buyurtmalar to'g'ridan-to'g'ri shu yerga yuboriladi. "
-                        f"Siz ularni bir tegishda qabul qilishingiz yoki rad etishingiz mumkin!"
-                    )
-                    show_barber_menu(chat_id, welcome)
-                    return
-
-            # Check if this chat_id already linked to a barber
-            barber = find_barber_by_chat_id(chat_id)
-            if barber:
-                welcome = (
-                    f"💈 <b>Salom, {barber['name']}!</b>\n"
-                    f"Siz VSM tizimida faol holatdasiz."
-                )
-                show_barber_menu(chat_id, welcome)
-            else:
-                # Offer list of barbers to bind
-                specialists = load_specialists()
-                buttons = []
-                for s in specialists:
-                    buttons.append([{"text": f"✂️ Men - {s['name']} ({s['role']})", "callback_data": f"bind_{s['id']}"}])
-
-                msg_text = (
-                    "💈 <b>VSM Barbershop - Sartaroshlar Boshqaruv Boti</b>\n\n"
-                    "Ushbu bot <b>faqat sartaroshlar va stillistlar</b> uchun mo'ljallangan.\n"
-                    "Iltimos, profilingizni tasdiqlash uchun o'z ismingizni tanlang:"
-                )
-                send_message(chat_id, msg_text, {"inline_keyboard": buttons})
+def notify_new_booking(appt):
+    """Send a new booking to its master and to the admin chat. Never raises."""
+    try:
+        if not get_token():
             return
+        phone = "".join(ch for ch in str(appt.get("clientPhone", "")) if ch.isdigit() or ch == "+")
+        barber = next((s for s in storage.load_specialists() if s.get("id") == appt.get("specialistId")), None)
 
-        barber = find_barber_by_chat_id(chat_id)
-        if not barber:
-            send_message(chat_id, "Iltimos, avval /start buyrug'ini yuborib, o'z profilingizni bog'lang.")
-            return
+        if barber and barber.get("chatId"):
+            keyboard = {"inline_keyboard": [[
+                {"text": "✅ Qabul qilish", "callback_data": f"accept_{appt['id']}"},
+                {"text": "❌ Rad etish", "callback_data": f"decline_{appt['id']}"},
+            ]]}
+            text = booking_text(appt, "🚨 <b>YANGI BUYURTMA! / НОВАЯ ЗАПИСЬ!</b>")
+            if phone:
+                text += f"\n📞 <b>Qo'ng'iroq:</b> {esc(phone)}"
+            send_message(barber["chatId"], text + "\n\n<i>Qabul qilasizmi?</i>", keyboard)
 
-        if text in ["📋 Bugungi navbatim", "/today"]:
-            show_barber_schedule(chat_id, barber, datetime.now().strftime("%Y-%m-%d"))
-            return
+        admin_id = str(storage.load_config().get("admin_chat_id", "")).strip()
+        if admin_id and not (barber and str(barber.get("chatId")) == admin_id):
+            note = "" if (barber and barber.get("chatId")) else "\n\n⚠️ <i>Bu usta Telegram'ga ulanmagan — mijozga o'zingiz qo'ng'iroq qiling.</i>"
+            send_message(admin_id, booking_text(appt, f"🔔 <b>{BRAND_HTML}: yangi buyurtma</b>") + note)
+    except Exception as e:  # notifications must never break a booking
+        log(f"notify_new_booking failed: {e}")
 
-        if text in ["📅 Ertangi navbatim", "/tomorrow"]:
-            tomorrow = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
-            show_barber_schedule(chat_id, barber, tomorrow)
-            return
 
-        if text in ["🟢 Navbatchilik holati", "/status"]:
-            barber["onDuty"] = not barber.get("onDuty", True)
-            specialists = load_specialists()
-            for s in specialists:
-                if s["id"] == barber["id"]:
-                    s["onDuty"] = barber["onDuty"]
-            save_specialists(specialists)
-            status_text = "🟢 Ishdasiz (On Duty)" if barber["onDuty"] else "🔴 Dam olishdasiz (Off Duty)"
-            send_message(chat_id, f"Navbatchilik holatingiz yangilandi: <b>{status_text}</b>")
-            return
+# --------------------------------------------------------------------------
+# Update handling
+# --------------------------------------------------------------------------
+def show_barber_menu(chat_id, text):
+    send_message(chat_id, text, {
+        "keyboard": [[{"text": "📋 Bugungi navbatim"}, {"text": "📅 Ertangi navbatim"}],
+                     [{"text": "🟢 Navbatchilik holati"}]],
+        "resize_keyboard": True,
+    })
 
-        if text.startswith("/simulate"):
-            # Simulation command to test booking alert
-            appt = {
-                "id": f"VSM-{int(time.time()) % 10000}",
-                "clientName": "Test Mijoz",
-                "clientPhone": "+998 90 999-88-77",
-                "salon": barber["salon"],
-                "serviceTitle": "Executive Precision Cut & Fade",
-                "specialistName": barber["name"],
-                "specialistId": barber["id"],
-                "date": datetime.now().strftime("%Y-%m-%d"),
-                "timeSlot": "4:00 PM",
-                "notes": "Test simulated booking from system"
-            }
-            notify_barber_new_booking(appt)
-            send_message(chat_id, "✅ Test xabarnomasi yuborildi!")
-            return
-
-        show_barber_menu(chat_id, "Kerakli bo'limni tanlang:")
-
-    elif "callback_query" in update:
-        cq = update["callback_query"]
-        chat_id = cq["message"]["chat"]["id"]
-        msg_id = cq["message"]["message_id"]
-        data = cq.get("data", "")
-        cq_id = cq["id"]
-
-        # Bind barber profile
-        if data.startswith("bind_"):
-            b_id = data.split("_")[1]
-            username = cq.get("from", {}).get("username", "")
-            barber = link_barber_chat_id(b_id, chat_id, username)
-            answer_callback(cq_id, f"Profil bog'landi: {barber['name']}")
-            welcome = (
-                f"✅ <b>Profil muvaffaqiyatli bog'landi!</b>\n\n"
-                f"Sartarosh: <b>{barber['name']}</b>\n"
-                f"Mutaxassislik: <b>{barber['role']}</b>\n\n"
-                f"Endi yangi buyurtmalar kelishi bilan shu yerda tasdiqlashingiz mumkin."
-            )
-            show_barber_menu(chat_id, welcome)
-            return
-
-        # Accept Booking
-        if data.startswith("accept_"):
-            appt_id = data.split("_")[1]
-            appointments = load_appointments()
-            appt = next((a for a in appointments if a.get("id") == appt_id), None)
-            
-            barber = find_barber_by_chat_id(chat_id)
-            barber_name = barber["name"] if barber else "Barber"
-
-            if appt:
-                appt["status"] = "Confirmed"
-                appt["acceptedBy"] = barber_name
-                appt["acceptedAt"] = datetime.now().isoformat()
-                save_appointments(appointments)
-
-            answer_callback(cq_id, "✅ Buyurtma qabul qilindi!", show_alert=True)
-
-            updated_text = (
-                f"✅ <b>BUYURTMA QABUL QILINDI!</b>\n\n"
-                f"🆔 <b>Buyurtma ID:</b> <code>{appt_id}</code>\n"
-                f"👤 <b>Mijoz:</b> {appt.get('clientName', 'Client')} ({appt.get('clientPhone', '')})\n"
-                f"✂️ <b>Xizmat:</b> {appt.get('serviceTitle', '')}\n"
-                f"📅 <b>Sana:</b> {appt.get('date', '')}\n"
-                f"⏰ <b>Vaqt:</b> {appt.get('timeSlot', '')}\n"
-                f"👍 <b>Holat:</b> Qabul qilindi ({barber_name} tomonidan)\n\n"
-                f"<i>Mijoz sizning navbatingizga qo'shildi.</i>"
-            )
-
-            edit_message(chat_id, msg_id, updated_text, None)
-            return
-
-        # Decline Booking
-        if data.startswith("decline_"):
-            appt_id = data.split("_")[1]
-            appointments = load_appointments()
-            appt = next((a for a in appointments if a.get("id") == appt_id), None)
-            
-            barber = find_barber_by_chat_id(chat_id)
-            barber_name = barber["name"] if barber else "Barber"
-
-            if appt:
-                appt["status"] = "Cancelled"
-                appt["declinedBy"] = barber_name
-                save_appointments(appointments)
-
-            answer_callback(cq_id, "❌ Buyurtma rad etildi", show_alert=True)
-
-            updated_text = (
-                f"❌ <b>BUYURTMA RAD ETILDI</b>\n\n"
-                f"🆔 <b>Buyurtma ID:</b> <code>{appt_id}</code>\n"
-                f"👤 <b>Mijoz:</b> {appt.get('clientName', 'Client')}\n"
-                f"⏰ <b>Vaqt:</b> {appt.get('date', '')} {appt.get('timeSlot', '')}\n"
-                f"⚠️ <b>Holat:</b> Bekor qilindi ({barber_name} tomonidan)\n\n"
-                f"<i>Ushbu vaqt sloti qayta bo'shatildi.</i>"
-            )
-
-            edit_message(chat_id, msg_id, updated_text, None)
-            return
-
-def show_barber_menu(chat_id, message_text):
-    reply_markup = {
-        "keyboard": [
-            [{"text": "📋 Bugungi navbatim"}, {"text": "📅 Ertangi navbatim"}],
-            [{"text": "🟢 Navbatchilik holati"}]
-        ],
-        "resize_keyboard": True
-    }
-    send_message(chat_id, message_text, reply_markup)
 
 def show_barber_schedule(chat_id, barber, date_str):
-    appointments = load_appointments()
-    appts = [
-        a for a in appointments 
-        if (a.get("specialistName") == barber["name"] or a.get("specialistId") == barber["id"])
-        and a.get("date") == date_str
-        and a.get("status") != "Cancelled"
-    ]
-
+    appts = [a for a in storage.load_appointments()
+             if a.get("specialistId") == barber["id"] and a.get("date") == date_str and a.get("status") != "Cancelled"]
     if not appts:
-        send_message(chat_id, f"📅 <b>{date_str}</b> sanasida hozircha yozilgan mijozlar yo'q.")
+        send_message(chat_id, f"📅 <b>{esc(date_str)}</b>: hozircha yozilgan mijozlar yo'q.")
         return
-
-    report = f"📋 <b>{barber['name']} — {date_str} navbati:</b>\n\n"
+    report = f"📋 <b>{esc(barber['name'])} — {esc(date_str)}</b>\n\n"
     for idx, a in enumerate(appts, 1):
-        status_icon = "✅" if a.get("status") == "Confirmed" else "⏳"
-        report += (
-            f"<b>{idx}. {a.get('timeSlot')}</b> — {status_icon} {a.get('clientName')}\n"
-            f"   ✂️ {a.get('serviceTitle')}\n"
-            f"   📞 {a.get('clientPhone')}\n"
-            f"   🆔 <code>{a.get('id')}</code>\n\n"
-        )
-
+        icon = "✅" if a.get("status") == "Confirmed" else "⏳"
+        report += (f"<b>{idx}. {esc(a.get('timeSlot'))}</b> — {icon} {esc(a.get('clientName'))}\n"
+                   f"   ✂️ {esc(a.get('serviceTitle'))}\n   📞 {esc(a.get('clientPhone'))}\n\n")
     send_message(chat_id, report)
 
-def run_bot():
-    print("=" * 65)
-    print("VSM Barbershop - Barber Acceptance Bot Engine")
-    print(f"Data Sources: {SPECIALISTS_FILE} | {APPOINTMENTS_FILE}")
-    print("=" * 65)
 
-    cfg = load_config()
-    token = cfg.get("bot_token", "")
+def link_barber(spec_id, code, chat_id, username):
+    with storage.lock:
+        specs = storage.load_specialists()
+        for s in specs:
+            if s.get("id") == spec_id and s.get("linkCode") and secrets.compare_digest(s["linkCode"], code):
+                s["chatId"] = str(chat_id)
+                if username:
+                    s["telegram"] = f"@{username}"
+                storage.save_specialists(specs)
+                return s
+    return None
 
-    if not token or token == "YOUR_BOT_TOKEN_HERE":
-        print("\n[!] NOTICE: BOT_TOKEN is not configured yet.")
-        print("You can set your token via:")
-        print("1. Admin Panel -> 'Telegram Bot Integratsiyasi' tab")
-        print("2. Or environment variable: set VSM_BOT_TOKEN=YOUR_TOKEN\n")
-        print("Running in verification mode. Script loaded and verified successfully.")
+
+def handle_start(chat_id, text, username):
+    parts = text.split(maxsplit=1)
+    param = parts[1].strip() if len(parts) > 1 else ""
+
+    if param.startswith("admin_"):
+        code = storage.load_config().get("admin_link_code", "")
+        if code and secrets.compare_digest(code, param[len("admin_"):]):
+            storage.update_config(admin_chat_id=str(chat_id))
+            send_message(chat_id, f"✅ <b>{BRAND_HTML} admin chati ulandi.</b>\nEndi barcha yangi buyurtmalar shu yerga keladi.")
+        else:
+            send_message(chat_id, "❌ Havola noto'g'ri yoki eskirgan. Admin paneldan yangi havolani oling.")
         return
 
-    print("Checking connection with Telegram Bot API...")
-    me = api_call("getMe")
-    if me and me.get("ok"):
-        bot_user = me["result"]["username"]
-        print(f"🟢 Connected successfully as @{bot_user}")
-        print("Polling for barber interactions and booking acceptances...")
+    if param.startswith("b_") and "_" in param[2:]:
+        spec_id, code = param[2:].rsplit("_", 1)
+        barber = link_barber(spec_id, code, chat_id, username)
+        if barber:
+            show_barber_menu(chat_id, (
+                f"💈 <b>Xush kelibsiz, {esc(barber['name'])}!</b>\n\n"
+                f"Siz <b>{BRAND_HTML}</b> tizimiga ulandingiz. Saytdan sizga yozilgan mijozlar shu yerga keladi — "
+                f"bir tegishda qabul qilasiz yoki rad etasiz."))
+        else:
+            send_message(chat_id, "❌ Havola noto'g'ri yoki eskirgan. Admin'dan yangi havola so'rang.")
+        return
+
+    barber = find_barber_by_chat_id(chat_id)
+    if barber:
+        show_barber_menu(chat_id, f"💈 <b>Salom, {esc(barber['name'])}!</b>")
+    elif is_admin_chat(chat_id):
+        send_message(chat_id, f"✅ Bu {BRAND_HTML} admin chati. Yangi buyurtmalar shu yerga keladi.")
     else:
-        print("[!] Could not connect to Telegram API with current token.")
+        send_message(chat_id, (
+            f"💈 <b>{BRAND_HTML} — ustalar boti</b>\n\n"
+            "Bu bot faqat salon ustalari uchun. Ulanish uchun admin bergan shaxsiy havoladan foydalaning.\n\n"
+            "Mijozmisiz? Saytimiz orqali yoziling."))
+
+
+def handle_callback(cq):
+    chat_id = cq["message"]["chat"]["id"]
+    msg_id = cq["message"]["message_id"]
+    data = cq.get("data", "")
+    action, _, appt_id = data.partition("_")
+    if action not in ("accept", "decline") or not appt_id:
+        answer_callback(cq["id"], "Noma'lum amal")
         return
 
-    last_update_id = 0
-    while True:
-        try:
-            updates = api_call("getUpdates", {"offset": last_update_id + 1, "timeout": 20})
-            if updates and updates.get("ok"):
-                for item in updates.get("result", []):
-                    last_update_id = item["update_id"]
-                    handle_update(item)
-            time.sleep(1)
-        except KeyboardInterrupt:
-            print("\nBot stopped by user.")
-            break
-        except Exception as e:
-            print(f"Polling error: {e}")
+    barber = find_barber_by_chat_id(chat_id)
+    with storage.lock:
+        appts = storage.load_appointments()
+        appt = next((a for a in appts if a.get("id") == appt_id), None)
+        if not appt:
+            answer_callback(cq["id"], "Buyurtma topilmadi", show_alert=True)
+            return
+        allowed = is_admin_chat(chat_id) or (barber and barber.get("id") == appt.get("specialistId"))
+        if not allowed:
+            answer_callback(cq["id"], "Bu buyurtma sizga tegishli emas", show_alert=True)
+            return
+        who = barber["name"] if barber else "Admin"
+        if action == "accept":
+            appt["status"] = "Confirmed"
+            appt["acceptedBy"] = who
+        else:
+            appt["status"] = "Cancelled"
+            appt["declinedBy"] = who
+        appt["updatedAt"] = datetime.now(timezone.utc).isoformat()
+        storage.save_appointments(appts)
+
+    if action == "accept":
+        answer_callback(cq["id"], "✅ Qabul qilindi!")
+        edit_message(chat_id, msg_id, booking_text(appt, f"✅ <b>QABUL QILINDI</b> ({esc(who)})"))
+    else:
+        answer_callback(cq["id"], "❌ Rad etildi")
+        edit_message(chat_id, msg_id, booking_text(appt, f"❌ <b>RAD ETILDI</b> ({esc(who)})") + "\n\n<i>Vaqt sloti bo'shatildi.</i>")
+
+
+def handle_update(update):
+    if "callback_query" in update:
+        handle_callback(update["callback_query"])
+        return
+    msg = update.get("message")
+    if not msg:
+        return
+    chat_id = msg["chat"]["id"]
+    text = (msg.get("text") or "").strip()
+    username = msg.get("from", {}).get("username", "")
+
+    if text.startswith("/start"):
+        handle_start(chat_id, text, username)
+        return
+
+    barber = find_barber_by_chat_id(chat_id)
+    if not barber:
+        if not is_admin_chat(chat_id):
+            send_message(chat_id, "Bu bot faqat salon ustalari uchun. Admin bergan havola orqali ulaning.")
+        return
+
+    today = datetime.now(TZ).date()
+    if text in ("📋 Bugungi navbatim", "/today"):
+        show_barber_schedule(chat_id, barber, today.isoformat())
+    elif text in ("📅 Ertangi navbatim", "/tomorrow"):
+        show_barber_schedule(chat_id, barber, (today + timedelta(days=1)).isoformat())
+    elif text in ("🟢 Navbatchilik holati", "/status"):
+        with storage.lock:
+            specs = storage.load_specialists()
+            on = barber.get("onDuty", True)
+            for s in specs:
+                if s["id"] == barber["id"]:
+                    s["onDuty"] = not s.get("onDuty", True)
+                    on = s["onDuty"]
+            storage.save_specialists(specs)
+        send_message(chat_id, "Holatingiz: <b>" + ("🟢 Ishdasiz" if on else "🔴 Dam olishdasiz") + "</b>")
+    else:
+        show_barber_menu(chat_id, "Kerakli bo'limni tanlang:")
+
+
+# --------------------------------------------------------------------------
+# Polling loop (runs in a background thread of server.py)
+# --------------------------------------------------------------------------
+def poll_forever(stop_event=None):
+    offset = 0
+    active_token = None
+    while not (stop_event and stop_event.is_set()):
+        token = get_token()
+        if not token:
             time.sleep(5)
+            continue
+        if token != active_token:
+            active_token, offset = token, 0
+            name = get_me(token)
+            if name:
+                log(f"Telegram bot ulandi: @{name}")
+            else:
+                log("Telegram bot tokeni noto'g'ri — admin paneldan tekshiring.")
+                time.sleep(30)
+                active_token = None
+                continue
+        resp = api_call("getUpdates", {"offset": offset, "timeout": 20,
+                                       "allowed_updates": ["message", "callback_query"]}, token=token)
+        if not resp or not resp.get("ok"):
+            if resp and resp.get("error_code") == 409:
+                log("Boshqa joyda ham shu bot ishlayapti (409). Faqat server.py ni ishga tushiring.")
+            time.sleep(5)
+            continue
+        for item in resp.get("result", []):
+            offset = item["update_id"] + 1
+            try:
+                handle_update(item)
+            except Exception as e:
+                log(f"Update error: {e}")
+
 
 if __name__ == "__main__":
-    run_bot()
+    storage.ensure_data_dir()
+    ensure_link_codes()
+    if not get_token():
+        print("Bot tokeni yo'q. WOMAN_BOT_TOKEN ni o'rnating yoki admin paneldan kiriting.")
+        print("Odatda botni alohida emas, `python server.py` orqali ishga tushiring.")
+    else:
+        poll_forever()

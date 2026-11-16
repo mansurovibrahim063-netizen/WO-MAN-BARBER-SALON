@@ -1,102 +1,95 @@
-# VSM Barbershop & Salon — Split-Screen Luxury Landing Page & Platform
+# WO&MAN — Go'zallik studiyasi / Студия красоты
 
-A minimalist, visually striking luxury platform engineered for **VSM Barbershop & Salon**, incorporating split-screen Male/Female salons, trilingual localization, real-time time-slot reservation (with prices removed), an administrative operations dashboard, and a Telegram booking bot.
+Erkaklar (**MAN**) va ayollar (**WO**) zali uchun sayt, onlayn yozilish, admin panel va ustalar uchun Telegram bot.
 
----
-
-## 🌐 1. Multilingual Support (Uzbek, English, Russian)
-
-- **Available Languages**:
-  - 🇺🇿 **O'zbekcha (UZ)**: Native Uzbek localization tailored to modern Tashkent luxury aesthetics.
-  - 🇬🇧 **English (EN)**: Editorial international salon and barbershop terminology.
-  - 🇷🇺 **Русский (RU)**: Full Russian translation for high-end clientele.
-- **Instant Reactive Switching**: A persistent language switch (`UZ | EN | RU`) updates all titles, headings, service descriptions, lookbook tags, reviews, and modals dynamically without reloading the page. Language preference is saved in `localStorage`.
+- **Sayt** (`index.html`): xizmatlar, usta, sana va vaqtni tanlab yozilish. Uch tilda: o'zbek, rus, ingliz.
+- **Admin panel** (`admin.html`): parol bilan kiriladi. Buyurtmalar, ustalar, Telegram sozlamalari.
+- **Telegram bot**: har bir yangi buyurtma ustaga (Qabul / Rad tugmalari bilan) va adminga keladi.
+- **Server** (`server.py`): hammasini bitta dasturda ishlatadi. Faqat Python 3 kerak, qo'shimcha o'rnatish shart emas.
 
 ---
 
-## ⏰ 2. Time-Slot Booking System (No Prices Displayed)
+## 1. Ishga tushirish
 
-- As requested, **all prices have been removed** across hero badges, service lists, lookbooks, and modals.
-- Replaced with **service duration** (e.g., `45 daq / 45 mins / 45 мин`) and **real-time slot indicators**.
-- **Interactive Booking Flow**:
-  1. Select Sanctuary (`♂ VSM Homme` / `♀ VSM Femme`).
-  2. Select Signature Service (with duration & technique overview).
-  3. Select Barber or Stylist (*Marcus Vance, Julian Drake, Leo Saint, Elena Rostova, Camille Laurent, Sienna Blake*).
-  4. Select Date (Today, Tomorrow, or pick from calendar).
-  5. Select Available Time Slot (`10:00 AM`, `11:30 AM`, `1:00 PM`, `2:30 PM`, `4:00 PM`, `5:30 PM`, `7:00 PM`). Already booked slots are marked as busy and disabled in real time.
-  6. Enter Client Name & Phone Number.
-  7. Instantly issues a confirmed Booking Ticket (e.g. `VSM-2045`), synchronized with the Admin Panel and Telegram Bot database.
-
----
-
-## ⚡ 3. Split-Screen System & Distinctive Blue/Pink Identity
-
-- **Male Salon (VSM Homme)**: Electric Cobalt & Ice Blue accents (`#0066FF`, `#38BDF8`), sapphire backlighting, hot-towel straight-razor shave rituals, and whiskey lounge atmosphere.
-- **Female Salon (VSM Femme)**: Vivid Fuchsia & Rose Quartz accents (`#FF2E93`, `#FB7185`), magenta backlighting, daylight-accurate optics, dimensional balayage, and prosecco bar atmosphere.
-- **Fluid Lerping Split & Draggable Divider**:
-  - Hovering left expands Homme to **64%**; hovering right expands Femme to **64%**.
-  - The luminous center handle (`◀ ❚ ▶`) is draggable to any custom ratio (22% to 78%).
-  - Navigation switcher pills (`Homme`, `Split 50/50`, `Femme`) toggle 100% immersive views.
-
----
-
-## 🛡️ 4. Admin Management Panel (`admin.html`)
-
-Access the management dashboard at:
-👉 [**`admin.html`**](file:///C:/Users/User/.gemini/antigravity/scratch/vsm-barbershop/admin.html)
-
-- **Live Analytics**:
-  - Total Bookings, Homme Bookings, Femme Bookings, Today's Active Slots, Telegram Bot Bookings.
-- **Appointments Table**:
-  - View ID, Client Name, Phone, Sanctuary (Homme ♂ / Femme ♀), Service, Specialist, Date, Time Slot, Source (Website / Telegram Bot), and Status (`Confirmed`, `Pending`, `Completed`, `Cancelled`).
-  - Search by client name, phone number, or booking ID.
-  - Filter by Salon, Status, or Booking Source.
-  - Quick action buttons to **Confirm**, **Complete**, or **Cancel** appointments.
-- **Manual Booking Creator**:
-  - Admin modal to enter phone or walk-in reservations manually.
-- **Staff Roster Management**:
-  - Toggle on-duty and day-off statuses for barbers and colorists.
-- **Export Data**:
-  - One-click JSON export for reporting and backups.
-- **Trilingual Admin Interface**:
-  - Also toggles seamlessly between Uzbek, English, and Russian.
-
----
-
-## 🤖 5. Telegram Booking Bot (`bot.py`)
-
-A standalone Python Telegram bot ready to connect directly to Telegram:
-👉 [**`bot.py`**](file:///C:/Users/User/.gemini/antigravity/scratch/vsm-barbershop/bot.py)
-👉 [**`TELEGRAM_BOT_GUIDE.md`**](file:///C:/Users/User/.gemini/antigravity/scratch/vsm-barbershop/TELEGRAM_BOT_GUIDE.md)
-
-### Quick Run:
-```powershell
-cd C:\Users\User\.gemini\antigravity\scratch\vsm-barbershop
-$env:VSM_BOT_TOKEN="YOUR_BOT_TOKEN_FROM_BOTFATHER"
-python bot.py
+```bash
+python server.py
 ```
 
-- **Features**:
-  - Interactive multi-language support (Uzbek, Russian, English).
-  - Step-by-step menu for choosing salon, barber, service, date, and time slot.
-  - Issues electronic booking tickets directly in Telegram.
-  - Stores all bookings in `appointments.json`, synchronized with the web Admin Panel.
-  - WebApp support to launch the full booking app inside Telegram.
+Keyin brauzerda oching:
 
----
+- Sayt: <http://localhost:8000>
+- Admin panel: <http://localhost:8000/admin.html>
 
-## 📂 Project Structure
+**Admin paroli** birinchi ishga tushirishda terminalda **bir marta** ko'rsatiladi (`ADMIN PAROLI: ...`). Uni yozib qo'ying. O'z parolingizni qo'ymoqchi bo'lsangiz:
+
+```bash
+WOMAN_ADMIN_PASSWORD="sizning-parolingiz" python server.py
+```
+
+(Windows PowerShell'da: `$env:WOMAN_ADMIN_PASSWORD="sizning-parolingiz"; python server.py`)
+
+> ⚠️ `index.html` ni faylni ikki marta bosib ochmang. Yozilish faqat `server.py` orqali ochilganda ishlaydi.
+
+## 2. Birinchi sozlash (5 daqiqa)
+
+1. **Ustalar.** Admin panel → *Ustalarni Boshqarish*. Namuna sifatida qo'yilgan ismlarni (Marcus Vance va boshqalar) haqiqiy ustalaringizga almashtiring yoki o'chiring.
+2. **Telegram.** `TELEGRAM_BOT_GUIDE.md` dagi qadamlarni bajaring: bot tokeni, admin havolasi, ustalar havolalari.
+3. **Aloqa ma'lumotlari.** `site-config.js` faylida telefon, manzil, Instagram va Telegram'ni yozing. Bo'sh qatorlar saytda ko'rinmaydi.
+4. **Matnlarni tekshiring.** Xizmatlar ro'yxati (`app.js` dagi `servicesCatalog`), ish vaqti (`index.html` footer) va sayt matnlari namuna sifatida yozilgan. Salonga moslang.
+5. **Rasmlar.** Lukbuk rasmlari namunaviy stok fotolar. Iloji bo'lsa o'z ishlaringiz rasmlari bilan almashtiring. "Mijozlar fikrlari" bo'limi va reytinglar yashirilgan, chunki ular to'qib chiqarilgan edi. Haqiqiy sharhlar bo'lsa, qo'shib yoqing.
+
+## 3. Ma'lumotlar qayerda saqlanadi?
+
+`data/` papkasida (u gitga **qo'shilmaydi**, chunki ichida mijozlarning ismlari va telefonlari bor):
+
+| Fayl | Ichida |
+|------|--------|
+| `data/appointments.json` | buyurtmalar |
+| `data/specialists.json` | ustalar (birinchi ishga tushirishda `specialists.json` dan nusxalanadi) |
+| `data/bot_config.json` | bot tokeni, admin chat, admin parol xeshi |
+
+Zaxira nusxa olish uchun `data/` papkasini nusxalab qo'ying yoki admin paneldagi **Export (JSON)** tugmasidan foydalaning.
+
+## 4. Internetga joylash
+
+Mijozlar saytga kira olishi uchun `server.py` doimiy ishlaydigan kompyuter yoki serverda (VPS) turishi kerak. Muhim:
+
+- `data/` papkasi o'chib ketmaydigan diskda bo'lsin (`WOMAN_DATA_DIR` bilan joyini o'zgartirish mumkin).
+- Server oldida Nginx yoki hosting proksisi bo'lsa, `WOMAN_TRUST_PROXY=1` qo'ying, aks holda spamdan himoya hamma mijozni bitta odam deb hisoblaydi.
+- Domen va HTTPS (masalan Nginx + Let's Encrypt) bilan oching, chunki admin parol internet orqali yuboriladi.
+
+| O'zgaruvchi | Ma'nosi |
+|-------------|---------|
+| `PORT` | port (standart 8000) |
+| `WOMAN_ADMIN_PASSWORD` | admin paroli |
+| `WOMAN_BOT_TOKEN` | Telegram bot tokeni (admin paneldan ham kiritsa bo'ladi) |
+| `WOMAN_DATA_DIR` | ma'lumotlar papkasi (standart `./data`) |
+| `WOMAN_TRUST_PROXY` | `1`: proksi orqasida |
+| `WOMAN_TZ_OFFSET_HOURS` | vaqt mintaqasi (standart 5, Toshkent) |
+
+## 5. Testlar
+
+```bash
+python test_suite.py
+```
+
+```bash
+python test_server.py
+```
+
+## Fayllar
 
 ```
-vsm-barbershop/
-├── index.html              # Main trilingual landing page & slot booking UI
-├── styles.css              # Custom luxury CSS with glowing Blue & Pink accents
-├── app.js                  # Frontend engine, slot availability & booking logic
-├── translations.js         # UZ, EN, RU localization dictionary
-├── admin.html              # Operational Admin Panel for managing bookings
-├── admin.js                # Admin dashboard filtering, metrics & status manager
-├── appointments.json       # Shared JSON database of booked appointments
-├── bot.py                  # Standalone Python Telegram Booking Bot
-├── TELEGRAM_BOT_GUIDE.md   # Telegram bot setup instructions (UZ / RU / EN)
-└── README.md               # Architecture documentation
+index.html        sayt
+admin.html        admin panel
+app.js            sayt logikasi (yozilish)
+admin.js          admin panel logikasi
+translations.js   UZ / EN / RU matnlar
+site-config.js    telefon, manzil, Instagram, Telegram
+styles.css        dizayn (qora + pushti + oq, logotip ranglari)
+assets/           logotip va ikonkalar
+server.py         veb-server va API
+bot.py            Telegram bot
+storage.py        ma'lumotlarni xavfsiz saqlash
+specialists.json  ustalar ro'yxati namunasi (boshlang'ich)
 ```

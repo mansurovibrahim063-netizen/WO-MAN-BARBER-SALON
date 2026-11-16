@@ -1,17 +1,37 @@
 /**
- * VSM Barbershop & Salon - Core Frontend & Booking Engine
+ * WO&MAN Beauty Studio - Core Frontend & Booking Engine
  * Features:
- * - Trilingual System (Uzbek / English / Russian) via VSM_TRANSLATIONS
- * - Time-Slot Reservation (No prices; real-time slot checking)
- * - Dynamic Specialists synchronization from Admin Panel
- * - Automated Telegram Alert Dispatch to the Barber upon booking
+ * - Trilingual System (Uzbek / English / Russian) via WOMAN_TRANSLATIONS
+ * - Time-Slot Reservation (No prices; busy slots come from the server)
+ * - Staff list and bookings are stored on the server (server.py), so every
+ *   booking reaches the admin panel and the master's Telegram
  * - Split-Screen Dynamic Lerp & Draggable Divider
  * - Audio Synthesis via Web Audio API
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+  // --- Helpers ---
+  function esc(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
+
+  function localDateStr(d = new Date()) {
+    const pad = n => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  }
+
+  function storageGet(key) {
+    try { return localStorage.getItem(key); } catch (e) { return null; }
+  }
+
+  function storageSet(key, value) {
+    try { localStorage.setItem(key, value); } catch (e) {}
+  }
+
   // --- Current Language State ---
-  let currentLang = localStorage.getItem('vsm_lang') || 'uz';
+  let currentLang = storageGet('woman_lang') || 'uz';
 
   // --- DOM Elements ---
   const heroContainer = document.getElementById('splitHero');
@@ -189,21 +209,33 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  // --- Dynamic Specialists Loader (Sync with Admin Panel) ---
-  function getLoadedSpecialists() {
-    try {
-      const stored = localStorage.getItem('vsm_specialists');
-      if (stored) return JSON.parse(stored);
-    } catch (e) {}
+  // --- Staff list & busy slots come from the server ---
+  const DEFAULT_AVATAR = 'assets/logo.png';
+  let specialists = [];
+  let specialistsLoadFailed = false;
+  const busyByDate = {};   // { 'YYYY-MM-DD': { specialistId: ['10:00 AM', ...] } }
 
-    return [
-      { id: "sp-m1", name: "Marcus Vance", role: "Master Fade Specialist", salon: "homme", phone: "+998 90 111-22-33", telegram: "@marcus_vance", chatId: "78219401", onDuty: true, img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" },
-      { id: "sp-m2", name: "Julian Drake", role: "Beard & Shave Master", salon: "homme", phone: "+998 90 222-33-44", telegram: "@julian_drake", chatId: "89312042", onDuty: true, img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80" },
-      { id: "sp-m3", name: "Leo Saint", role: "Texture Specialist", salon: "homme", phone: "+998 90 333-44-55", telegram: "@leo_saint", chatId: "91048211", onDuty: true, img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80" },
-      { id: "sp-f1", name: "Elena Rostova", role: "Creative Color Director", salon: "femme", phone: "+998 90 444-55-66", telegram: "@elena_rostova", chatId: "65192034", onDuty: true, img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80" },
-      { id: "sp-f2", name: "Camille Laurent", role: "Haute Cut Specialist", salon: "femme", phone: "+998 90 555-66-77", telegram: "@camille_laurent", chatId: "73104928", onDuty: true, img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=200&q=80" },
-      { id: "sp-f3", name: "Sienna Blake", role: "Balayage Artisan", salon: "femme", phone: "+998 90 666-77-88", telegram: "@sienna_blake", chatId: "82019483", onDuty: false, img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80" }
-    ];
+  async function loadSpecialists() {
+    try {
+      const res = await fetch('/api/public/specialists', { cache: 'no-store' });
+      if (!res.ok) throw new Error(res.status);
+      specialists = await res.json();
+      specialistsLoadFailed = false;
+    } catch (e) {
+      specialists = [];
+      specialistsLoadFailed = true;
+    }
+  }
+
+  async function loadBusySlots(date) {
+    try {
+      const res = await fetch(`/api/public/busy?date=${encodeURIComponent(date)}`, { cache: 'no-store' });
+      if (!res.ok) throw new Error(res.status);
+      const data = await res.json();
+      busyByDate[date] = data.busy || {};
+    } catch (e) {
+      busyByDate[date] = busyByDate[date] || {};
+    }
   }
 
   // --- Service Catalog Data (No Prices, Only Durations) ---
@@ -229,7 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       {
         id: 'h4',
-        title: { uz: 'VSM Dual Gentlemen To\'plami', en: 'The VSM Signature Dual Package', ru: 'Комплекс VSM Dual (Стрижка + Бритье)' },
+        title: { uz: 'WO&MAN Dual Erkaklar To\'plami', en: 'The WO&MAN Signature Dual Package', ru: 'Комплекс WO&MAN Dual (Стрижка + Бритье)' },
         duration: { uz: '75 daqiqa', en: '75 mins', ru: '75 минут' },
         desc: { uz: 'Soch turmagi + Qirollik tarash rituali + bosh terisi massaji.', en: 'Haircut + Royal hot towel shave + scalp massage.', ru: 'Авторская стрижка + королевское бритье + массаж головы.' }
       }
@@ -268,8 +300,8 @@ document.addEventListener('DOMContentLoaded', () => {
   let selectedSalon = 'homme';
   let selectedService = null;
   let selectedSpecialist = null;
-  let selectedDate = new Date().toISOString().split('T')[0];
-  let selectedTimeSlot = '2:30 PM';
+  let selectedDate = localDateStr();
+  let selectedTimeSlot = null;
 
   const salonToggleBtns = document.querySelectorAll('.salon-toggle-btn');
   const serviceSelectList = document.getElementById('serviceSelectList');
@@ -278,17 +310,38 @@ document.addEventListener('DOMContentLoaded', () => {
   const confirmBookingBtn = document.getElementById('confirmBookingBtn');
   const datePicker = document.getElementById('bookingDateInput');
 
-  function getExistingAppointments() {
-    try {
-      const stored = localStorage.getItem('vsm_appointments');
-      if (stored) return JSON.parse(stored);
-    } catch (e) {}
-    return [];
+  function isSlotBooked(specialistId, date, timeSlot) {
+    const busy = (busyByDate[date] || {})[specialistId] || [];
+    return busy.includes(timeSlot);
   }
 
-  function isSlotBooked(specialistName, date, timeSlot) {
-    const list = getExistingAppointments();
-    return list.some(a => a.specialistName === specialistName && a.date === date && a.timeSlot === timeSlot && a.status !== 'Cancelled');
+  function slotMinutes(slot) {
+    const m = slot.match(/^(\d{1,2}):(\d{2}) (AM|PM)$/);
+    if (!m) return 0;
+    let h = parseInt(m[1], 10) % 12;
+    if (m[3] === 'PM') h += 12;
+    return h * 60 + parseInt(m[2], 10);
+  }
+
+  function isSlotPast(date, slot) {
+    if (date !== localDateStr()) return date < localDateStr();
+    const now = new Date();
+    return slotMinutes(slot) <= now.getHours() * 60 + now.getMinutes();
+  }
+
+  function uiText(key) {
+    const t = {
+      busy: { uz: 'Band', en: 'Booked', ru: 'Занято' },
+      past: { uz: "O'tgan", en: 'Past', ru: 'Прошло' },
+      noStaff: { uz: 'Hozircha bu zalda bo\'sh ustalar yo\'q', en: 'No masters available right now', ru: 'Сейчас нет свободных мастеров' },
+      loadFailed: { uz: "Ustalar ro'yxatini yuklab bo'lmadi. Sahifani yangilang yoki bizga qo'ng'iroq qiling.", en: 'Could not load the masters. Refresh the page or call us.', ru: 'Не удалось загрузить мастеров. Обновите страницу или позвоните нам.' },
+      pickSlot: { uz: "Iltimos, bo'sh vaqtni tanlang!", en: 'Please pick a free time slot!', ru: 'Пожалуйста, выберите свободное время!' },
+      pickStaff: { uz: 'Iltimos, ustani tanlang!', en: 'Please pick a master!', ru: 'Пожалуйста, выберите мастера!' },
+      needInfo: { uz: 'Iltimos, ismingiz va telefon raqamingizni kiriting!', en: 'Please enter your name and phone number!', ru: 'Пожалуйста, введите имя и номер!' },
+      sending: { uz: 'Yuborilmoqda...', en: 'Sending...', ru: 'Отправка...' },
+      netError: { uz: "Ulanishda xatolik. Internetni tekshirib, qayta urinib ko'ring.", en: 'Connection error. Check your internet and try again.', ru: 'Ошибка соединения. Проверьте интернет и попробуйте снова.' }
+    };
+    return (t[key] && (t[key][currentLang] || t[key].uz)) || key;
   }
 
   function renderBookingServices(salon) {
@@ -331,11 +384,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!specialistSelectList) return;
     specialistSelectList.innerHTML = '';
 
-    const allSpecs = getLoadedSpecialists();
-    const list = allSpecs.filter(s => s.salon === salon && s.onDuty !== false);
+    const list = specialists.filter(s => s.salon === salon && s.onDuty !== false);
 
     if (list.length === 0) {
-      specialistSelectList.innerHTML = `<p style="font-size: 0.8rem; color: var(--text-muted); padding: 10px;">Hozircha ustalar mavjud emas</p>`;
+      selectedSpecialist = null;
+      specialistSelectList.innerHTML = `<p style="font-size: 0.8rem; color: var(--text-muted); padding: 10px;">${esc(specialistsLoadFailed ? uiText('loadFailed') : uiText('noStaff'))}</p>`;
+      renderTimeSlots();
       return;
     }
 
@@ -343,10 +397,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const item = document.createElement('div');
       item.className = `specialist-item ${idx === 0 ? 'selected' : ''}`;
       item.innerHTML = `
-        <img src="${sp.img}" alt="${sp.name}">
-        <p>${sp.name}</p>
-        <span>${sp.role}</span>
+        <img src="${esc(sp.img || DEFAULT_AVATAR)}" alt="${esc(sp.name)}">
+        <p>${esc(sp.name)}</p>
+        <span>${esc(sp.role)}</span>
       `;
+      item.querySelector('img').addEventListener('error', (e) => { e.target.src = DEFAULT_AVATAR; }, { once: true });
 
       item.addEventListener('click', () => {
         specialistSelectList.querySelectorAll('.specialist-item').forEach(i => i.classList.remove('selected'));
@@ -367,19 +422,25 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!timeSlotsContainer) return;
     timeSlotsContainer.innerHTML = '';
 
-    const specName = selectedSpecialist ? selectedSpecialist.name : '';
+    const specId = selectedSpecialist ? selectedSpecialist.id : '';
+    const isFree = slot => !isSlotBooked(specId, selectedDate, slot) && !isSlotPast(selectedDate, slot);
+    if (!selectedTimeSlot || !isFree(selectedTimeSlot)) {
+      selectedTimeSlot = defaultSlots.find(isFree) || null;
+    }
 
     defaultSlots.forEach((slot) => {
       const btn = document.createElement('button');
-      const booked = isSlotBooked(specName, selectedDate, slot);
+      btn.type = 'button';
+      const booked = isSlotBooked(specId, selectedDate, slot);
+      const past = isSlotPast(selectedDate, slot);
 
-      btn.className = `time-chip ${slot === selectedTimeSlot && !booked ? 'selected' : ''}`;
-      if (booked) {
+      btn.className = `time-chip ${slot === selectedTimeSlot ? 'selected' : ''}`;
+      if (booked || past) {
         btn.disabled = true;
         btn.classList.add('slot-booked');
         btn.style.opacity = '0.35';
         btn.style.textDecoration = 'line-through';
-        btn.textContent = `${slot} (Band)`;
+        btn.textContent = `${slot} (${uiText(booked ? 'busy' : 'past')})`;
       } else {
         btn.textContent = slot;
         btn.addEventListener('click', () => {
@@ -415,64 +476,26 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   if (datePicker) {
+    const maxDate = new Date();
+    maxDate.setDate(maxDate.getDate() + 90);
     datePicker.value = selectedDate;
-    datePicker.addEventListener('change', () => {
-      selectedDate = datePicker.value || new Date().toISOString().split('T')[0];
+    datePicker.min = localDateStr();
+    datePicker.max = localDateStr(maxDate);
+    datePicker.addEventListener('change', async () => {
+      selectedDate = datePicker.value && datePicker.value >= localDateStr() ? datePicker.value : localDateStr();
+      datePicker.value = selectedDate;
+      renderTimeSlots();
+      await loadBusySlots(selectedDate);
       renderTimeSlots();
     });
   }
 
-  // --- Dispatch Booking Notification to Barber via Telegram ---
-  async function notifyBarberViaTelegram(appt) {
-    try {
-      const cfg = JSON.parse(localStorage.getItem('vsm_telegram_config') || '{}');
-      const token = cfg.bot_token;
-      if (!token) return;
+  // --- Confirm Appointment: send the booking to the server ---
+  let bookingInFlight = false;
 
-      const allSpecs = getLoadedSpecialists();
-      const barber = allSpecs.find(s => s.name === appt.specialistName || s.id === appt.specialistId);
-      if (!barber || !barber.chatId) return;
-
-      const alertText = 
-        `🚨 <b>YANGI BUYURTMA! / NEW BOOKING!</b>\n\n` +
-        `🆔 <b>ID:</b> <code>${appt.id}</code>\n` +
-        `👤 <b>Mijoz:</b> ${appt.clientName} (${appt.clientPhone})\n` +
-        `✂️ <b>Xizmat:</b> ${appt.serviceTitle}\n` +
-        `📅 <b>Sana:</b> ${appt.date}\n` +
-        `⏰ <b>Vaqt Sloti:</b> <b>${appt.timeSlot}</b>\n` +
-        `📝 <b>Izoh:</b> ${appt.notes || 'Yo\'q'}\n\n` +
-        `<i>Iltimos, ushbu mijozni qabul qilasizmi yoki rad etasizmi?</i>`;
-
-      const keyboard = {
-        inline_keyboard: [
-          [
-            { text: "✅ Qabul qilish (Accept)", callback_data: `accept_${appt.id}` },
-            { text: "❌ Rad etish (Decline)", callback_data: `decline_${appt.id}` }
-          ],
-          [
-            { text: "📞 Qo'ng'iroq qilish", url: `tel:${appt.clientPhone.replace(/\s+/g, '')}` }
-          ]
-        ]
-      };
-
-      await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          chat_id: barber.chatId,
-          text: alertText,
-          parse_mode: 'HTML',
-          reply_markup: keyboard
-        })
-      });
-    } catch (e) {
-      console.warn("Could not dispatch Telegram alert:", e);
-    }
-  }
-
-  // --- Confirm Appointment Logic ---
   if (confirmBookingBtn) {
-    confirmBookingBtn.addEventListener('click', () => {
+    confirmBookingBtn.addEventListener('click', async () => {
+      if (bookingInFlight) return;
       const nameInput = document.getElementById('clientNameInput');
       const phoneInput = document.getElementById('clientPhoneInput');
       const notesInput = document.getElementById('clientNotesInput');
@@ -481,47 +504,61 @@ document.addEventListener('DOMContentLoaded', () => {
       const phone = phoneInput ? phoneInput.value.trim() : '';
       const notes = notesInput ? notesInput.value.trim() : '';
 
-      if (!name || !phone) {
-        alert(currentLang === 'uz' ? 'Iltimos, ismingiz va telefon raqamingizni kiriting!' : (currentLang === 'ru' ? 'Пожалуйста, введите имя и номер!' : 'Please enter your name and phone number!'));
-        return;
-      }
+      if (!selectedSpecialist) { alert(uiText('pickStaff')); return; }
+      if (!selectedTimeSlot) { alert(uiText('pickSlot')); return; }
+      if (!name || !phone) { alert(uiText('needInfo')); return; }
 
-      const bookingId = `VSM-${Math.floor(1000 + Math.random() * 9000)}`;
-      const srvTitle = selectedService ? (selectedService.title[currentLang] || selectedService.title.en) : 'Precision Cut';
-
-      const newAppt = {
-        id: bookingId,
-        clientName: name,
-        clientPhone: phone,
+      const srvTitle = selectedService ? (selectedService.title[currentLang] || selectedService.title.en) : '';
+      const payload = {
         salon: selectedSalon,
+        serviceId: selectedService ? selectedService.id : '',
         serviceTitle: srvTitle,
-        specialistName: selectedSpecialist ? selectedSpecialist.name : 'Master Barber',
-        specialistId: selectedSpecialist ? selectedSpecialist.id : '',
+        specialistId: selectedSpecialist.id,
         date: selectedDate,
         timeSlot: selectedTimeSlot,
-        source: 'Website',
-        status: 'Pending',
-        createdAt: new Date().toISOString(),
+        clientName: name,
+        clientPhone: phone,
         notes: notes
       };
 
-      // Save to shared localStorage
-      const appts = getExistingAppointments();
-      appts.unshift(newAppt);
-      localStorage.setItem('vsm_appointments', JSON.stringify(appts));
+      bookingInFlight = true;
+      const originalLabel = confirmBookingBtn.textContent;
+      confirmBookingBtn.disabled = true;
+      confirmBookingBtn.textContent = uiText('sending');
 
-      // Attempt Telegram Notification to Barber
-      notifyBarberViaTelegram(newAppt);
+      try {
+        const res = await fetch('/api/bookings', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          alert(data.error || uiText('netError'));
+          if (res.status === 409) {
+            await loadBusySlots(selectedDate);
+            renderTimeSlots();
+          }
+          return;
+        }
 
-      bookingModal.classList.remove('open');
+        bookingModal.classList.remove('open');
+        const d = WOMAN_TRANSLATIONS[currentLang] || WOMAN_TRANSLATIONS.uz;
+        showToastNotice(`🎉 ${d.toast_success} [ID: ${data.id} • ${data.specialistName} • ${data.date} ${data.timeSlot}]`);
+        playLuxuryChime(selectedSalon === 'homme');
 
-      const d = VSM_TRANSLATIONS[currentLang] || VSM_TRANSLATIONS.uz;
-      showToastNotice(`🎉 ${d.toast_success} [ID: ${bookingId} • ${selectedSpecialist ? selectedSpecialist.name : ''} • ${selectedTimeSlot}]`);
-      playLuxuryChime(selectedSalon === 'homme');
-
-      if (nameInput) nameInput.value = '';
-      if (phoneInput) phoneInput.value = '';
-      if (notesInput) notesInput.value = '';
+        if (nameInput) nameInput.value = '';
+        if (phoneInput) phoneInput.value = '';
+        if (notesInput) notesInput.value = '';
+        await loadBusySlots(selectedDate);
+        renderTimeSlots();
+      } catch (e) {
+        alert(uiText('netError'));
+      } finally {
+        bookingInFlight = false;
+        confirmBookingBtn.disabled = false;
+        confirmBookingBtn.textContent = originalLabel;
+      }
     });
   }
 
@@ -563,6 +600,10 @@ document.addEventListener('DOMContentLoaded', () => {
     m.addEventListener('click', (e) => {
       if (e.target === m) m.classList.remove('open');
     });
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') [bookingModal, menuModal].forEach(m => m && m.classList.remove('open'));
   });
 
   // --- Menu Modal Tabs ---
@@ -618,13 +659,13 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Trilingual Language Switcher ---
   function setLanguage(lang) {
     currentLang = lang;
-    localStorage.setItem('vsm_lang', lang);
+    storageSet('woman_lang', lang);
 
     langBtns.forEach(btn => {
       btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
     });
 
-    const dict = VSM_TRANSLATIONS[lang] || VSM_TRANSLATIONS.uz;
+    const dict = WOMAN_TRANSLATIONS[lang] || WOMAN_TRANSLATIONS.uz;
 
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
@@ -638,6 +679,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderBookingServices(selectedSalon);
     renderBookingSpecialists(selectedSalon);
+    applySalonConfig();
+  }
+
+  // --- Contact details from site-config.js (empty values stay hidden) ---
+  function applySalonConfig() {
+    const cfg = window.SALON_CONFIG || {};
+    const clean = v => String(v || '').trim().replace(/^@/, '');
+    const address = cfg.address ? (cfg.address[currentLang] || cfg.address.uz || '') : '';
+    const phoneDigits = String(cfg.phone || '').replace(/[^\d+]/g, '');
+    const contacts = {
+      phone: cfg.phone ? { href: `tel:${phoneDigits}`, label: cfg.phone } : null,
+      telegram: clean(cfg.telegram) ? { href: `https://t.me/${encodeURIComponent(clean(cfg.telegram))}`, label: `Telegram @${clean(cfg.telegram)}` } : null,
+      instagram: clean(cfg.instagram) ? { href: `https://instagram.com/${encodeURIComponent(clean(cfg.instagram))}`, label: `Instagram @${clean(cfg.instagram)}` } : null,
+      address: address ? { href: cfg.mapUrl || `https://maps.google.com/?q=${encodeURIComponent(address)}`, label: address } : null
+    };
+
+    document.querySelectorAll('[data-contact]').forEach(el => {
+      const c = contacts[el.getAttribute('data-contact')];
+      const target = el.closest('li') || el;
+      target.classList.toggle('is-hidden', !c);
+      if (!c) return;
+      el.setAttribute('href', c.href);
+      if (el.closest('li')) el.textContent = c.label;
+    });
+
+    document.querySelectorAll('[data-contact-section]').forEach(el => {
+      el.classList.toggle('is-hidden', !contacts[el.getAttribute('data-contact-section')]);
+    });
+
+    // Hide the footer "contact" column entirely while nothing is filled in
+    document.querySelectorAll('.footer-col').forEach(col => {
+      const items = col.querySelectorAll('li [data-contact]');
+      if (!items.length) return;
+      col.classList.toggle('is-hidden', !Object.values(contacts).some(Boolean));
+    });
   }
 
   langBtns.forEach(btn => {
@@ -647,7 +723,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Opening the booking form refreshes staff and busy slots from the server
+  async function refreshBookingData() {
+    await Promise.all([loadSpecialists(), loadBusySlots(selectedDate)]);
+    renderBookingSpecialists(selectedSalon);
+  }
+
+  document.querySelectorAll('[data-open-booking], [data-book-service]').forEach(btn => {
+    btn.addEventListener('click', refreshBookingData);
+  });
+
   // Initial setup
   setLanguage(currentLang);
   setBookingSalon('homme');
+  refreshBookingData();
 });

@@ -3,9 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VSM Admin Operations | Barbershop & Salon</title>
+  <title>WO&amp;MAN Admin | Beauty Studio</title>
+  <meta name="robots" content="noindex, nofollow">
   
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23090A0F'/%3E%3Cpolygon points='50,15 85,35 85,65 50,85 15,65 15,35' stroke='%230066FF' stroke-width='6' fill='none'/%3E%3Ccircle cx='50' cy='50' r='14' fill='%23FF2E93'/%3E%3C/svg%3E">
+  <link rel="icon" type="image/png" href="assets/logo.png">
 
   <link rel="stylesheet" href="styles.css">
   <style>
@@ -46,7 +47,7 @@
     }
 
     .admin-badge-tag {
-      background: linear-gradient(135deg, rgba(0, 102, 255, 0.2), rgba(255, 46, 147, 0.2));
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(236, 11, 141, 0.2));
       border: 1px solid rgba(255, 255, 255, 0.15);
       font-size: 0.7rem;
       font-weight: 700;
@@ -134,7 +135,7 @@
     .stat-card.card-homme::before { background: var(--blue-bright); }
     .stat-card.card-femme::before { background: var(--pink-bright); }
     .stat-card.card-today::before { background: #10b981; }
-    .stat-card.card-bot::before { background: #38bdf8; }
+    .stat-card.card-bot::before { background: #f1f1f4; }
 
     .stat-label {
       font-size: 0.75rem;
@@ -219,13 +220,12 @@
     }
 
     .search-input {
-      width: 100%;
-      background: rgba(0, 0, 0, 0.4);
-      border: 1px solid var(--border-subtle);
-      padding: 9px 14px 9px 38px;
-      border-radius: var(--radius-sm);
-      color: #fff;
+      padding: 9px 14px;
       font-size: 0.85rem;
+    }
+
+    .search-input-wrap .search-input {
+      padding-left: 38px;
     }
 
     .search-input:focus {
@@ -331,8 +331,8 @@
     }
 
     .status-completed {
-      background: rgba(59, 130, 246, 0.12);
-      color: #60a5fa;
+      background: rgba(255, 255, 255, 0.06);
+      color: #e5e7eb;
       border: 1px solid rgba(96, 165, 250, 0.3);
     }
 
@@ -455,9 +455,9 @@
     }
 
     .copy-chip-btn {
-      background: rgba(56, 189, 248, 0.12);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      color: #38bdf8;
+      background: rgba(240, 240, 245, 0.072);
+      border: 1px solid rgba(240, 240, 245, 0.18);
+      color: #f1f1f4;
       font-size: 0.75rem;
       font-weight: 700;
       padding: 6px 12px;
@@ -467,7 +467,7 @@
     }
 
     .copy-chip-btn:hover {
-      background: rgba(56, 189, 248, 0.25);
+      background: rgba(240, 240, 245, 0.15);
     }
 
     /* Responsive */
@@ -483,6 +483,33 @@
       .admin-nav { padding: 0 1rem; }
       .admin-content { padding: 1.5rem 1rem; }
     }
+
+    /* Login overlay */
+    .login-overlay {
+      position: fixed; inset: 0; z-index: 500;
+      display: none; align-items: center; justify-content: center;
+      padding: 16px;
+      background: radial-gradient(circle at 50% 30%, rgba(236, 11, 141, 0.14), rgba(5, 5, 7, 0.97) 60%);
+      backdrop-filter: blur(10px);
+    }
+    .login-overlay.open { display: flex; }
+    .login-card {
+      width: 100%; max-width: 380px;
+      display: flex; flex-direction: column; gap: 12px; align-items: stretch;
+      padding: 2rem 1.75rem;
+      background: rgba(14, 14, 18, 0.95);
+      border: 1px solid var(--pink-border);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 0 40px var(--pink-glow);
+      text-align: center;
+    }
+    .login-logo { width: 110px; height: 110px; border-radius: 50%; margin: 0 auto 0.5rem; }
+    .login-card h2 { font-family: 'Syne', sans-serif; font-size: 1.3rem; color: #fff; }
+    .login-card p { color: var(--text-muted); font-size: 0.85rem; }
+    .login-error { min-height: 1.1em; color: #f87171; font-size: 0.82rem; }
+    .login-submit { justify-content: center; padding: 12px; font-size: 0.9rem; }
+    .login-back { color: var(--text-muted); font-size: 0.8rem; text-decoration: none; }
+    .brand-logo-img { border-radius: 50%; display: block; }
   </style>
 </head>
 <body class="admin-layout">
@@ -491,14 +518,8 @@
   <header class="admin-nav">
     <div style="display: flex; align-items: center; gap: 14px;">
       <a href="index.html" class="admin-brand">
-        <div class="brand-emblem" style="width: 32px; height: 32px;">
-          <svg viewBox="0 0 100 100" fill="none">
-            <polygon points="50,4 92,26 92,74 50,96 8,74 8,26" stroke="rgba(255,255,255,0.2)" stroke-width="3" fill="#0E1017"/>
-            <path d="M26 30 L45 72 L50 60 L38 34 Z" fill="#0066FF"/>
-            <path d="M74 30 L55 72 L50 60 L62 34 Z" fill="#FF2E93"/>
-          </svg>
-        </div>
-        <span class="brand-title" style="font-size: 1.1rem;">VSM</span>
+        <img src="assets/logo.png" alt="WO&amp;MAN" class="brand-logo-img" style="width: 36px; height: 36px;">
+        <span class="brand-title brand-wordmark" style="font-size: 1.1rem;"><span class="wm-wo">WO</span>&amp;MAN</span>
       </a>
       <span class="admin-badge-tag" id="adminTag">Operations Portal</span>
     </div>
@@ -513,8 +534,22 @@
 
       <!-- Quick Link to Live Site -->
       <a href="index.html" class="nav-link-btn" id="btnBackSite">&larr; Saytga qaytish</a>
+      <button class="btn-panel btn-panel-secondary" id="btnLogout" type="button" style="padding: 6px 14px; font-size: 0.78rem;">Chiqish</button>
     </div>
   </header>
+
+  <!-- LOGIN OVERLAY (admin panel is password-protected) -->
+  <div class="login-overlay" id="loginOverlay">
+    <form class="login-card" id="loginForm" autocomplete="on">
+      <img src="assets/logo.png" alt="WO&amp;MAN" class="login-logo">
+      <h2>Admin panelga kirish</h2>
+      <p>Davom etish uchun admin parolini kiriting.</p>
+      <input type="password" id="loginPassword" class="search-input" placeholder="Parol" autocomplete="current-password" required>
+      <div class="login-error" id="loginError" role="alert"></div>
+      <button type="submit" class="btn-panel btn-femme-primary login-submit">Kirish</button>
+      <a href="index.html" class="login-back">&larr; Saytga qaytish</a>
+    </form>
+  </div>
 
   <!-- MAIN ADMIN CONTENT -->
   <main class="admin-content">
@@ -530,13 +565,13 @@
       <div class="stat-card card-homme">
         <span class="stat-label" id="statHommeLabel">♂ Homme Zali</span>
         <span class="stat-number" id="metricHomme" style="color: var(--blue-bright);">0</span>
-        <span class="stat-subtext">Erkaklar sartaroshxonasi</span>
+        <span class="stat-subtext">MAN — erkaklar</span>
       </div>
 
       <div class="stat-card card-femme">
         <span class="stat-label" id="statFemmeLabel">♀ Femme Zali</span>
         <span class="stat-number" id="metricFemme" style="color: var(--pink-bright);">0</span>
-        <span class="stat-subtext">Ayollar go'zallik studiyasi</span>
+        <span class="stat-subtext">WO — ayollar</span>
       </div>
 
       <div class="stat-card card-today">
@@ -547,7 +582,7 @@
 
       <div class="stat-card card-bot">
         <span class="stat-label" id="statBotLabel">Sartaroshlar</span>
-        <span class="stat-number" id="metricBarbers" style="color: #38bdf8;">0</span>
+        <span class="stat-number" id="metricBarbers" style="color: #f1f1f4;">0</span>
         <span class="stat-subtext">Faol ustalar ro'yxati</span>
       </div>
     </section>
@@ -590,9 +625,9 @@
 
         <div class="filter-controls">
           <select id="filterSalon" class="filter-select">
-            <option value="all">Barcha zallar (Homme & Femme)</option>
-            <option value="homme">♂ Homme (Erkaklar)</option>
-            <option value="femme">♀ Femme (Ayollar)</option>
+            <option value="all">Barcha zallar</option>
+            <option value="homme">♂ Erkaklar</option>
+            <option value="femme">♀ Ayollar</option>
           </select>
 
           <select id="filterStatus" class="filter-select">
@@ -632,7 +667,7 @@
     <div id="viewSpecialists" style="display: none;">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
         <div>
-          <h3 style="font-family: 'Syne', sans-serif; font-size: 1.4rem; color: #fff;">Sartaroshlar va Stillistlar Ro'yxati</h3>
+          <h3 style="font-family: 'Syne', sans-serif; font-size: 1.4rem; color: #fff;">Ustalar Ro'yxati</h3>
           <p style="color: var(--text-muted); font-size: 0.85rem;">Sayt va Telegram botda mijozlarni qabul qiluvchi mutaxassislar tarkibi.</p>
         </div>
         <button class="btn-panel btn-homme-primary" id="btnOpenAddBarberModal" style="padding: 10px 20px;">
@@ -652,14 +687,14 @@
         <!-- Left: Bot Connection Configuration -->
         <div class="integration-card">
           <div class="integration-title">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f1f1f4" stroke-width="2">
               <line x1="22" y1="2" x2="11" y2="13"></line>
               <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
             </svg>
             <span>Telegram Bot Parametrlari</span>
           </div>
           <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6;">
-            Sartaroshlar saytdan tushgan yangi buyurtmalarni o'z Telegramlarida qabul qilishlari uchun bot tokeni va sozlamalarini bu yerda boshqaring.
+            Saytdan tushgan buyurtmalar ustalarga va sizga Telegram orqali kelishi uchun bot tokenini shu yerga kiriting. Token serverda saqlanadi va saytga kirgan mijozlarga ko'rinmaydi.
           </p>
 
           <div class="booking-form-group">
@@ -668,12 +703,16 @@
               <input type="password" id="tgBotTokenInput" class="search-input" placeholder="7123456789:AAFlkBj..." style="font-family: monospace;">
               <button class="btn-panel btn-panel-secondary" id="btnToggleTokenVisibility" style="padding: 8px 12px; font-size: 0.75rem;">Ko'rish</button>
             </div>
-            <span style="font-size: 0.7rem; color: var(--text-subtle);">@BotFather dan olingan bot tokeni.</span>
+            <span style="font-size: 0.7rem; color: var(--text-subtle);">Telegram'da @BotFather → /newbot orqali olingan token. O'zgartirmoqchi bo'lmasangiz, bo'sh qoldiring.</span>
           </div>
 
           <div class="booking-form-group">
-            <label class="booking-label">Admin / Kanal Chat ID (Ixtiyoriy)</label>
-            <input type="text" id="tgAdminChatInput" class="search-input" placeholder="-100123456789 yoki @vsm_reception">
+            <label class="booking-label">Admin Chat ID (ixtiyoriy)</label>
+            <input type="text" id="tgAdminChatInput" class="search-input" placeholder="-100123456789">
+            <span style="font-size: 0.7rem; color: var(--text-subtle);">Qo'lda yozish shart emas — pastdagi havola orqali avtomatik ulanadi.</span>
+          </div>
+
+          <div class="booking-form-group" id="tgAdminLinkBox">
           </div>
 
           <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border-subtle); padding-top: 1.25rem;">
@@ -682,7 +721,7 @@
             </div>
             <div style="display: flex; gap: 8px;">
               <button class="btn-panel btn-panel-secondary" id="btnTestTgConnection" style="padding: 8px 16px; font-size: 0.8rem;">
-                ⚡ Ulanishni Tekshirish
+                ⚡ Holatni Yangilash
               </button>
               <button class="btn-panel btn-homme-primary" id="btnSaveTgConfig" style="padding: 8px 18px; font-size: 0.8rem;">
                 Saqlash
@@ -699,20 +738,20 @@
               <circle cx="8.5" cy="7" r="4"></circle>
               <polyline points="17 11 19 13 23 9"></polyline>
             </svg>
-            <span>Sartaroshlarni Botga Bog'lash</span>
+            <span>Ustalarni Botga Bog'lash</span>
           </div>
           <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.6;">
-            Har bir sartaroshga uning shaxsiy havolasini yuboring. U havolani ochishi bilan barcha yangi mijozlar uning Telegramiga kelib tushadi.
+            Har bir ustaga faqat uning o'z shaxsiy havolasini yuboring. U havolani ochib "Start" ni bossa, unga yozilgan mijozlar Telegram'iga keladi.
           </p>
 
           <div class="linking-list" id="barberLinkingList">
             <!-- Rendered by admin.js with deep link copier -->
           </div>
 
-          <div style="background: rgba(56, 189, 248, 0.08); border: 1px dashed rgba(56, 189, 248, 0.3); border-radius: var(--radius-md); padding: 1rem;">
-            <h5 style="color: #38bdf8; font-size: 0.85rem; margin-bottom: 4px;">🧪 Test Bildirishnomasi Yuborish</h5>
+          <div style="background: rgba(240, 240, 245, 0.048); border: 1px dashed rgba(240, 240, 245, 0.18); border-radius: var(--radius-md); padding: 1rem;">
+            <h5 style="color: #f1f1f4; font-size: 0.85rem; margin-bottom: 4px;">🧪 Test Bildirishnomasi Yuborish</h5>
             <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 10px;">
-              Sartarosh Telegramiga test buyurtma yuborib, uning qabul qilish (Accept) tugmasini sinab ko'ring.
+              Ustaning Telegram'iga test xabari yuborib, ulanish ishlayotganini tekshiring.
             </p>
             <div style="display: flex; gap: 8px;">
               <select id="testBarberSelect" class="filter-select" style="flex: 1;"></select>
@@ -741,13 +780,13 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div class="booking-form-group">
             <label class="booking-label">F.I.SH (Ism va Familiya)</label>
-            <input type="text" id="barberNameInput" class="search-input" placeholder="Marcus Vance" required>
+            <input type="text" id="barberNameInput" class="search-input" placeholder="Ism Familiya" required>
           </div>
           <div class="booking-form-group">
             <label class="booking-label">Zal</label>
             <select id="barberSalonSelect" class="filter-select" style="width: 100%;">
-              <option value="homme">VSM Homme (Erkaklar zali)</option>
-              <option value="femme">VSM Femme (Ayollar zali)</option>
+              <option value="homme">♂ MAN (Erkaklar zali)</option>
+              <option value="femme">♀ WO (Ayollar zali)</option>
             </select>
           </div>
         </div>
@@ -755,7 +794,7 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div class="booking-form-group">
             <label class="booking-label">Mutaxassislik / Mansabi</label>
-            <input type="text" id="barberRoleInput" class="search-input" placeholder="Master Fade Specialist" required>
+            <input type="text" id="barberRoleInput" class="search-input" placeholder="Barber / Stilist" required>
           </div>
           <div class="booking-form-group">
             <label class="booking-label">Telefon Raqami</label>
@@ -766,17 +805,17 @@
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
           <div class="booking-form-group">
             <label class="booking-label">Telegram Username</label>
-            <input type="text" id="barberTelegramInput" class="search-input" placeholder="@marcus_vance">
+            <input type="text" id="barberTelegramInput" class="search-input" placeholder="@username">
           </div>
           <div class="booking-form-group">
-            <label class="booking-label">Telegram Chat ID (ixtiyoriy)</label>
+            <label class="booking-label">Telegram Chat ID (avtomatik)</label>
             <input type="text" id="barberChatIdInput" class="search-input" placeholder="78219401">
           </div>
         </div>
 
         <div class="booking-form-group">
           <label class="booking-label">Surat URL (Avatar rasm havolasi)</label>
-          <input type="url" id="barberImgInput" class="search-input" placeholder="https://images.unsplash.com/...">
+          <input type="text" id="barberImgInput" class="search-input" placeholder="https://... (bo'sh qolsa logotip qo'yiladi)">
         </div>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
@@ -819,8 +858,8 @@
         <div class="booking-form-group">
           <label class="booking-label">Zal</label>
           <select id="manualSalon" class="filter-select" style="width: 100%;">
-            <option value="homme">VSM Homme (Erkaklar zali)</option>
-            <option value="femme">VSM Femme (Ayollar zali)</option>
+            <option value="homme">♂ MAN (Erkaklar zali)</option>
+            <option value="femme">♀ WO (Ayollar zali)</option>
           </select>
         </div>
         <div class="booking-form-group">
@@ -853,7 +892,6 @@
     </div>
   </div>
 
-  <script src="translations.js"></script>
   <script src="admin.js"></script>
 </body>
 </html>
