@@ -3,11 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>VSM Barbershop & Salon | The Duality of Luxury Grooming</title>
-  <meta name="description" content="Minimalist luxury split-screen salon experience for VSM Barbershop. Multilingual booking in Uzbek, English, and Russian. Real-time time-slot reservation with Telegram Bot integration.">
+  <title>WO&amp;MAN — Go'zallik studiyasi | Студия красоты</title>
+  <meta name="description" content="WO&amp;MAN — erkaklar va ayollar uchun go'zallik studiyasi. Sartarosh va stilistlarga onlayn yoziling. Студия красоты WO&amp;MAN: онлайн-запись к мастеру.">
+  <meta name="theme-color" content="#050507">
+  <meta property="og:title" content="WO&amp;MAN — Студия красоты">
+  <meta property="og:image" content="assets/logo.png">
   
-  <!-- Favicon Monogram -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%230066FF'/%3E%3Cstop offset='100%25' stop-color='%23FF2E93'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='100' height='100' rx='24' fill='%23090A0F'/%3E%3Cpath d='M25 32 L40 68 L50 45 L60 68 L75 32' stroke='url(%23g)' stroke-width='9' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+  <!-- Favicon: WO&MAN logo -->
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
 
   <!-- Core Stylesheet -->
   <link rel="stylesheet" href="styles.css">
@@ -52,7 +56,7 @@
 
     .telegram-card {
       background: linear-gradient(135deg, rgba(14, 25, 45, 0.7) 0%, rgba(20, 14, 35, 0.7) 100%);
-      border: 1px solid rgba(56, 189, 248, 0.25);
+      border: 1px solid rgba(240, 240, 245, 0.15);
       border-radius: var(--radius-lg);
       padding: 3rem;
       display: flex;
@@ -72,7 +76,7 @@
       right: -10%;
       width: 300px;
       height: 300px;
-      background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(240, 240, 245, 0.09) 0%, transparent 70%);
       pointer-events: none;
     }
 
@@ -125,33 +129,11 @@
        NAVIGATION BAR
        ========================================================================== -->
   <nav class="site-nav" id="siteNav">
-    <!-- Brand Logo with Distinctive Blue/Pink Geometry -->
+    <!-- Brand Logo: WO&MAN -->
     <a href="#" class="brand-link">
-      <div class="brand-emblem">
-        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <linearGradient id="vsmBlueGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#38BDF8"/>
-              <stop offset="100%" stop-color="#0066FF"/>
-            </linearGradient>
-            <linearGradient id="vsmPinkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#FF2E93"/>
-              <stop offset="100%" stop-color="#FB7185"/>
-            </linearGradient>
-            <linearGradient id="vsmCenterGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#0066FF"/>
-              <stop offset="50%" stop-color="#C084FC"/>
-              <stop offset="100%" stop-color="#FF2E93"/>
-            </linearGradient>
-          </defs>
-          <polygon points="50,4 92,26 92,74 50,96 8,74 8,26" stroke="rgba(255,255,255,0.18)" stroke-width="2.5" fill="rgba(10,12,18,0.7)"/>
-          <path d="M26 30 L45 72 L50 60 L38 34 Z" fill="url(#vsmBlueGrad)"/>
-          <path d="M74 30 L55 72 L50 60 L62 34 Z" fill="url(#vsmPinkGrad)"/>
-          <circle cx="50" cy="38" r="4.5" fill="url(#vsmCenterGrad)"/>
-        </svg>
-      </div>
+      <img src="assets/logo.png" alt="WO&amp;MAN logotipi" class="brand-logo-img">
       <div class="brand-text">
-        <span class="brand-title">VSM</span>
+        <span class="brand-title brand-wordmark"><span class="wm-wo">WO</span>&amp;MAN</span>
         <span class="brand-tagline">
           <span class="blue-dot"></span> <span data-i18n="brand_tagline">ERKAKLAR VA AYOLLAR SALONI</span> <span class="pink-dot"></span>
         </span>
@@ -198,17 +180,15 @@
       <button class="nav-link-btn" data-open-menu data-menu-salon="homme" data-i18n="nav_services">Xizmatlar</button>
       <a href="#lookbook" class="nav-link-btn" data-i18n="nav_lookbook">Lukbuk</a>
       
-      <!-- Telegram Bot Link -->
-      <a href="https://t.me/VSMBarbershopBot" target="_blank" class="nav-link-btn" style="color: #38bdf8; display: flex; align-items: center; gap: 4px;">
+      <!-- Salon Telegram (set in site-config.js) -->
+      <a href="#" data-contact="telegram" target="_blank" rel="noopener" class="nav-link-btn is-hidden" style="color: #f1f1f4; display: flex; align-items: center; gap: 4px;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="22" y1="2" x2="11" y2="13"></line>
           <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
         </svg>
-        <span>Bot</span>
+        <span>Telegram</span>
       </a>
 
-      <!-- Admin Panel Link -->
-      <a href="admin.html" class="nav-link-btn" style="color: #cbd5e1; border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-sm); padding: 5px 10px; font-size: 0.75rem;" data-i18n="nav_admin">Admin</a>
       
       <!-- Audio Atmosphere Toggle -->
       <button class="sound-toggle-btn" id="soundToggle" title="Ovoz effektlari">
@@ -234,7 +214,7 @@
        ========================================================================== -->
   <main class="split-hero-container" id="splitHero">
     
-    <!-- LEFT PANEL: VSM HOMME (Male Salon) -->
+    <!-- LEFT PANEL: MAN (Male Salon) -->
     <section class="split-panel split-panel-homme" id="panelHomme">
       <div class="panel-bg"></div>
       <div class="panel-ambient-glow"></div>
@@ -243,7 +223,7 @@
       <div class="panel-content">
         <div class="sub-badge badge-homme">
           <span class="pulse-indicator"></span>
-          <span data-i18n="homme_badge">VSM HOMME // ERKAKLAR SALONI</span>
+          <span data-i18n="homme_badge">MAN // ERKAKLAR ZALI</span>
         </div>
 
         <h1 class="panel-title">
@@ -282,8 +262,8 @@
           </button>
         </div>
 
-        <!-- Micro Meta: Barbers & Ratings -->
-        <div class="panel-footer-meta">
+        <!-- Hidden: the ratings/review counts here were invented. Show real numbers, then remove "is-hidden". -->
+        <div class="panel-footer-meta is-hidden">
           <div class="avatar-stack">
             <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Marcus Vance">
             <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80" alt="Julian Drake">
@@ -309,7 +289,7 @@
       </div>
     </div>
 
-    <!-- RIGHT PANEL: VSM FEMME (Female Salon) -->
+    <!-- RIGHT PANEL: WO (Female Salon) -->
     <section class="split-panel split-panel-femme" id="panelFemme">
       <div class="panel-bg"></div>
       <div class="panel-ambient-glow"></div>
@@ -318,7 +298,7 @@
       <div class="panel-content">
         <div class="sub-badge badge-femme">
           <span class="pulse-indicator"></span>
-          <span data-i18n="femme_badge">VSM FEMME // AYOLLAR SALONI</span>
+          <span data-i18n="femme_badge">WO // AYOLLAR ZALI</span>
         </div>
 
         <h1 class="panel-title">
@@ -357,8 +337,8 @@
           </button>
         </div>
 
-        <!-- Micro Meta: Stylists & Ratings -->
-        <div class="panel-footer-meta">
+        <!-- Hidden: the ratings/review counts here were invented. Show real numbers, then remove "is-hidden". -->
+        <div class="panel-footer-meta is-hidden">
           <div class="avatar-stack">
             <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=120&q=80" alt="Elena Rostova">
             <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=120&q=80" alt="Camille Laurent">
@@ -377,7 +357,7 @@
   <!-- ==========================================================================
        TELEGRAM BOT BOOKING PROMO BANNER
        ========================================================================== -->
-  <section class="section-telegram-promo">
+  <section class="section-telegram-promo is-hidden" data-contact-section="telegram">
     <div class="telegram-card">
       <div class="tg-content">
         <div class="sub-badge badge-homme" style="margin-bottom: 0.5rem;" data-i18n="tg_banner_badge">TEZKOR BAND QILISH</div>
@@ -385,12 +365,12 @@
         <p data-i18n="tg_banner_desc">Saytga kirmasdan, Telegram orqali 30 soniyada o'zingizga ma'qul usta va bo'sh vaqt slotini tanlang. Eslatma xabarnomalari avtomatik yuboriladi.</p>
       </div>
       <div>
-        <a href="https://t.me/VSMBarbershopBot" target="_blank" class="btn-telegram">
+        <a href="#" data-contact="telegram" target="_blank" rel="noopener" class="btn-telegram">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="22" y1="2" x2="11" y2="13"></line>
             <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
           </svg>
-          <span data-i18n="btn_open_tg_bot">Telegram Botni ochish (@VSMBarbershopBot)</span>
+          <span data-i18n="btn_open_tg_bot">Telegram orqali yozish</span>
         </a>
       </div>
     </div>
@@ -401,13 +381,13 @@
        ========================================================================== -->
   <section class="section-duality" id="philosophy">
     <div class="section-header">
-      <div class="section-label" data-i18n="philosophy_label">VSM Kontseptsiyasi</div>
+      <div class="section-label" data-i18n="philosophy_label">WO&amp;MAN Kontseptsiyasi</div>
       <h2 class="section-title">
         <span data-i18n="philosophy_title_1">BITTA FLAGMAN BINO.</span><br>
         <span class="dual-gradient-text" data-i18n="philosophy_title_2">IKKITA ALOHIDA SANCTUARY.</span>
       </h2>
       <p class="section-subtitle" data-i18n="philosophy_subtitle">
-        An'anaviy salonlardan farqli o'laroq, VSM bir tom ostida erkaklar va ayollar uchun akustik va vizual jihatdan mustaqil ikkita alohida makon yaratdi.
+        An'anaviy salonlardan farqli o'laroq, WO&amp;MAN bir tom ostida erkaklar va ayollar uchun akustik va vizual jihatdan mustaqil ikkita alohida makon yaratdi.
       </p>
     </div>
 
@@ -424,7 +404,7 @@
             <line x1="19" y1="5" x2="19" y2="10"></line>
           </svg>
         </div>
-        <div class="sub-badge badge-homme" style="margin-bottom: 1rem;" data-i18n="homme_card_badge">VSM Homme Zali</div>
+        <div class="sub-badge badge-homme" style="margin-bottom: 1rem;" data-i18n="homme_card_badge">MAN — Erkaklar zali</div>
         <h3 class="card-heading" data-i18n="homme_card_title">Akustik Teri & Po'lat</h3>
         <p class="card-text" data-i18n="homme_card_desc">
           To'q yong'oq yog'ochi, qo'lda tikilgan charm Belmont o'rindiqlari va yapon po'lat ustaralari. Qulaylik va xotirjamlik maskani.
@@ -463,7 +443,7 @@
             <line x1="9" y1="18" x2="15" y2="18"></line>
           </svg>
         </div>
-        <div class="sub-badge badge-femme" style="margin-bottom: 1rem;" data-i18n="femme_card_badge">VSM Femme Zali</div>
+        <div class="sub-badge badge-femme" style="margin-bottom: 1rem;" data-i18n="femme_card_badge">WO — Ayollar zali</div>
         <h3 class="card-heading" data-i18n="femme_card_title">Tabiiy Yorug'lik & Koloristika</h3>
         <p class="card-text" data-i18n="femme_card_desc">
           Ranglarni buzmasdan ko'rsatuvchi 5500K kunduzgi yorug'lik, shaxsiy bosh yuvish xonalari va individual bo'yoq formulasini tayyorlash.
@@ -501,7 +481,7 @@
        ========================================================================== -->
   <section class="section-lookbook" id="lookbook">
     <div class="section-header">
-      <div class="section-label" data-i18n="lookbook_label">VSM Lukbuki</div>
+      <div class="section-label" data-i18n="lookbook_label">WO&amp;MAN Lukbuki</div>
       <h2 class="section-title" data-i18n="lookbook_title">HAR BIR TOLADA MINIMALIST ANIQILIK</h2>
       <p class="section-subtitle" data-i18n="lookbook_subtitle">
         Bizning ustalarimiz tomonidan yaratilgan so'nggi obrazlar. Har bir soch turmagi va rang individual loyihalashtirilgan.
@@ -522,7 +502,6 @@
         <div class="gallery-overlay">
           <span class="look-tag homme-tag">Homme • Skin Fade</span>
           <h4 class="look-title">Low Drop Taper & Texture</h4>
-          <span class="look-author">Crafted by Marcus Vance</span>
         </div>
       </div>
 
@@ -531,7 +510,6 @@
         <div class="gallery-overlay">
           <span class="look-tag femme-tag">Femme • Dimensional Color</span>
           <h4 class="look-title">Champagne Sun Balayage</h4>
-          <span class="look-author">Crafted by Elena Rostova</span>
         </div>
       </div>
 
@@ -540,7 +518,6 @@
         <div class="gallery-overlay">
           <span class="look-tag homme-tag">Homme • Beard Craft</span>
           <h4 class="look-title">Executive Contour & Shave</h4>
-          <span class="look-author">Crafted by Julian Drake</span>
         </div>
       </div>
 
@@ -549,7 +526,6 @@
         <div class="gallery-overlay">
           <span class="look-tag femme-tag">Femme • Styling</span>
           <h4 class="look-title">Runway Silk Waves</h4>
-          <span class="look-author">Crafted by Camille Laurent</span>
         </div>
       </div>
 
@@ -558,7 +534,6 @@
         <div class="gallery-overlay">
           <span class="look-tag homme-tag">Homme • Precision Crop</span>
           <h4 class="look-title">Textured Razor Crop</h4>
-          <span class="look-author">Crafted by Leo Saint</span>
         </div>
       </div>
 
@@ -567,7 +542,6 @@
         <div class="gallery-overlay">
           <span class="look-tag femme-tag">Femme • Gloss & Cut</span>
           <h4 class="look-title">Rich Espresso Mirror Gloss</h4>
-          <span class="look-author">Crafted by Sienna Blake</span>
         </div>
       </div>
 
@@ -576,7 +550,6 @@
         <div class="gallery-overlay">
           <span class="look-tag homme-tag">Homme • Classic Barbershop</span>
           <h4 class="look-title">Heritage Taper & Shave</h4>
-          <span class="look-author">Crafted by Marcus Vance</span>
         </div>
       </div>
 
@@ -585,7 +558,6 @@
         <div class="gallery-overlay">
           <span class="look-tag femme-tag">Femme • Blonde Mastery</span>
           <h4 class="look-title">Nordic Ice Balayage</h4>
-          <span class="look-author">Crafted by Elena Rostova</span>
         </div>
       </div>
     </div>
@@ -594,7 +566,8 @@
   <!-- ==========================================================================
        CLIENT REVIEWS & REPUTATION
        ========================================================================== -->
-  <section class="section-reviews" id="reviews">
+  <!-- Hidden: the sample reviews were invented. Put real client reviews here, then remove "is-hidden". -->
+  <section class="section-reviews is-hidden" id="reviews">
     <div class="section-header">
       <div class="section-label" data-i18n="reviews_label">Mijozlarimiz fikrlari</div>
       <h2 class="section-title" data-i18n="reviews_title">MUKAMMAL NATIJA VA E'TIROF</h2>
@@ -652,16 +625,10 @@
     <div class="footer-top-grid">
       <div class="footer-brand">
         <div class="brand-link" style="margin-bottom: 0.5rem;">
-          <div class="brand-emblem" style="width: 36px; height: 36px;">
-            <svg viewBox="0 0 100 100" fill="none">
-              <polygon points="50,4 92,26 92,74 50,96 8,74 8,26" stroke="rgba(255,255,255,0.2)" stroke-width="3" fill="#0E1017"/>
-              <path d="M26 30 L45 72 L50 60 L38 34 Z" fill="#0066FF"/>
-              <path d="M74 30 L55 72 L50 60 L62 34 Z" fill="#FF2E93"/>
-            </svg>
-          </div>
+          <img src="assets/logo.png" alt="WO&amp;MAN" class="brand-logo-img" style="width: 40px; height: 40px;">
           <div class="brand-text">
-            <span class="brand-title" style="font-size: 1.1rem;">VSM</span>
-            <span class="brand-tagline" style="font-size: 0.6rem;">BARBERSHOP & SALON</span>
+            <span class="brand-title brand-wordmark" style="font-size: 1.1rem;"><span class="wm-wo">WO</span>&amp;MAN</span>
+            <span class="brand-tagline" style="font-size: 0.6rem;">СТУДИЯ КРАСОТЫ</span>
           </div>
         </div>
         <p data-i18n="footer_about">
@@ -672,10 +639,9 @@
       <div class="footer-col">
         <h5 data-i18n="footer_studios">STUDIYALAR</h5>
         <ul>
-          <li><a href="#" data-open-booking data-salon="homme" data-i18n="nav_homme">VSM Homme (Barber)</a></li>
-          <li><a href="#" data-open-booking data-salon="femme" data-i18n="nav_femme">VSM Femme (Salon)</a></li>
+          <li><a href="#" data-open-booking data-salon="homme" data-i18n="nav_homme">MAN (Erkaklar)</a></li>
+          <li><a href="#" data-open-booking data-salon="femme" data-i18n="nav_femme">WO (Ayollar)</a></li>
           <li><a href="admin.html" data-i18n="footer_admin_link">Admin boshqaruv paneli</a></li>
-          <li><a href="https://t.me/VSMBarbershopBot" target="_blank">Telegram Bot (@VSMBarbershopBot)</a></li>
         </ul>
       </div>
 
@@ -700,17 +666,17 @@
       <div class="footer-col">
         <h5 data-i18n="footer_contact">ALOQA & REZERV</h5>
         <ul>
-          <li><span style="color: #cbd5e1;" data-i18n="footer_address">Toshkent sh., Amir Temur shox ko'chasi 45</span></li>
-          <li><a href="tel:+998712001122">+998 (71) 200-11-22</a></li>
-          <li><a href="https://t.me/VSMBarbershopBot" target="_blank">Telegram Concierge</a></li>
-          <li><a href="#">Instagram @vsm.atelier</a></li>
+          <!-- Filled from site-config.js; empty items stay hidden -->
+          <li class="is-hidden"><a href="#" data-contact="address" target="_blank" rel="noopener" style="color: #cbd5e1;"></a></li>
+          <li class="is-hidden"><a href="#" data-contact="phone"></a></li>
+          <li class="is-hidden"><a href="#" data-contact="telegram" target="_blank" rel="noopener">Telegram</a></li>
+          <li class="is-hidden"><a href="#" data-contact="instagram" target="_blank" rel="noopener">Instagram</a></li>
         </ul>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <span data-i18n="footer_rights">&copy; 2026 VSM Barbershop & Salon. Barcha huquqlar himoyalangan.</span>
-      <span>Designed with Blue & Pink Duality Architecture.</span>
+      <span data-i18n="footer_rights">&copy; 2026 WO&amp;MAN Go'zallik studiyasi. Barcha huquqlar himoyalangan.</span>
     </div>
   </footer>
 
@@ -730,10 +696,10 @@
           <label class="booking-label" data-i18n="modal_step_1">1. Salon yo'nalishini tanlang</label>
           <div class="salon-toggle-group">
             <button class="salon-toggle-btn active" data-salon="homme">
-              <span>♂</span> VSM Homme (Barbershop)
+              <span>♂</span> MAN (Erkaklar)
             </button>
             <button class="salon-toggle-btn" data-salon="femme">
-              <span>♀</span> VSM Femme (Salon)
+              <span>♀</span> WO (Ayollar)
             </button>
           </div>
         </div>
@@ -774,12 +740,12 @@
       </div>
 
       <div class="modal-footer">
-        <a href="https://t.me/VSMBarbershopBot" target="_blank" class="nav-link-btn" style="color: #38bdf8; display: flex; align-items: center; gap: 6px;">
+        <a href="#" data-contact="telegram" target="_blank" rel="noopener" class="nav-link-btn is-hidden" style="color: #f1f1f4; display: flex; align-items: center; gap: 6px;">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <line x1="22" y1="2" x2="11" y2="13"></line>
             <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
           </svg>
-          <span data-i18n="btn_book_via_bot">Telegram Bot orqali yozilish</span>
+          <span data-i18n="btn_book_via_bot">Telegram orqali yozish</span>
         </a>
 
         <button class="btn-confirm-booking" id="confirmBookingBtn" data-i18n="btn_confirm_slot">
@@ -795,7 +761,7 @@
   <div class="modal-backdrop" id="menuModal">
     <div class="modal-container" style="max-width: 780px;">
       <div class="modal-header">
-        <h3 class="modal-title" data-i18n="menu_modal_title">VSM Xizmatlar va Ritual Ma'lumotnomasi</h3>
+        <h3 class="modal-title" data-i18n="menu_modal_title">WO&amp;MAN Xizmatlar Ma'lumotnomasi</h3>
         <button class="modal-close-btn" data-close-modal aria-label="Close menu modal">&times;</button>
       </div>
 
@@ -830,7 +796,7 @@
             </div>
             <div class="service-card-select">
               <div class="service-info">
-                <h5>The VSM Dual Package (Cut + Shave + Facial)</h5>
+                <h5>The WO&amp;MAN Dual Package (Cut + Shave + Facial)</h5>
                 <span>⏱ 75 daqiqa • Soch turmagi + Qirollik tarash rituali + bosh terisini tozalovchi massaj.</span>
               </div>
             </div>
@@ -880,13 +846,14 @@
        TOAST NOTIFICATION COMPONENT
        ========================================================================== -->
   <div class="toast-notice" id="toastNotice">
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f1f1f4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
       <polyline points="20 6 9 17 4 12"></polyline>
     </svg>
     <span class="toast-text">Vaqt sloti muvaffaqiyatli band qilindi!</span>
   </div>
 
   <!-- Core Scripts -->
+  <script src="site-config.js"></script>
   <script src="translations.js"></script>
   <script src="app.js"></script>
 </body>

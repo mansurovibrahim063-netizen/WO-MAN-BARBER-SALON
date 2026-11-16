@@ -1,15 +1,15 @@
 /**
- * VSM Barbershop & Salon - Trilingual Localization Dictionary
+ * WO&MAN Beauty Studio - Trilingual Localization Dictionary
  * Languages:
  * - uz: O'zbek tili
  * - en: English
  * - ru: Русский язык
  */
 
-const VSM_TRANSLATIONS = {
+const WOMAN_TRANSLATIONS = {
   uz: {
     // Brand & Nav
-    brand_tagline: "ERKAKLAR VA AYOLLAR SALONI",
+    brand_tagline: "GO'ZALLIK STUDIYASI",
     nav_homme: "Erkaklar",
     nav_femme: "Ayollar",
     nav_split: "Bo'lingan 50/50",
@@ -22,7 +22,7 @@ const VSM_TRANSLATIONS = {
     sound_fx: "Ovoz effektlari",
 
     // Hero Homme
-    homme_badge: "VSM HOMME // ERKAKLAR SALONI",
+    homme_badge: "MAN // ERKAKLAR ZALI",
     homme_title_1: "ANIQLIK VA",
     homme_title_2: "USTALIK SAN'ATI",
     homme_desc: "Benuqson feydlar, an'anaviy qaynoq sochiqli xavfli ustara tarashlari va soqol arxitekturasi. Mukammallikni qadrlovchi zamonaviy erkaklar uchun.",
@@ -35,7 +35,7 @@ const VSM_TRANSLATIONS = {
     homme_meta_role: "Bosh sartaroshlar & mutaxassislar",
 
     // Hero Femme
-    femme_badge: "VSM FEMME // AYOLLAR SALONI",
+    femme_badge: "WO // AYOLLAR ZALI",
     femme_title_1: "GO'ZALLIK VA",
     femme_title_2: "NAFOSAT UYG'UNLIGI",
     femme_desc: "Hajmli balayaj, mualliflik parvarishi va qizil yo'lakcha darajasidagi uslub. Tabiiy yorug'lik va organik premium mahsulotlar uyg'unligi.",
@@ -51,12 +51,12 @@ const VSM_TRANSLATIONS = {
     divider_hint: "Suring yoki kursor olib boring",
 
     // Philosophy
-    philosophy_label: "VSM Kontseptsiyasi",
+    philosophy_label: "WO&MAN Kontseptsiyasi",
     philosophy_title_1: "BITTA FLAGMAN BINO.",
     philosophy_title_2: "IKKITA ALOHIDA SANCTUARY.",
-    philosophy_subtitle: "An'anaviy salonlardan farqli o'laroq, VSM bir tom ostida erkaklar va ayollar uchun akustik va vizual jihatdan mustaqil ikkita alohida makon yaratdi.",
+    philosophy_subtitle: "An'anaviy salonlardan farqli o'laroq, WO&MAN bir tom ostida erkaklar va ayollar uchun akustik va vizual jihatdan mustaqil ikkita alohida makon yaratdi.",
     
-    homme_card_badge: "VSM Homme Zali",
+    homme_card_badge: "MAN — Erkaklar zali",
     homme_card_title: "Akustik Teri & Po'lat",
     homme_card_desc: "To'q yong'oq yog'ochi, qo'lda tikilgan charm Belmont o'rindiqlari va yapon po'lat ustaralari. Qulaylik va xotirjamlik maskani.",
     homme_feat_1: "Bepul bar: Sara espresso va premium ichimliklar",
@@ -64,7 +64,7 @@ const VSM_TRANSLATIONS = {
     homme_feat_3: "Yuz arxitekturasi: Jag' va bosh tuzilishiga mos soqol shakli",
     homme_feat_4: "Akustik izolyatsiya: Shovqinsiz, xotirjam fon musiqasi",
 
-    femme_card_badge: "VSM Femme Zali",
+    femme_card_badge: "WO — Ayollar zali",
     femme_card_title: "Tabiiy Yorug'lik & Koloristika",
     femme_card_desc: "Ranglarni buzmasdan ko'rsatuvchi 5500K kunduzgi yorug'lik, shaxsiy bosh yuvish xonalari va individual bo'yoq formulasini tayyorlash.",
     femme_feat_1: "Prosecco & choy bari: Sovutilgan shampan va tog' giyohlari",
@@ -73,7 +73,7 @@ const VSM_TRANSLATIONS = {
     femme_feat_4: "Kutyur ukladka: Sochlarning tabiiy jilosini saqlovchi uslub",
 
     // Lookbook
-    lookbook_label: "VSM Lukbuki",
+    lookbook_label: "WO&MAN Lukbuki",
     lookbook_title: "HAR BIR TOLADA MINIMALIST ANIQILIK",
     lookbook_subtitle: "Bizning ustalarimiz tomonidan yaratilgan so'nggi obrazlar. Har bir soch turmagi va rang individual loyihalashtirilgan.",
     filter_all: "Barcha obrazlar (8)",
@@ -94,10 +94,10 @@ const VSM_TRANSLATIONS = {
     rev_3_role: "Stillist & dizayner",
 
     // Telegram Bot Promo Section
-    tg_banner_badge: "TEZKOR BAND QILISH",
-    tg_banner_title: "TELEGRAM BOT ORQALI SARTAROSHGA YOZILING",
-    tg_banner_desc: "Saytga kirmasdan, Telegram orqali 30 soniyada o'zingizga ma'qul usta va bo'sh vaqt slotini tanlang. Eslatma xabarnomalari avtomatik yuboriladi.",
-    btn_open_tg_bot: "Telegram Botni ochish (@VSMBarbershopBot)",
+    tg_banner_badge: "SAVOLINGIZ BORMI?",
+    tg_banner_title: "TELEGRAM ORQALI BIZGA YOZING",
+    tg_banner_desc: "Xizmatlar, narxlar yoki bo'sh vaqt haqida so'ramoqchimisiz? Telegram'da yozing — tez javob beramiz.",
+    btn_open_tg_bot: "Telegram orqali yozish",
 
     // Footer
     footer_about: "Bitta arxitektura ostida erkaklar va ayollar uchun mo'ljallangan oliy toifadagi dual salon atelyesi.",
@@ -107,8 +107,7 @@ const VSM_TRANSLATIONS = {
     footer_sat: "Shanba",
     footer_sun: "Yakshanba",
     footer_contact: "ALOQA & REZERV",
-    footer_address: "Toshkent sh., Amir Temur shox ko'chasi 45",
-    footer_rights: "© 2026 VSM Barbershop & Salon. Barcha huquqlar himoyalangan.",
+    footer_rights: "© 2026 WO&MAN Go'zallik studiyasi. Barcha huquqlar himoyalangan.",
     footer_admin_link: "Admin boshqaruv paneli",
 
     // Booking Modal
@@ -123,12 +122,12 @@ const VSM_TRANSLATIONS = {
     placeholder_phone: "+998 (90) 123-45-67",
     placeholder_notes: "Qo'shimcha istaklar (ixtiyoriy)",
     btn_confirm_slot: "Vaqtni tasdiqlash",
-    btn_book_via_bot: "Telegram Bot orqali yozilish",
-    toast_success: "Vaqt sloti muvaffaqiyatli band qilindi! Tez orada siz bilan bog'lanamiz.",
+    btn_book_via_bot: "Telegram orqali yozish",
+    toast_success: "Buyurtmangiz qabul qilindi! Usta tasdiqlaydi va siz bilan bog'lanamiz.",
     toast_slot_busy: "Kechirasiz, ushbu vaqt sloti band. Boshqa vaqtni tanlang.",
 
     // Menu Modal
-    menu_modal_title: "VSM Xizmatlar va Ritual Ma'lumotnomasi",
+    menu_modal_title: "WO&MAN Xizmatlar Ma'lumotnomasi",
     tab_homme_menu: "♂ Erkaklar Salon Xizmatlari",
     tab_femme_menu: "♀ Ayollar Salon Xizmatlari",
     btn_book_this_service: "Ushbu xizmatga vaqt tanlash",
@@ -138,14 +137,14 @@ const VSM_TRANSLATIONS = {
     date_tomorrow: "Ertaga",
 
     // Admin
-    admin_title: "VSM Admin Boshqaruv Markazi"
+    admin_title: "WO&MAN Admin Boshqaruv Markazi"
   },
 
   en: {
     // Brand & Nav
-    brand_tagline: "BARBERSHOP & SALON",
-    nav_homme: "Homme",
-    nav_femme: "Femme",
+    brand_tagline: "BEAUTY STUDIO",
+    nav_homme: "Men",
+    nav_femme: "Women",
     nav_split: "Split 50/50",
     nav_services: "Services",
     nav_lookbook: "Lookbook",
@@ -156,28 +155,28 @@ const VSM_TRANSLATIONS = {
     sound_fx: "Sound FX",
 
     // Hero Homme
-    homme_badge: "VSM HOMME // MASTER GROOMING",
+    homme_badge: "MAN // MEN'S STUDIO",
     homme_title_1: "THE ART OF",
     homme_title_2: "PRECISION & CRAFT",
     homme_desc: "Bespoke scissor craft, razor-sharp skin fades, and ritualistic hot-towel straight-razor shaves. Engineered for the modern gentleman.",
     homme_pill_1: "Precision Skin Fade • 45 min",
     homme_pill_2: "Royal Hot Towel Shave • 40 min",
     homme_pill_3: "Beard Architecture • 30 min",
-    btn_book_homme: "Book Homme Chair",
-    btn_view_homme_menu: "View Homme Services",
+    btn_book_homme: "Book a Barber",
+    btn_view_homme_menu: "Men's Services",
     homme_meta_rating: "★ 4.98 (840+ reviews)",
     homme_meta_role: "Master Barbers & Specialists",
 
     // Hero Femme
-    femme_badge: "VSM FEMME // HAUTE COIFFURE",
+    femme_badge: "WO // WOMEN'S STUDIO",
     femme_title_1: "THE ESSENCE OF",
     femme_title_2: "ELEGANCE & RADIANCE",
     femme_desc: "Dimensional balayage, bespoke botanical restorations, and red-carpet runway blowouts in an exclusive luminous sanctuary.",
     femme_pill_1: "Dimensional Balayage • 150 min",
     femme_pill_2: "Haute Couture Blowout • 60 min",
     femme_pill_3: "Keratin Silk Infusion • 120 min",
-    btn_book_femme: "Book Femme Suite",
-    btn_view_femme_menu: "View Femme Services",
+    btn_book_femme: "Book a Stylist",
+    btn_view_femme_menu: "Women's Services",
     femme_meta_rating: "★ 4.99 (920+ reviews)",
     femme_meta_role: "Master Colorists & Stylists",
 
@@ -185,12 +184,12 @@ const VSM_TRANSLATIONS = {
     divider_hint: "Drag or hover to explore",
 
     // Philosophy
-    philosophy_label: "The VSM Architecture",
+    philosophy_label: "The WO&MAN Concept",
     philosophy_title_1: "ONE FLAGSHIP ROOF.",
     philosophy_title_2: "TWO DEDICATED SANCTUARIES.",
     philosophy_subtitle: "We reimagined the traditional salon experience: two architecturally isolated spaces under one roof, each dedicated to its unique craft and energy.",
     
-    homme_card_badge: "VSM Homme Suite",
+    homme_card_badge: "MAN — Men's Studio",
     homme_card_title: "Acoustic Leather & Steel",
     homme_card_desc: "Dark walnut wood, hand-stitched leather Belmont recliners, and precision Japanese steel blades for effortless rejuvenation.",
     homme_feat_1: "Complimentary bar: Single-malt scotch & artisanal espresso",
@@ -198,7 +197,7 @@ const VSM_TRANSLATIONS = {
     homme_feat_3: "Facial architecture: Hair-to-beard bone contouring",
     homme_feat_4: "VIP acoustic isolation: Low-frequency chill audio lounge",
 
-    femme_card_badge: "VSM Femme Suite",
+    femme_card_badge: "WO — Women's Studio",
     femme_card_title: "Natural Light & Haute Color",
     femme_card_desc: "5500K color-accurate daylight optics, private reclining wash beds, and custom tableside micro-pigment balayage formulation.",
     femme_feat_1: "Prosecco bar: Chilled brut champagne & botanical teas",
@@ -207,12 +206,12 @@ const VSM_TRANSLATIONS = {
     femme_feat_4: "Editorial finish: Runway blowouts tailored to natural bounce",
 
     // Lookbook
-    lookbook_label: "VSM Lookbook",
+    lookbook_label: "WO&MAN Lookbook",
     lookbook_title: "PRECISION IN EVERY STRAND",
     lookbook_subtitle: "Explore recent masterpieces crafted by our master barbers and color directors.",
     filter_all: "All Styles (8)",
-    filter_homme: "♂ Homme Fades & Beards",
-    filter_femme: "♀ Femme Balayage & Blowouts",
+    filter_homme: "♂ Men: Fades & Beards",
+    filter_femme: "♀ Women: Balayage & Blowouts",
 
     // Reviews
     reviews_label: "Client Accolades",
@@ -228,10 +227,10 @@ const VSM_TRANSLATIONS = {
     rev_3_role: "Fashion Editor & Stylist",
 
     // Telegram Bot Promo Section
-    tg_banner_badge: "SEAMLESS BOOKING",
-    tg_banner_title: "BOOK APPOINTMENTS DIRECTLY VIA TELEGRAM BOT",
-    tg_banner_desc: "Pick your favorite barber, preferred service, and real-time time slot in under 30 seconds via Telegram. Automated reminders included.",
-    btn_open_tg_bot: "Open Telegram Bot (@VSMBarbershopBot)",
+    tg_banner_badge: "GOT A QUESTION?",
+    tg_banner_title: "MESSAGE US ON TELEGRAM",
+    tg_banner_desc: "Questions about services, prices or free times? Message us on Telegram and we will reply quickly.",
+    btn_open_tg_bot: "Message us on Telegram",
 
     // Footer
     footer_about: "The premier dual salon atelier uniting bespoke male grooming and haute female styling under one roof.",
@@ -241,8 +240,7 @@ const VSM_TRANSLATIONS = {
     footer_sat: "Saturday",
     footer_sun: "Sunday",
     footer_contact: "CONCIERGE & BOOKING",
-    footer_address: "450 Madison Avenue, Suite 400",
-    footer_rights: "© 2026 VSM Barbershop & Salon. All rights reserved.",
+    footer_rights: "© 2026 WO&MAN Beauty Studio. All rights reserved.",
     footer_admin_link: "Admin Management Portal",
 
     // Booking Modal
@@ -257,14 +255,14 @@ const VSM_TRANSLATIONS = {
     placeholder_phone: "+1 (555) 000-0000",
     placeholder_notes: "Special requests or notes (optional)",
     btn_confirm_slot: "Confirm Time Slot Reservation",
-    btn_book_via_bot: "Book via Telegram Bot",
-    toast_success: "Time slot booked successfully! Our concierge will contact you.",
+    btn_book_via_bot: "Message us on Telegram",
+    toast_success: "Booking received! Your master will confirm and we will contact you.",
     toast_slot_busy: "This slot has just been reserved. Please choose another time.",
 
     // Menu Modal
-    menu_modal_title: "VSM Rituals & Services Directory",
-    tab_homme_menu: "♂ Homme Barber Services",
-    tab_femme_menu: "♀ Femme Salon Services",
+    menu_modal_title: "WO&MAN Services Directory",
+    tab_homme_menu: "♂ Men's Services",
+    tab_femme_menu: "♀ Women's Services",
     btn_book_this_service: "Book Slot for this Service",
 
     // Dates
@@ -272,12 +270,12 @@ const VSM_TRANSLATIONS = {
     date_tomorrow: "Tomorrow",
 
     // Admin
-    admin_title: "VSM Admin Operations Portal"
+    admin_title: "WO&MAN Admin Operations Portal"
   },
 
   ru: {
     // Brand & Nav
-    brand_tagline: "МУЖСКОЙ И ЖЕНСКИЙ САЛОН",
+    brand_tagline: "СТУДИЯ КРАСОТЫ",
     nav_homme: "Мужской",
     nav_femme: "Женский",
     nav_split: "Сплит 50/50",
@@ -290,7 +288,7 @@ const VSM_TRANSLATIONS = {
     sound_fx: "Звуковые эффекты",
 
     // Hero Homme
-    homme_badge: "VSM HOMME // МУЖСКОЙ САЛОН",
+    homme_badge: "MAN // МУЖСКОЙ ЗАЛ",
     homme_title_1: "ИСКУССТВО ТОЧНОСТИ",
     homme_title_2: "И МАСТЕРСТВА",
     homme_desc: "Безупречные фейды, классическое бритье опасной бритвой с горячими полотенцами и авторское моделирование бороды. Для современных джентльменов.",
@@ -303,7 +301,7 @@ const VSM_TRANSLATIONS = {
     homme_meta_role: "Топ-барберы и мастера бритья",
 
     // Hero Femme
-    femme_badge: "VSM FEMME // ЖЕНСКИЙ САЛОН",
+    femme_badge: "WO // ЖЕНСКИЙ ЗАЛ",
     femme_title_1: "ГАРМОНИЯ РОСКОШИ",
     femme_title_2: "И СТИЛЯ",
     femme_desc: "Многомерный авторский балаяж, спа-восстановление волос и подиумные укладки. Пространство истинного сияния и премиального ухода.",
@@ -319,12 +317,12 @@ const VSM_TRANSLATIONS = {
     divider_hint: "Перетяните или наведите курсор",
 
     // Philosophy
-    philosophy_label: "Концепция VSM",
+    philosophy_label: "Концепция WO&MAN",
     philosophy_title_1: "ОДНО ПРОСТРАНСТВО.",
     philosophy_title_2: "ДВЕ УНИКАЛЬНЫЕ СТУДИИ.",
     philosophy_subtitle: "Мы переосмыслили салонный сервис: два акустически и визуально изолированных пространства под одной крышей, каждое со своей атмосферой.",
     
-    homme_card_badge: "Зал VSM Homme",
+    homme_card_badge: "MAN — Мужской зал",
     homme_card_title: "Акустическая кожа и сталь",
     homme_card_desc: "Массив темного ореха, кожаные кресла Belmont ручной работы и японские лезвия. Пространство концентрации и спокойствия.",
     homme_feat_1: "Бар для гостей: Премиальный эспрессо и односолодовый виски",
@@ -332,7 +330,7 @@ const VSM_TRANSLATIONS = {
     homme_feat_3: "Скульптурирование: Подбор контуров бороды под анатомию лица",
     homme_feat_4: "Акустическая изоляция: Специально сведенный фоновый саундтрек",
 
-    femme_card_badge: "Зал VSM Femme",
+    femme_card_badge: "WO — Женский зал",
     femme_card_title: "Естественный свет и колористика",
     femme_card_desc: "Оптика 5500K без искажения цветопередачи, приватные мойки-реклайнеры и создание индивидуальных формул оттенков.",
     femme_feat_1: "Prosecco-бар: Охлажденный брют и коллекция травяных чаев",
@@ -341,7 +339,7 @@ const VSM_TRANSLATIONS = {
     femme_feat_4: "Подиумный финиш: Укладки, сохраняющие природную легкость",
 
     // Lookbook
-    lookbook_label: "Лукбук VSM",
+    lookbook_label: "Лукбук WO&MAN",
     lookbook_title: "СОВЕРШЕНСТВО В КАЖДОЙ ПРЯДИ",
     lookbook_subtitle: "Работы наших мастеров и арт-директоров. Каждая стрижка и оттенок создаются строго индивидуально.",
     filter_all: "Все образы (8)",
@@ -362,10 +360,10 @@ const VSM_TRANSLATIONS = {
     rev_3_role: "Fashion-стилист",
 
     // Telegram Bot Promo Section
-    tg_banner_badge: "БЫСТРАЯ ЗАПИСЬ",
-    tg_banner_title: "ЗАПИСЬ К БАРБЕРУ ЧЕРЕЗ TELEGRAM-БОТ",
-    tg_banner_desc: "Выберите мастера, услугу и удобный временной слот прямо в Telegram всего за 30 секунд. Автоматические напоминания и управление записью.",
-    btn_open_tg_bot: "Открыть Telegram-бота (@VSMBarbershopBot)",
+    tg_banner_badge: "ЕСТЬ ВОПРОС?",
+    tg_banner_title: "НАПИШИТЕ НАМ В TELEGRAM",
+    tg_banner_desc: "Вопросы об услугах, ценах или свободном времени? Напишите нам в Telegram — быстро ответим.",
+    btn_open_tg_bot: "Написать в Telegram",
 
     // Footer
     footer_about: "Флагманский дуальный салон-ателье, объединяющий авторский мужской груминг и высокую женскую эстетику.",
@@ -375,8 +373,7 @@ const VSM_TRANSLATIONS = {
     footer_sat: "Суббота",
     footer_sun: "Воскресенье",
     footer_contact: "КОНСЬЕРЖ И БРОНИРОВАНИЕ",
-    footer_address: "Мэдисон Авеню 450, офис 400",
-    footer_rights: "© 2026 VSM Barbershop & Salon. Все права защищены.",
+    footer_rights: "© 2026 WO&MAN Студия красоты. Все права защищены.",
     footer_admin_link: "Панель администратора",
 
     // Booking Modal
@@ -391,12 +388,12 @@ const VSM_TRANSLATIONS = {
     placeholder_phone: "+7 (999) 000-00-00",
     placeholder_notes: "Пожелания или комментарии (необязательно)",
     btn_confirm_slot: "Подтвердить бронь слота",
-    btn_book_via_bot: "Записаться через Telegram-бота",
-    toast_success: "Временной слот успешно забронирован! Наш администратор свяжется с вами.",
+    btn_book_via_bot: "Написать в Telegram",
+    toast_success: "Запись принята! Мастер подтвердит, и мы свяжемся с вами.",
     toast_slot_busy: "Этот слот только что был занят. Пожалуйста, выберите другое время.",
 
     // Menu Modal
-    menu_modal_title: "Каталог Услуг и Ритуалов VSM",
+    menu_modal_title: "Каталог услуг WO&MAN",
     tab_homme_menu: "♂ Услуги Мужского Зала",
     tab_femme_menu: "♀ Услуги Женского Зала",
     btn_book_this_service: "Выбрать время для этой услуги",
@@ -406,6 +403,6 @@ const VSM_TRANSLATIONS = {
     date_tomorrow: "Завтра",
 
     // Admin
-    admin_title: "Панель Управления VSM Admin"
+    admin_title: "Панель управления WO&MAN"
   }
 };

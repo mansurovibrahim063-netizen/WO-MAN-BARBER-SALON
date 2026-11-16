@@ -1,69 +1,48 @@
-# 💈 VSM Barbershop — Sartaroshlar Boti & Admin Integratsiyasi
+# WO&MAN — Telegram botni ulash
 
-Ushbu Telegram boti **faqat sartaroshlar va stillistlar uchun mo'ljallangan**.
-Saytdan mijozlar vaqt slotini band qilganda, buyurtma to'g'ridan-to'g'ri o'sha sartaroshning Telegramiga kelib tushadi. Sartarosh bir bosish bilan buyurtmani **qabul qiladi (Accept)** yoki **rad etadi (Decline)**.
+Bot **ustalar va admin** uchun. Mijoz saytda yozilganda:
 
----
+- tanlangan ustaning Telegram'iga xabar keladi, unda **✅ Qabul qilish** va **❌ Rad etish** tugmalari bo'ladi;
+- admin chatiga ham nusxa keladi;
+- usta tugmani bossa, holat admin panelda ham yangilanadi.
 
-## 🇺🇿 O'zbekcha: Tezkor Sozlash & Ishlatish
-
-### 1. Telegram Bot Tokenini olish
-1. Telegramda [@BotFather](https://t.me/BotFather) ga kiring.
-2. `/newbot` buyrug'i orqali yangi bot oching (masalan: `VSM Barbershop Staff`).
-3. Berilgan HTTP API tokenni nusxalang (masalan: `7123456789:AAFlkBj...`).
-
-### 2. Admin Panel orqali Integratsiya qilish
-1. [**`admin.html`**](file:///C:/Users/User/.gemini/antigravity/scratch/vsm-barbershop/admin.html) ni oching.
-2. **"🤖 Telegram Bot Integratsiyasi"** bo'limiga o'ting.
-3. Bot Tokenini joylashtiring va **"⚡ Ulanishni Tekshirish"** tugmasini bosing.
-4. **"Saqlash"** tugmasini bosing.
-
-### 3. Sartaroshlarni Botga Bog'lash (1 marta qilinadi)
-1. Admin panelning shu bo'limida har bir sartaroshning shaxsiy havolasi bo'ladi:
-   - Marcus Vance: `https://t.me/VSMBarbershopBot?start=barber_sp-m1`
-   - Julian Drake: `https://t.me/VSMBarbershopBot?start=barber_sp-m2`
-   - va h.k.
-2. **"📋 Havolani Nusxalash"** tugmasini bosib, sartaroshning Telegramiga yuboring.
-3. Sartarosh o'sha havolani ochib, botda **`/start`** tugmasini bossa bo'ldi — uning hisobi tizimga ulanadi!
-
-### 4. Bot qanday ishlaydi?
-1. Saytda mijoz Marcus Vanceni tanlab, soat 11:30 ga vaqt band qiladi.
-2. Marcusning Telegramiga xabar keladi:
-   ```
-   🚨 YANGI BUYURTMA!
-   🆔 Buyurtma ID: VSM-2047
-   👤 Mijoz: Jamshid Rahimov (+998 90 321-45-89)
-   ✂️ Xizmat: Executive Precision Cut & Fade
-   📅 Sana: 2026-10-25
-   ⏰ Vaqt Sloti: 11:30 AM
-   ```
-3. Marcus **`[ ✅ Qabul qilish (Accept) ]`** tugmasini bosadi.
-4. Buyurtma holati avtomatik tarzda **Confirmed** ga o'zgaradi va navbatga kiritiladi.
+Bot alohida ishga tushirilmaydi, u `server.py` ichida ishlaydi.
 
 ---
 
-## 🇷🇺 Русский: Настройка и Работа Бота для Барберов
+## 🇺🇿 O'zbekcha
 
-- Бот предназначен **исключительно для персонала и барберов**.
-- Клиент бронирует время на сайте &rarr; уведомление мгновенно поступает барберу в Telegram.
-- Барбер нажимает **«Принять»** или **«Отклонить»**.
+### 1. Bot yaratish (bir marta)
+1. Telegram'da [@BotFather](https://t.me/BotFather) ni oching.
+2. `/newbot` yuboring, nom va username bering (masalan `woman_studio_bot`).
+3. BotFather bergan tokenni nusxalang (`7123456789:AAF...` ko'rinishida).
 
-### Запуск скрипта бота:
-```powershell
-cd C:\Users\User\.gemini\antigravity\scratch\vsm-barbershop
-$env:VSM_BOT_TOKEN="ВАШ_ТОКЕН_ИЗ_BOTFATHER"
-python bot.py
-```
+### 2. Tokenni saytga kiritish
+1. Serverni ishga tushiring (`python server.py`) va `http://localhost:8000/admin.html` ni oching.
+2. Admin parol bilan kiring.
+3. **🤖 Telegram Bot** bo'limida tokenni joylang va **Saqlash** ni bosing.
+4. Holat **🟢 Ulangan: @bot_nomi** bo'lishi kerak.
+
+Token faqat serverda saqlanadi, sayt mijozlariga ko'rinmaydi.
+
+### 3. Admin chatini ulash
+Shu bo'limda **admin havolasi** paydo bo'ladi. Uni o'zingizning Telegram'ingizda oching va **Start** ni bosing. Endi barcha yangi buyurtmalar sizga ham keladi.
+
+### 4. Ustalarni ulash
+Har bir usta uchun **shaxsiy havola** bor (`📋 Havolani Nusxalash`). Havolani faqat o'sha ustaga yuboring. U havolani ochib **Start** ni bossa, ulanadi.
+
+Havolada maxfiy kod bor, shuning uchun begona odam o'zini usta deb ko'rsatib mijozlar ma'lumotini ololmaydi. Botni oddiy ochgan odam faqat "bu bot ustalar uchun" degan javob oladi.
+
+### 5. Usta uchun bot buyruqlari
+- **📋 Bugungi navbatim**: bugungi mijozlar ro'yxati
+- **📅 Ertangi navbatim**: ertangi mijozlar ro'yxati
+- **🟢 Navbatchilik holati**: ishda / dam olishda (dam olishdagi usta saytda ko'rinmaydi)
 
 ---
 
-## 🇬🇧 English: Quick Start for Barbers Workspace
+## 🇷🇺 Русский (кратко)
 
-```powershell
-cd C:\Users\User\.gemini\antigravity\scratch\vsm-barbershop
-$env:VSM_BOT_TOKEN="YOUR_BOT_TOKEN"
-python bot.py
-```
-
-- Each barber links their account via deep link: `https://t.me/VSMBarbershopBot?start=barber_sp-m1`.
-- When bookings are made on the website, barbers receive instant alert notifications with action buttons.
+1. Создайте бота через [@BotFather](https://t.me/BotFather) → `/newbot` и скопируйте токен.
+2. Запустите `python server.py`, откройте `admin.html`, войдите и вставьте токен в разделе **Telegram Bot** → **Saqlash**.
+3. Откройте у себя ссылку администратора: новые записи будут приходить вам.
+4. Отправьте каждому мастеру его личную ссылку. Мастер нажимает **Start** и получает свои записи с кнопками «Принять / Отклонить».

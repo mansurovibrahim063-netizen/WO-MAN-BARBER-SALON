@@ -1,155 +1,146 @@
 #!/usr/bin/env python3
 """
-VSM Barbershop - Automated End-to-End Verification Test Suite
-Tests:
-1. File Integrity & JSON Validation
-2. Trilingual Localization Keys Completeness (UZ, EN, RU)
-3. HTML Structure & Component Verification (index.html, admin.html)
-4. Barber Management (Add, Edit, Link, Status Toggle)
-5. Barber-Exclusive Telegram Bot Logic & Booking Acceptance Flow
+WO&MAN Beauty Studio - static checks + Telegram bot logic.
+
+Run:  python test_suite.py
+The bot tests use a temporary data folder, so real bookings are never touched.
 """
 
-import os
-import sys
 import json
+import os
 import re
+import sys
+import tempfile
 
-# Set stdout encoding for Windows console compatibility
 if sys.platform == "win32":
     sys.stdout.reconfigure(encoding="utf-8")
 
 DIR = os.path.dirname(os.path.abspath(__file__))
+TMP = tempfile.mkdtemp(prefix="woman-test-")
+os.environ["WOMAN_DATA_DIR"] = TMP
+os.environ.pop("WOMAN_BOT_TOKEN", None)
+sys.path.insert(0, DIR)
+
 
 def assert_true(cond, msg):
     if not cond:
         print(f"[FAIL] {msg}")
         sys.exit(1)
-    else:
-        print(f"[PASS] {msg}")
+    print(f"[PASS] {msg}")
+
+
+def read(name):
+    with open(os.path.join(DIR, name), "r", encoding="utf-8") as f:
+        return f.read()
+
 
 def test_file_integrity():
-    print("\n--- Test 1: File Integrity & JSON Validation ---")
-    files = [
-        "index.html", "admin.html", "app.js", "admin.js", 
-        "styles.css", "translations.js", "bot.py", 
-        "specialists.json", "appointments.json", "TELEGRAM_BOT_GUIDE.md"
-    ]
-    for f in files:
+    print("\n--- Test 1: Files & seed data ---")
+    for f in ["index.html", "admin.html", "app.js", "admin.js", "styles.css", "translations.js",
+              "site-config.js", "server.py", "bot.py", "storage.py", "specialists.json",
+              "assets/logo.png", "assets/favicon.png", "TELEGRAM_BOT_GUIDE.md"]:
         path = os.path.join(DIR, f)
-        assert_true(os.path.exists(path) and os.path.getsize(path) > 0, f"File exists and not empty: {f}")
+        assert_true(os.path.exists(path) and os.path.getsize(path) > 0, f"exists: {f}")
 
-    # Validate JSONs
-    with open(os.path.join(DIR, "specialists.json"), "r", encoding="utf-8") as f:
-        specs = json.load(f)
-        assert_true(isinstance(specs, list) and len(specs) >= 3, f"specialists.json has {len(specs)} entries")
-        for s in specs:
-            assert_true("id" in s and "name" in s and "salon" in s, f"Specialist valid: {s.get('name')}")
+    specs = json.loads(read("specialists.json"))
+    assert_true(isinstance(specs, list) and len(specs) >= 1, f"specialists.json has {len(specs)} entries")
+    for s in specs:
+        assert_true(all(k in s for k in ("id", "name", "salon")), f"specialist valid: {s.get('name')}")
+        assert_true(not s.get("chatId"), f"seed has no real Telegram chat id: {s.get('name')}")
 
-    with open(os.path.join(DIR, "appointments.json"), "r", encoding="utf-8") as f:
-        appts = json.load(f)
-        assert_true(isinstance(appts, list) and len(appts) >= 2, f"appointments.json has {len(appts)} entries")
-        for a in appts:
-            assert_true("id" in a and "clientName" in a and "timeSlot" in a, f"Appointment valid: {a.get('id')}")
 
 def test_html_components():
-    print("\n--- Test 2: HTML Components & UI Hooks ---")
-    with open(os.path.join(DIR, "index.html"), "r", encoding="utf-8") as f:
-        html = f.read()
-        assert_true("lang-pill-btn" in html, "index.html has language switcher pills")
-        assert_true('data-lang="uz"' in html and 'data-lang="en"' in html and 'data-lang="ru"' in html, "index.html supports uz, en, ru")
-        assert_true("admin.html" in html, "index.html has Admin panel link")
-        assert_true("bookingModal" in html, "index.html has Booking modal")
-        assert_true("clientNameInput" in html and "clientPhoneInput" in html, "index.html has client input fields")
-        assert_true("$65" not in html and "$240" not in html, "index.html has no hardcoded dollar prices in main text")
+    print("\n--- Test 2: HTML hooks & branding ---")
+    html = read("index.html")
+    assert_true('data-lang="uz"' in html and 'data-lang="en"' in html and 'data-lang="ru"' in html, "index.html: uz/en/ru")
+    assert_true("admin.html" in html, "index.html links the admin panel (footer)")
+    assert_true("bookingModal" in html and "clientNameInput" in html and "clientPhoneInput" in html, "index.html: booking form")
+    assert_true("assets/logo.png" in html, "index.html uses the WO&MAN logo")
+    assert_true("site-config.js" in html, "index.html loads site-config.js")
+    assert_true("VSMBarbershopBot" not in html, "index.html: no old VSM bot links")
+    assert_true("$65" not in html and "$240" not in html, "index.html: no hardcoded prices")
 
-    with open(os.path.join(DIR, "admin.html"), "r", encoding="utf-8") as f:
-        admin_html = f.read()
-        assert_true("viewAppointments" in admin_html, "admin.html has Appointments view")
-        assert_true("viewSpecialists" in admin_html, "admin.html has Specialists management view")
-        assert_true("viewTelegram" in admin_html, "admin.html has Telegram Bot Integration view")
-        assert_true("barberModal" in admin_html, "admin.html has Barber Add/Edit modal")
-        assert_true("tgBotTokenInput" in admin_html, "admin.html has Telegram Token input")
-        assert_true("barberLinkingList" in admin_html, "admin.html has Barber linking dashboard")
+    admin = read("admin.html")
+    for hook in ["viewAppointments", "viewSpecialists", "viewTelegram", "barberModal", "tgBotTokenInput",
+                 "barberLinkingList", "loginOverlay", "loginPassword", "btnLogout", "tgAdminLinkBox"]:
+        assert_true(hook in admin, f"admin.html has #{hook}")
+    assert_true("noindex" in admin, "admin.html is hidden from search engines")
+
+    ids = set(re.findall(r'id="([^"]+)"', admin))
+    used = set(re.findall(r"getElementById\('([^']+)'\)", read("admin.js")))
+    missing = sorted(used - ids)
+    assert_true(not missing, f"every element admin.js looks up exists in admin.html {missing or ''}")
+
 
 def test_translations():
-    print("\n--- Test 3: Trilingual Localization Coverage ---")
-    with open(os.path.join(DIR, "translations.js"), "r", encoding="utf-8") as f:
-        content = f.read()
-        assert_true("VSM_TRANSLATIONS" in content, "translations.js defines VSM_TRANSLATIONS")
-        assert_true("uz:" in content and "en:" in content and "ru:" in content, "translations.js has uz, en, ru roots")
-        assert_true("modal_book_title" in content, "translations.js has booking modal strings")
-        assert_true("btn_open_tg_bot" in content, "translations.js has Telegram bot strings")
+    print("\n--- Test 3: Translations ---")
+    content = read("translations.js")
+    assert_true("WOMAN_TRANSLATIONS" in content, "translations.js defines WOMAN_TRANSLATIONS")
+    assert_true("uz:" in content and "en:" in content and "ru:" in content, "uz/en/ru present")
+    keys = {}
+    for lang in ("uz", "en", "ru"):
+        block = re.search(rf"\n  {lang}: \{{(.*?)\n  \}}", content, re.S).group(1)
+        keys[lang] = set(re.findall(r"^\s{4}(\w+):", block, re.M))
+    assert_true(keys["uz"] == keys["en"] == keys["ru"], "all three languages have the same keys")
 
-def test_barber_bot_logic():
-    print("\n--- Test 4: Barber-Exclusive Telegram Bot Logic ---")
+
+def test_bot_logic():
+    print("\n--- Test 4: Telegram bot logic (temporary data) ---")
+    import storage
     import bot
 
-    # Test loading specialists & appointments
-    specs = bot.load_specialists()
-    assert_true(len(specs) > 0, f"bot.py successfully loaded {len(specs)} specialists")
+    storage.ensure_data_dir()
+    bot.ensure_link_codes()
+    specs = storage.load_specialists()
+    assert_true(len(specs) > 0 and all(s.get("linkCode") for s in specs), "every master gets a private link code")
 
-    appts = bot.load_appointments()
-    assert_true(len(appts) > 0, f"bot.py successfully loaded {len(appts)} appointments")
+    sent = []
+    bot.api_call = lambda method, payload=None, token=None, timeout=30: sent.append((method, payload)) or {"ok": True, "result": {}}
+    bot.get_token = lambda: "123456:TEST"
 
-    # Test barber lookup
-    barber = bot.find_barber_by_id("sp-m1")
-    assert_true(barber is not None and barber["name"] == "Marcus Vance", "bot.py finds barber by ID")
+    m1 = specs[0]
+    # A stranger cannot claim a master by guessing
+    bot.handle_update({"message": {"chat": {"id": 555}, "text": f"/start b_{m1['id']}_wrongcode", "from": {}}})
+    assert_true(bot.find_barber_by_chat_id(555) is None, "wrong link code does not link a chat")
 
-    # Test linking barber to Telegram chat_id
-    test_chat_id = "99988877"
-    linked = bot.link_barber_chat_id("sp-m1", test_chat_id, "marcus_test")
-    assert_true(linked is not None and linked["chatId"] == test_chat_id, "bot.py successfully binds barber chatId")
+    # The real private link works
+    bot.handle_update({"message": {"chat": {"id": 777}, "text": f"/start b_{m1['id']}_{m1['linkCode']}", "from": {"username": "m1"}}})
+    assert_true(bot.find_barber_by_chat_id(777)["id"] == m1["id"], "private link links the master's chat")
 
-    found_by_chat = bot.find_barber_by_chat_id(test_chat_id)
-    assert_true(found_by_chat is not None and found_by_chat["id"] == "sp-m1", "bot.py finds barber by chatId")
+    # Admin chat link
+    code = storage.load_config()["admin_link_code"]
+    bot.handle_update({"message": {"chat": {"id": 999}, "text": f"/start admin_{code}", "from": {}}})
+    assert_true(storage.load_config().get("admin_chat_id") == "999", "admin link sets the admin chat")
 
-    # Test booking acceptance callback simulation
-    test_appt = {
-        "id": "VSM-TEST-01",
-        "clientName": "Test Client",
-        "clientPhone": "+998 90 123-45-67",
-        "salon": "homme",
-        "serviceTitle": "Executive Cut",
-        "specialistName": "Marcus Vance",
-        "specialistId": "sp-m1",
-        "date": "2026-10-25",
-        "timeSlot": "11:30 AM",
-        "status": "Pending"
-    }
-    appts_list = bot.load_appointments()
-    appts_list.append(test_appt)
-    bot.save_appointments(appts_list)
+    appt = {"id": "WM-11111", "clientName": "Ali <b>&", "clientPhone": "+998 90 123 45 67", "salon": m1["salon"],
+            "serviceTitle": "Soch", "specialistId": m1["id"], "specialistName": m1["name"],
+            "date": "2030-01-02", "timeSlot": "10:00 AM", "status": "Pending"}
+    storage.save_appointments([appt])
+    sent.clear()
+    bot.notify_new_booking(appt)
+    chats = sorted(str(p["chat_id"]) for m, p in sent if m == "sendMessage")
+    assert_true(chats == ["777", "999"], "new booking goes to the master and the admin")
+    master_msg = next(p for m, p in sent if m == "sendMessage" and str(p["chat_id"]) == "777")
+    assert_true("Ali &lt;b&gt;&amp;" in master_msg["text"], "client text is HTML-escaped for Telegram")
+    assert_true(master_msg["reply_markup"]["inline_keyboard"][0][0]["callback_data"] == "accept_WM-11111", "accept button present")
 
-    # Simulate barber accepting via callback
-    test_update = {
-        "callback_query": {
-            "id": "cb_123",
-            "message": {
-                "chat": {"id": int(test_chat_id)},
-                "message_id": 456
-            },
-            "data": "accept_VSM-TEST-01"
-        }
-    }
-    bot.handle_update(test_update)
+    # Another chat cannot accept someone else's booking
+    bot.handle_update({"callback_query": {"id": "c1", "message": {"chat": {"id": 555}, "message_id": 1}, "data": "accept_WM-11111"}})
+    assert_true(storage.load_appointments()[0]["status"] == "Pending", "stranger cannot accept the booking")
 
-    # Check that appointment is now Confirmed and accepted by Marcus Vance
-    updated_appts = bot.load_appointments()
-    accepted = next((a for a in updated_appts if a.get("id") == "VSM-TEST-01"), None)
-    assert_true(accepted is not None, "Test appointment exists in records")
-    assert_true(accepted.get("status") == "Confirmed", "Appointment status updated to 'Confirmed'")
-    assert_true(accepted.get("acceptedBy") == "Marcus Vance", "Appointment records 'acceptedBy: Marcus Vance'")
+    bot.handle_update({"callback_query": {"id": "c2", "message": {"chat": {"id": 777}, "message_id": 1}, "data": "accept_WM-11111"}})
+    saved = storage.load_appointments()[0]
+    assert_true(saved["status"] == "Confirmed" and saved["acceptedBy"] == m1["name"], "master accepts -> Confirmed")
 
-    # Clean up test appointment
-    cleaned = [a for a in updated_appts if a.get("id") != "VSM-TEST-01"]
-    bot.save_appointments(cleaned)
-    print("[PASS] Cleaned up test booking record.")
+    bot.handle_update({"callback_query": {"id": "c3", "message": {"chat": {"id": 777}, "message_id": 1}, "data": "accept_WM-00000"}})
+    assert_true(True, "unknown booking id is handled without crashing")
+
 
 if __name__ == "__main__":
     test_file_integrity()
     test_html_components()
     test_translations()
-    test_barber_bot_logic()
+    test_bot_logic()
     print("\n=======================================================")
-    print("ALL TESTS PASSED SUCCESSFULLY! EVERYTHING IS VERIFIED & READY.")
+    print("ALL TESTS PASSED")
     print("=======================================================")

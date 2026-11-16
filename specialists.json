@@ -4,77 +4,71 @@
     "name": "Marcus Vance",
     "role": "Master Fade Specialist",
     "salon": "homme",
-    "phone": "+998 90 111-22-33",
-    "telegram": "@marcus_test",
-    "chatId": "99988877",
+    "phone": "",
+    "telegram": "",
+    "chatId": "",
     "onDuty": true,
-    "rating": "4.98",
     "experience": "8 years",
-    "img": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+    "img": ""
   },
   {
     "id": "sp-m2",
     "name": "Julian Drake",
     "role": "Beard & Shave Master",
     "salon": "homme",
-    "phone": "+998 90 222-33-44",
-    "telegram": "@julian_drake",
-    "chatId": "89312042",
+    "phone": "",
+    "telegram": "",
+    "chatId": "",
     "onDuty": true,
-    "rating": "4.97",
     "experience": "10 years",
-    "img": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80"
+    "img": ""
   },
   {
     "id": "sp-m3",
     "name": "Leo Saint",
     "role": "Texture & Scissor Artisan",
     "salon": "homme",
-    "phone": "+998 90 333-44-55",
-    "telegram": "@leo_saint",
-    "chatId": "91048211",
+    "phone": "",
+    "telegram": "",
+    "chatId": "",
     "onDuty": true,
-    "rating": "4.95",
     "experience": "6 years",
-    "img": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80"
+    "img": ""
   },
   {
     "id": "sp-f1",
     "name": "Elena Rostova",
     "role": "Creative Color Director",
     "salon": "femme",
-    "phone": "+998 90 444-55-66",
-    "telegram": "@elena_rostova",
-    "chatId": "65192034",
+    "phone": "",
+    "telegram": "",
+    "chatId": "",
     "onDuty": true,
-    "rating": "4.99",
     "experience": "12 years",
-    "img": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80"
+    "img": ""
   },
   {
     "id": "sp-f2",
     "name": "Camille Laurent",
     "role": "Haute Cut Specialist",
     "salon": "femme",
-    "phone": "+998 90 555-66-77",
-    "telegram": "@camille_laurent",
-    "chatId": "73104928",
+    "phone": "",
+    "telegram": "",
+    "chatId": "",
     "onDuty": true,
-    "rating": "4.96",
     "experience": "7 years",
-    "img": "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=200&q=80"
+    "img": ""
   },
   {
     "id": "sp-f3",
     "name": "Sienna Blake",
     "role": "Balayage Artisan",
     "salon": "femme",
-    "phone": "+998 90 666-77-88",
-    "telegram": "@sienna_blake",
-    "chatId": "82019483",
+    "phone": "",
+    "telegram": "",
+    "chatId": "",
     "onDuty": false,
-    "rating": "4.94",
     "experience": "5 years",
-    "img": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80"
+    "img": ""
   }
 ]

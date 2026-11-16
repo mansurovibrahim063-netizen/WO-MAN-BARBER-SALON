@@ -1,0 +1,6 @@
+# Live data: real client names and phone numbers, bot token, admin password hash
+data/
+
+# Python
+__pycache__/
+*.pyc
