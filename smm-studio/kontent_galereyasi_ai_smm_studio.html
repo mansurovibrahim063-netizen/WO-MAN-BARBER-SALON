@@ -1,0 +1,3717 @@
+<!DOCTYPE html>
+<html lang="uz" class="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#0057FF" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="description" content="KONTENT GALEREYASI — Telegram, Instagram va YouTube uchun AI SMM kontent va oblojka studiyasi (UZ / RU)" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%230057FF'/%3E%3Cpath d='M20 44V20h14c6 0 10 3.5 10 8.5S40 37 34 37h-7v7h-7zm7-13h6.5c2.2 0 3.5-1 3.5-2.5S35.7 26 33.5 26H27v5z' fill='%23fff'/%3E%3C/svg%3E" />
+  <title>KONTENT GALEREYASI — AI SMM Studio</title>
+  
+  <!-- Google Fonts: Space Grotesk, Plus Jakarta Sans, JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Space Grotesk"', 'sans-serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            cobalt: '#0057FF',
+            magenta: '#FF2A85',
+            crimson: '#FF1E56',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      /* Light Mode - Minimalist Art Gallery Alabaster */
+      --bg-canvas: #F8F8F6;
+      --bg-surface: #FFFFFF;
+      --bg-surface-elevated: #F2F2EF;
+      --text-primary: #0A0A0C;
+      --text-secondary: #5E5E68;
+      --text-muted: #8E8E98;
+      --border-hairline: rgba(10, 10, 12, 0.09);
+      --border-strong: rgba(10, 10, 12, 0.22);
+      --glass-dock: rgba(255, 255, 255, 0.82);
+      
+      /* Dynamic Platform Mood Tokens (Default: Telegram Electric Cobalt) */
+      --accent-primary: #0057FF;
+      --accent-secondary: #00B4D8;
+      --accent-glow-1: rgba(0, 87, 255, 0.13);
+      --accent-glow-2: rgba(0, 180, 216, 0.08);
+      --accent-contrast: #FFFFFF;
+    }
+
+    html.dark {
+      /* Dark Mode - Deep Obsidian Exhibition */
+      --bg-canvas: #0A0A0C;
+      --bg-surface: #121216;
+      --bg-surface-elevated: #1A1A20;
+      --text-primary: #F5F5F7;
+      --text-secondary: #A0A0AB;
+      --text-muted: #686873;
+      --border-hairline: rgba(255, 255, 255, 0.09);
+      --border-strong: rgba(255, 255, 255, 0.22);
+      --glass-dock: rgba(18, 18, 22, 0.82);
+      
+      --accent-glow-1: rgba(0, 87, 255, 0.22);
+      --accent-glow-2: rgba(0, 180, 216, 0.12);
+    }
+
+    /* Platform Atmosphere Overrides */
+    body[data-platform="telegram"] {
+      --accent-primary: #0057FF;
+      --accent-secondary: #0EA5E9;
+      --accent-glow-1: rgba(0, 87, 255, 0.15);
+      --accent-glow-2: rgba(14, 165, 233, 0.09);
+    }
+    html.dark body[data-platform="telegram"] {
+      --accent-primary: #2563EB;
+      --accent-secondary: #38BDF8;
+      --accent-glow-1: rgba(37, 99, 235, 0.25);
+      --accent-glow-2: rgba(56, 189, 248, 0.12);
+    }
+
+    body[data-platform="instagram"] {
+      --accent-primary: #FF2A85;
+      --accent-secondary: #0057FF;
+      --accent-glow-1: rgba(255, 42, 133, 0.15);
+      --accent-glow-2: rgba(0, 87, 255, 0.08);
+    }
+    html.dark body[data-platform="instagram"] {
+      --accent-primary: #FF2A85;
+      --accent-secondary: #60A5FA;
+      --accent-glow-1: rgba(255, 42, 133, 0.25);
+      --accent-glow-2: rgba(0, 87, 255, 0.14);
+    }
+
+    body[data-platform="youtube"] {
+      --accent-primary: #FF1E56;
+      --accent-secondary: #0057FF;
+      --accent-glow-1: rgba(255, 30, 86, 0.15);
+      --accent-glow-2: rgba(0, 87, 255, 0.07);
+    }
+    html.dark body[data-platform="youtube"] {
+      --accent-primary: #FF1E56;
+      --accent-secondary: #3B82F6;
+      --accent-glow-1: rgba(255, 30, 86, 0.26);
+      --accent-glow-2: rgba(59, 130, 246, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-canvas);
+      color: var(--text-primary);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      transition: background-color 0.55s cubic-bezier(0.22, 1, 0.36, 1), color 0.45s ease;
+    }
+
+    /* Ambient Gallery Light Orb */
+    .ambient-atmosphere {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(circle at 85% 8%, var(--accent-glow-1) 0%, transparent 52%),
+        radial-gradient(circle at 12% 88%, var(--accent-glow-2) 0%, transparent 48%);
+      transition: background 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Architectural Hairline Borders */
+    .hairline-border {
+      border: 1px solid var(--border-hairline);
+      transition: border-color 0.35s ease, background-color 0.45s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .hairline-b {
+      border-bottom: 1px solid var(--border-hairline);
+    }
+
+    .hairline-t {
+      border-top: 1px solid var(--border-hairline);
+    }
+
+    /* Blur-In Typewriter Word Animation */
+    @keyframes blurInReveal {
+      0% {
+        filter: blur(7px);
+        opacity: 0;
+        transform: translateY(5px);
+      }
+      100% {
+        filter: blur(0px);
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .blur-word {
+      display: inline-block;
+      animation: blurInReveal 0.34s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Morphing Screen Transitions */
+    .screen-panel {
+      transition: opacity 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+                  transform 0.48s cubic-bezier(0.22, 1, 0.36, 1),
+                  filter 0.42s ease;
+    }
+
+    .screen-hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(16px) scale(0.98);
+      filter: blur(4px);
+      position: absolute;
+      inset: 0;
+    }
+
+    .screen-active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+      filter: blur(0px);
+      position: relative;
+    }
+
+    /* Morphing Expansion Pulse when transitioning Create -> Exhibition */
+    @keyframes galleryMorphExpand {
+      0% {
+        transform: scale(0.92) translateY(24px);
+        opacity: 0.4;
+        border-radius: 999px;
+      }
+      60% {
+        transform: scale(1.01) translateY(-2px);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+        border-radius: 24px;
+      }
+    }
+
+    .morph-stage-enter {
+      animation: galleryMorphExpand 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    /* 3D Card Deck Stack Styling */
+    .deck-viewport {
+      perspective: 1200px;
+      position: relative;
+      min-height: 410px;
+      touch-action: pan-y;
+    }
+
+    .deck-card {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-hairline);
+      border-radius: 24px;
+      box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.14);
+      transition: transform 0.48s cubic-bezier(0.22, 1, 0.36, 1),
+                  opacity 0.42s ease,
+                  border-color 0.35s ease,
+                  box-shadow 0.35s ease;
+      will-change: transform, opacity;
+      user-select: none;
+    }
+
+    html.dark .deck-card {
+      box-shadow: 0 24px 48px -18px rgba(0, 0, 0, 0.65);
+    }
+
+    .deck-card.dragging {
+      transition: none !important;
+      cursor: grabbing;
+    }
+
+    /* Magnetic Button Physics */
+    .magnetic-btn {
+      transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+                  background-color 0.35s ease,
+                  box-shadow 0.35s ease,
+                  border-color 0.35s ease;
+      will-change: transform;
+    }
+
+    /* Custom Scrollbar (Subtle Gallery Style) */
+    ::-webkit-scrollbar {
+      width: 3px;
+      height: 3px;
+    }
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-strong);
+      border-radius: 99px;
+    }
+
+    /* Floating Glass Bottom Dock */
+    .glass-dock {
+      background: var(--glass-dock);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
+      border: 1px solid var(--border-hairline);
+      box-shadow: 0 14px 34px -10px rgba(0, 0, 0, 0.15);
+    }
+
+    html.dark .glass-dock {
+      box-shadow: 0 18px 40px -8px rgba(0, 0, 0, 0.7);
+    }
+
+    /* Safe Area & Mobile Viewport */
+    .app-shell {
+      min-height: 100dvh;
+      max-width: 480px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+      padding-bottom: calc(96px + env(safe-area-inset-bottom));
+    }
+
+    @media (min-width: 520px) {
+      .app-shell {
+        min-height: calc(100dvh - 32px);
+        margin-top: 16px;
+        margin-bottom: 16px;
+        border: 1px solid var(--border-hairline);
+        border-radius: 32px;
+        background-color: rgba(255, 255, 255, 0.02);
+        box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.12);
+      }
+    }
+
+    /* Pulse indicator for streaming */
+    @keyframes galleryPulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(0.8); }
+    }
+    .stream-dot {
+      animation: galleryPulse 1.1s infinite ease-in-out;
+    }
+
+    /* Cover / Oblojka Preview Frame Morphing */
+    .cover-stage-frame {
+      position: relative;
+      width: 100%;
+      margin: 0 auto;
+      border-radius: 22px;
+      overflow: hidden;
+      background-color: var(--bg-surface-elevated);
+      border: 1px solid var(--border-hairline);
+      transition: aspect-ratio 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                  max-width 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+                  box-shadow 0.4s ease;
+    }
+
+    .cover-stage-frame[data-ratio="1:1"] {
+      aspect-ratio: 1 / 1;
+      max-width: 100%;
+    }
+    .cover-stage-frame[data-ratio="9:16"] {
+      aspect-ratio: 9 / 16;
+      max-width: 245px;
+    }
+    .cover-stage-frame[data-ratio="16:9"] {
+      aspect-ratio: 16 / 9;
+      max-width: 100%;
+    }
+    .cover-stage-frame[data-ratio="4:3"] {
+      aspect-ratio: 4 / 3;
+      max-width: 100%;
+    }
+
+    @keyframes shimmerSweep {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    .cover-shimmer::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
+      animation: shimmerSweep 1.6s infinite;
+    }
+
+    /* Photo Dropzone Styling */
+    .photo-dropzone {
+      border: 1.5px dashed var(--border-strong);
+      background-color: var(--bg-surface);
+      transition: border-color 0.3s ease, background-color 0.3s ease, transform 0.25s ease;
+    }
+    .photo-dropzone.drag-over {
+      border-color: var(--accent-primary);
+      background-color: var(--accent-glow-1);
+      transform: scale(0.99);
+    }
+  </style>
+</head>
+<body data-platform="telegram">
+  <!-- Dynamic Platform Atmospheric Glow -->
+  <div class="ambient-atmosphere" id="ambientBg"></div>
+
+  <!-- Main Mobile-First Gallery Container -->
+  <div class="app-shell flex flex-col">
+    
+    <!-- Minimalist Gallery Header -->
+    <header class="px-5 pt-5 pb-4 hairline-b flex items-center justify-between sticky top-0 z-30 backdrop-blur-md" style="background-color: color-mix(in srgb, var(--bg-canvas) 84%, transparent);">
+      <div>
+        <div class="flex items-center gap-2">
+          <span id="exhibitionIndex" class="font-mono text-[11px] font-medium tracking-widest uppercase px-2 py-0.5 rounded-full hairline-border" style="color: var(--accent-primary);">
+            № 01 / STUDIYA
+          </span>
+          <span id="platformMoodBadge" class="font-mono text-[10px] uppercase tracking-wider" style="color: var(--text-muted);">
+            TELEGRAM
+          </span>
+        </div>
+        <h1 id="appMainTitle" class="font-display text-[22px] font-bold tracking-tight mt-1 leading-none">
+          KONTENT GALEREYASI
+        </h1>
+      </div>
+
+      <!-- Language (UZ / RU) & Theme Controls -->
+      <div class="flex items-center gap-2">
+        <div class="inline-flex p-0.5 rounded-full hairline-border" style="background-color: var(--bg-surface);">
+          <button type="button" data-lang="uz" class="lang-btn px-2.5 py-1.5 rounded-full font-mono text-[11px] font-semibold transition-all text-white" style="background-color: var(--accent-primary);">
+            UZ
+          </button>
+          <button type="button" data-lang="ru" class="lang-btn px-2.5 py-1.5 rounded-full font-mono text-[11px] font-semibold transition-all" style="color: var(--text-secondary);">
+            RU
+          </button>
+        </div>
+
+        <!-- API Key Settings Modal Trigger -->
+        <button id="apiSettingsBtn" aria-label="API Kalit sozlamalari" class="magnetic-btn w-10 h-10 rounded-full hairline-border flex items-center justify-center relative" style="background-color: var(--bg-surface);">
+          <i data-lucide="key-round" class="w-4 h-4"></i>
+          <span id="apiKeyStatusDot" class="w-2 h-2 rounded-full absolute top-1.5 right-1.5" style="background-color: #10B981;"></span>
+        </button>
+
+        <!-- Dark / Light Mode Toggle -->
+        <button id="themeToggleBtn" aria-label="Mavzuni o'zgartirish" class="magnetic-btn w-10 h-10 rounded-full hairline-border flex items-center justify-center" style="background-color: var(--bg-surface);">
+          <i data-lucide="moon" id="themeIconMoon" class="w-4 h-4"></i>
+          <i data-lucide="sun" id="themeIconSun" class="w-4 h-4 hidden"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Viewport Stage -->
+    <main class="flex-1 px-5 pt-5 relative overflow-x-hidden">
+      
+      <!-- =========================================================
+           SCREEN 1: YARATISH (STUDIO / INPUT CANVAS)
+      ========================================================== -->
+      <section id="screenCreate" class="screen-panel screen-active space-y-5">
+        
+        <!-- Platform Selector with Sliding Pill -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <label id="labelPlatformStep" class="font-display text-xs font-semibold uppercase tracking-wider" style="color: var(--text-secondary);">
+              01. Platforma Muhiti
+            </label>
+            <span id="platformSpecHint" class="font-mono text-[11px]" style="color: var(--accent-primary);">
+              Qisqa va lo‘nda format
+            </span>
+          </div>
+
+          <div id="platformSelector" class="relative grid grid-cols-3 p-1 rounded-2xl hairline-border" style="background-color: var(--bg-surface);">
+            <!-- Sliding Active Indicator -->
+            <div id="platformSlider" class="absolute top-1 bottom-1 left-1 w-[calc(33.333%-4px)] rounded-xl transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]" style="background-color: var(--accent-primary); box-shadow: 0 6px 18px -4px var(--accent-glow-1);"></div>
+            
+            <button type="button" data-plat="telegram" class="plat-btn relative z-10 py-2.5 px-2 rounded-xl font-display text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors duration-300 text-white">
+              <i data-lucide="send" class="w-3.5 h-3.5"></i>
+              <span>Telegram</span>
+            </button>
+            <button type="button" data-plat="instagram" class="plat-btn relative z-10 py-2.5 px-2 rounded-xl font-display text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors duration-300" style="color: var(--text-secondary);">
+              <i data-lucide="instagram" class="w-3.5 h-3.5"></i>
+              <span>Instagram</span>
+            </button>
+            <button type="button" data-plat="youtube" class="plat-btn relative z-10 py-2.5 px-2 rounded-xl font-display text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors duration-300" style="color: var(--text-secondary);">
+              <i data-lucide="youtube" class="w-3.5 h-3.5"></i>
+              <span>YouTube</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Quick Sample Presets -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <span id="labelPresetsTitle" class="font-display text-xs font-semibold uppercase tracking-wider" style="color: var(--text-secondary);">
+              Tezkor Namuna G‘oyalar
+            </span>
+            <span id="labelPresetsHint" class="font-mono text-[10px]" style="color: var(--text-muted);">1 bosishda sinang</span>
+          </div>
+          <div id="presetsContainer" class="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+            <!-- Populated dynamically based on UZ / RU language -->
+          </div>
+        </div>
+
+        <!-- Photo Upload Dropzone for AI Visual Post Generation (Optional) -->
+        <div>
+          <input type="file" id="studioPhotoInput" accept="image/*" class="hidden" />
+          <div id="studioDropzone" class="photo-dropzone rounded-2xl p-3.5 cursor-pointer relative overflow-hidden">
+            <!-- Empty Upload Prompt State -->
+            <div id="studioDropEmpty" class="flex items-center justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl hairline-border flex items-center justify-center shrink-0" style="background-color: var(--bg-surface-elevated); color: var(--accent-primary);">
+                  <i data-lucide="image-plus" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <p id="studioUploadTitle" class="font-display text-xs font-bold tracking-wide">
+                    Rasm tashlang (ixtiyoriy)
+                  </p>
+                  <p id="studioUploadSub" class="text-[11px] mt-0.5" style="color: var(--text-secondary);">
+                    AI rasmni ko‘rib, unga mos post yozib beradi
+                  </p>
+                </div>
+              </div>
+              <span id="studioUploadBadge" class="font-mono text-[10px] font-semibold uppercase px-2.5 py-1 rounded-full hairline-border shrink-0" style="color: var(--accent-primary);">
+                + FOTO
+              </span>
+            </div>
+
+            <!-- Uploaded Photo Preview State -->
+            <div id="studioDropPreview" class="hidden flex items-center justify-between gap-3">
+              <div class="flex items-center gap-3 min-w-0">
+                <img id="studioPreviewImg" src="" alt="Uploaded preview" class="w-14 h-14 rounded-xl object-cover hairline-border shrink-0" />
+                <div class="min-w-0">
+                  <span id="studioAttachedTag" class="font-mono text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full inline-block" style="background-color: var(--accent-glow-1); color: var(--accent-primary);">
+                    RASM BIRIKTIRILDI
+                  </span>
+                  <p id="studioAttachedHint" class="text-xs mt-1 truncate" style="color: var(--text-secondary);">
+                    Nima yozish kerakligini pastda kiriting
+                  </p>
+                </div>
+              </div>
+              <button type="button" id="removeStudioPhotoBtn" aria-label="Rasmni o'chirish" class="w-8 h-8 rounded-full hairline-border flex items-center justify-center shrink-0 hover:opacity-75" style="background-color: var(--bg-surface-elevated); color: var(--text-primary);">
+                <i data-lucide="x" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Business / Product Context Input -->
+        <div class="rounded-2xl p-4 hairline-border transition-all focus-within:ring-1" style="background-color: var(--bg-surface); --tw-ring-color: var(--accent-primary);">
+          <div class="flex items-center justify-between mb-1.5">
+            <label id="labelBusinessStep" for="businessInput" class="font-display text-xs font-semibold uppercase tracking-wider" style="color: var(--text-secondary);">
+              02. Biznesingiz yoki mahsulotingiz haqida
+            </label>
+            <span id="bizCounter" class="font-mono text-[11px]" style="color: var(--text-muted);">0/300</span>
+          </div>
+          <input
+            id="businessInput"
+            type="text"
+            maxlength="300"
+            placeholder="Masalan: Toshkentdagi minimalist qahvaxona..."
+            class="w-full bg-transparent text-[16px] leading-relaxed focus:outline-none placeholder:opacity-45"
+            style="color: var(--text-primary);"
+          />
+        </div>
+
+        <!-- Post Topic / Idea Textarea -->
+        <div class="rounded-2xl p-4 hairline-border transition-all focus-within:ring-1" style="background-color: var(--bg-surface); --tw-ring-color: var(--accent-primary);">
+          <div class="flex items-center justify-between mb-1.5">
+            <label id="labelIdeaStep" for="ideaInput" class="font-display text-xs font-semibold uppercase tracking-wider" style="color: var(--text-secondary);">
+              03. Post mavzusi va asosiy g‘oya
+            </label>
+            <span id="ideaCounter" class="font-mono text-[11px]" style="color: var(--text-muted);">0/600</span>
+          </div>
+          <textarea
+            id="ideaInput"
+            rows="3"
+            maxlength="600"
+            placeholder="Bugungi post nima haqida? Aksiya, yangilik yoki foydali maslahatni yozing..."
+            class="w-full bg-transparent text-[16px] leading-relaxed resize-none focus:outline-none placeholder:opacity-45"
+            style="color: var(--text-primary);"
+          ></textarea>
+        </div>
+
+        <!-- Tone & Variant Count Row -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <span id="labelToneStep" class="font-display text-xs font-semibold uppercase tracking-wider" style="color: var(--text-secondary);">
+              04. Ohang & Variantlar Soni
+            </span>
+            <!-- Variant Count Switcher (2 or 3) -->
+            <div class="inline-flex p-0.5 rounded-xl hairline-border" style="background-color: var(--bg-surface);">
+              <button type="button" data-count="2" class="count-btn px-2.5 py-1 rounded-lg font-mono text-xs font-medium transition-all" style="color: var(--text-secondary);">
+                2 ta
+              </button>
+              <button type="button" data-count="3" class="count-btn px-2.5 py-1 rounded-lg font-mono text-xs font-semibold transition-all text-white" style="background-color: var(--accent-primary);">
+                3 ta
+              </button>
+            </div>
+          </div>
+
+          <!-- Tone Selector Pills -->
+          <div class="grid grid-cols-4 gap-1.5">
+            <button type="button" data-tone="professional" class="tone-btn py-2 px-1 rounded-xl hairline-border font-display text-[11px] font-semibold text-center transition-all text-white" style="background-color: var(--accent-primary); border-color: var(--accent-primary);">
+              Professional
+            </button>
+            <button type="button" data-tone="friendly" class="tone-btn py-2 px-1 rounded-xl hairline-border font-display text-[11px] font-semibold text-center transition-all" style="background-color: var(--bg-surface); color: var(--text-secondary);">
+              Do‘stona
+            </button>
+            <button type="button" data-tone="sales" class="tone-btn py-2 px-1 rounded-xl hairline-border font-display text-[11px] font-semibold text-center transition-all" style="background-color: var(--bg-surface); color: var(--text-secondary);">
+              Sotuvchi
+            </button>
+            <button type="button" data-tone="expert" class="tone-btn py-2 px-1 rounded-xl hairline-border font-display text-[11px] font-semibold text-center transition-all" style="background-color: var(--bg-surface); color: var(--text-secondary);">
+              Ekspert
+            </button>
+          </div>
+        </div>
+
+        <!-- Primary Magnetic Generate CTA Button -->
+        <div class="pt-1 pb-4">
+          <button
+            id="generateBtn"
+            type="button"
+            class="magnetic-btn w-full py-4 px-6 rounded-2xl font-display text-[15px] font-bold tracking-wide text-white flex items-center justify-center gap-2.5 shadow-lg active:scale-[0.98]"
+            style="background-color: var(--accent-primary); box-shadow: 0 14px 30px -8px var(--accent-glow-1);"
+          >
+            <span id="generateBtnText">Post yaratish</span>
+            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+      </section>
+
+
+      <!-- =========================================================
+           SCREEN 2: NATIJA (EXHIBITION DECK & BLUR-IN STREAMING)
+      ========================================================== -->
+      <section id="screenResult" class="screen-panel screen-hidden space-y-4">
+        
+        <!-- Exhibition Top Meta Bar & Pill Switcher -->
+        <div class="flex items-center justify-between gap-2">
+          <div id="variantPills" class="flex items-center gap-1.5">
+            <!-- Dynamically populated Variant 01, 02, 03 pills -->
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span id="streamingIndicator" class="hidden items-center gap-1.5 font-mono text-[11px] px-2.5 py-1 rounded-full hairline-border" style="background-color: var(--bg-surface); color: var(--accent-primary);">
+              <span class="w-2 h-2 rounded-full stream-dot" style="background-color: var(--accent-primary);"></span>
+              <span id="streamingTextLabel">Yozilmoqda...</span>
+            </span>
+            <span id="deckCounterDisplay" class="font-mono text-xs font-semibold px-2.5 py-1 rounded-full hairline-border" style="background-color: var(--bg-surface);">
+              01 / 03
+            </span>
+          </div>
+        </div>
+
+        <!-- Swipe Hint Instruction -->
+        <div class="flex items-center justify-between text-[11px] font-mono px-1" style="color: var(--text-muted);">
+          <span class="flex items-center gap-1">
+            <i data-lucide="move-horizontal" class="w-3.5 h-3.5"></i>
+            <span id="swipeHintLabel">Kartani chap/o‘ngga suring</span>
+          </span>
+          <span id="charCountDisplay">0 belgi</span>
+        </div>
+
+        <!-- Interactive 3D Card Deck / Stack Container -->
+        <div id="deckContainer" class="deck-viewport">
+          <!-- Cards rendered dynamically here -->
+        </div>
+
+        <!-- Exhibition Action Controls (Magnetic Physics) -->
+        <div class="grid grid-cols-12 gap-2.5 pt-2 pb-4">
+          <!-- Copy Button (Primary Action) -->
+          <button
+            id="copyActiveBtn"
+            type="button"
+            class="magnetic-btn col-span-6 py-3.5 px-4 rounded-2xl font-display text-xs font-bold tracking-wide text-white flex items-center justify-center gap-2"
+            style="background-color: var(--accent-primary); box-shadow: 0 10px 24px -6px var(--accent-glow-1);"
+          >
+            <i data-lucide="copy" id="copyIcon" class="w-4 h-4"></i>
+            <span id="copyBtnLabel">Nusxalash</span>
+          </button>
+
+          <!-- Regenerate Button -->
+          <button
+            id="regenerateBtn"
+            type="button"
+            class="magnetic-btn col-span-4 py-3.5 px-3 rounded-2xl hairline-border font-display text-xs font-semibold flex items-center justify-center gap-1.5"
+            style="background-color: var(--bg-surface); color: var(--text-primary);"
+          >
+            <i data-lucide="refresh-cw" id="regenIcon" class="w-3.5 h-3.5"></i>
+            <span id="regenBtnLabel">Qayta</span>
+          </button>
+
+          <!-- Inline Edit Toggle Button -->
+          <button
+            id="editToggleBtn"
+            type="button"
+            aria-label="Matnni tahrirlash"
+            class="magnetic-btn col-span-2 py-3.5 rounded-2xl hairline-border font-display text-xs font-semibold flex items-center justify-center"
+            style="background-color: var(--bg-surface); color: var(--text-primary);"
+          >
+            <i data-lucide="pencil" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <!-- Quick Jump to Cover / Oblojka Studio -->
+        <div class="pb-4">
+          <button
+            id="jumpToCoverBtn"
+            type="button"
+            class="magnetic-btn w-full py-3.5 px-4 rounded-2xl hairline-border font-display text-xs font-bold tracking-wider uppercase flex items-center justify-center gap-2"
+            style="background-color: var(--bg-surface); color: var(--accent-primary);"
+          >
+            <i data-lucide="frame" class="w-4 h-4"></i>
+            <span id="jumpToCoverLabel">OBLOJKA YARATISH</span>
+          </button>
+        </div>
+
+      </section>
+
+
+      <!-- =========================================================
+           SCREEN 2.5: OBLOJKA STUDIYASI (COVER / VISUAL STUDIO)
+      ========================================================== -->
+      <section id="screenCover" class="screen-panel screen-hidden space-y-4">
+
+        <!-- Photo Upload & AI Image-to-Image Dropzone -->
+        <div>
+          <input type="file" id="coverPhotoInput" accept="image/*" class="hidden" />
+          <div id="coverDropzone" class="photo-dropzone rounded-2xl p-3.5 cursor-pointer relative overflow-hidden">
+            <!-- Empty Upload State -->
+            <div id="coverDropEmpty" class="flex items-center justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl hairline-border flex items-center justify-center shrink-0" style="background-color: var(--bg-surface-elevated); color: var(--accent-primary);">
+                  <i data-lucide="camera" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <p id="coverUploadTitle" class="font-display text-xs font-bold tracking-wide">
+                    Rasm tashlang va nima qilishni yozing
+                  </p>
+                  <p id="coverUploadSub" class="text-[11px] mt-0.5" style="color: var(--text-secondary);">
+                    AI fonni almashtiradi, yorug‘lik va dizayn beradi
+                  </p>
+                </div>
+              </div>
+              <span id="coverUploadBadge" class="font-mono text-[10px] font-semibold uppercase px-2.5 py-1 rounded-full hairline-border shrink-0" style="color: var(--accent-primary);">
+                YUKLASH
+              </span>
+            </div>
+
+            <!-- Uploaded Photo Active State -->
+            <div id="coverDropPreview" class="hidden flex items-center justify-between gap-3">
+              <div class="flex items-center gap-3 min-w-0">
+                <img id="coverSourceThumb" src="" alt="Source photo" class="w-12 h-12 rounded-xl object-cover hairline-border shrink-0" />
+                <div class="min-w-0">
+                  <span id="coverSourceBadge" class="font-mono text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full inline-block" style="background-color: var(--accent-glow-1); color: var(--accent-primary);">
+                    ASL RASM YUKLANDI
+                  </span>
+                  <p id="coverSourceHint" class="text-[11px] mt-0.5 truncate" style="color: var(--text-secondary);">
+                    AI nima o‘zgartirishini pastga yozing
+                  </p>
+                </div>
+              </div>
+              <button type="button" id="removeCoverPhotoBtn" aria-label="Rasmni olib tashlash" class="w-8 h-8 rounded-full hairline-border flex items-center justify-center shrink-0 hover:opacity-75" style="background-color: var(--bg-surface-elevated); color: var(--text-primary);">
+                <i data-lucide="x" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Smart AI Edit Chips (Visible when a photo is uploaded) -->
+          <div id="coverSmartChipsRow" class="hidden flex gap-1.5 overflow-x-auto pt-2.5 pb-0.5">
+            <!-- Populated dynamically in UZ / RU -->
+          </div>
+        </div>
+
+        <!-- Aspect Ratio & Platform Selector Bar -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <span id="labelCoverRatio" class="font-display text-xs font-semibold uppercase tracking-wider" style="color: var(--text-secondary);">
+              01. Format Nisbati
+            </span>
+            <span id="coverPlatformTag" class="font-mono text-[11px] uppercase" style="color: var(--accent-primary);">
+              TELEGRAM • 4:3
+            </span>
+          </div>
+
+          <div class="grid grid-cols-4 gap-1.5">
+            <button type="button" data-ratio="1:1" class="ratio-btn py-2 px-2 rounded-xl hairline-border font-mono text-xs font-semibold text-center transition-all" style="background-color: var(--bg-surface); color: var(--text-secondary);">
+              1:1
+            </button>
+            <button type="button" data-ratio="9:16" class="ratio-btn py-2 px-2 rounded-xl hairline-border font-mono text-xs font-semibold text-center transition-all" style="background-color: var(--bg-surface); color: var(--text-secondary);">
+              9:16
+            </button>
+            <button type="button" data-ratio="16:9" class="ratio-btn py-2 px-2 rounded-xl hairline-border font-mono text-xs font-semibold text-center transition-all" style="background-color: var(--bg-surface); color: var(--text-secondary);">
+              16:9
+            </button>
+            <button type="button" data-ratio="4:3" class="ratio-btn py-2 px-2 rounded-xl hairline-border font-mono text-xs font-semibold text-center transition-all text-white" style="background-color: var(--accent-primary); border-color: var(--accent-primary);">
+              4:3
+            </button>
+          </div>
+        </div>
+
+        <!-- Live Gallery Preview Frame -->
+        <div class="py-1 flex flex-col items-center space-y-2.5">
+          <!-- Before / After Comparison Switcher (Shown when an uploaded photo was processed) -->
+          <div id="beforeAfterBar" class="hidden inline-flex p-0.5 rounded-full hairline-border" style="background-color: var(--bg-surface);">
+            <button type="button" data-viewmode="after" class="ba-toggle-btn px-3 py-1 rounded-full font-mono text-[10px] font-semibold uppercase transition-all text-white" style="background-color: var(--accent-primary);">
+              AI NATIJA
+            </button>
+            <button type="button" data-viewmode="before" class="ba-toggle-btn px-3 py-1 rounded-full font-mono text-[10px] font-semibold uppercase transition-all" style="color: var(--text-secondary);">
+              ASL RASM
+            </button>
+          </div>
+
+          <div id="coverPreviewFrame" data-ratio="4:3" class="cover-stage-frame shadow-xl">
+            <!-- Rendered High-Res Composite Canvas Preview -->
+            <canvas id="coverCompositeCanvas" class="w-full h-full block object-cover"></canvas>
+
+            <!-- Generating Overlay Shimmer -->
+            <div id="coverLoadingOverlay" class="hidden absolute inset-0 backdrop-blur-md flex flex-col items-center justify-center gap-2 z-20 cover-shimmer" style="background-color: rgba(10, 10, 12, 0.55);">
+              <span class="w-2.5 h-2.5 rounded-full stream-dot" style="background-color: var(--accent-primary);"></span>
+              <span id="coverGeneratingLabel" class="font-mono text-[11px] font-semibold uppercase tracking-widest text-white">
+                Vizual yaratilmoqda...
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Visual Style Chips -->
+        <div>
+          <span id="labelCoverStyle" class="font-display text-xs font-semibold uppercase tracking-wider block mb-2" style="color: var(--text-secondary);">
+            02. Vizual Uslub
+          </span>
+          <div id="coverStylesContainer" class="flex gap-1.5 overflow-x-auto pb-1">
+            <!-- Populated dynamically in UZ / RU -->
+          </div>
+        </div>
+
+        <!-- Image Prompt Input -->
+        <div class="rounded-2xl p-3.5 hairline-border transition-all focus-within:ring-1" style="background-color: var(--bg-surface); --tw-ring-color: var(--accent-primary);">
+          <div class="flex items-center justify-between mb-1">
+            <label id="labelCoverPrompt" for="coverPromptInput" class="font-display text-xs font-semibold uppercase tracking-wider" style="color: var(--text-secondary);">
+              03. Rasm tavsifi (Prompt)
+            </label>
+            <button type="button" id="syncFromPostBtn" class="font-mono text-[10px] underline" style="color: var(--accent-primary);">
+              Postdan olish
+            </button>
+          </div>
+          <textarea
+            id="coverPromptInput"
+            rows="2"
+            maxlength="400"
+            placeholder="Masalan: Minimalist qahvaxona stoli, tonggi yorug'lik, estetik kompozitsiya..."
+            class="w-full bg-transparent text-[16px] leading-snug resize-none focus:outline-none placeholder:opacity-45"
+            style="color: var(--text-primary);"
+          ></textarea>
+        </div>
+
+        <!-- Editorial Typography Overlay Controls -->
+        <div class="rounded-2xl p-3.5 hairline-border space-y-3" style="background-color: var(--bg-surface);">
+          <div class="flex items-center justify-between">
+            <span id="labelOverlayControls" class="font-display text-xs font-semibold uppercase tracking-wider" style="color: var(--text-secondary);">
+              04. Sarlavha & Matn Qatlami
+            </span>
+            <span id="overlayThemeName" class="font-mono text-[10px] uppercase" style="color: var(--accent-primary);">
+              DARK GLASS
+            </span>
+          </div>
+
+          <!-- Editable Overlay Headline & Badge -->
+          <div class="grid grid-cols-12 gap-2">
+            <input
+              id="coverBadgeInput"
+              type="text"
+              maxlength="24"
+              placeholder="TEG / RUKN"
+              class="col-span-4 p-2.5 rounded-xl hairline-border bg-transparent font-mono text-[16px] sm:text-xs uppercase focus:outline-none"
+              style="color: var(--text-primary);"
+            />
+            <input
+              id="coverHeadlineInput"
+              type="text"
+              maxlength="85"
+              placeholder="Oblojka sarlavhasi..."
+              class="col-span-8 p-2.5 rounded-xl hairline-border bg-transparent font-display text-[16px] font-bold focus:outline-none"
+              style="color: var(--text-primary);"
+            />
+          </div>
+
+          <!-- Overlay Theme Selector -->
+          <div class="grid grid-cols-4 gap-1.5">
+            <button type="button" data-ovtheme="dark-glass" class="ov-theme-btn py-1.5 px-1 rounded-xl hairline-border font-display text-[11px] font-semibold text-center transition-all text-white" style="background-color: var(--accent-primary); border-color: var(--accent-primary);">
+              Dark Glass
+            </button>
+            <button type="button" data-ovtheme="light-editorial" class="ov-theme-btn py-1.5 px-1 rounded-xl hairline-border font-display text-[11px] font-semibold text-center transition-all" style="background-color: var(--bg-surface-elevated); color: var(--text-secondary);">
+              Editorial
+            </button>
+            <button type="button" data-ovtheme="minimal-tag" class="ov-theme-btn py-1.5 px-1 rounded-xl hairline-border font-display text-[11px] font-semibold text-center transition-all" style="background-color: var(--bg-surface-elevated); color: var(--text-secondary);">
+              Minimal
+            </button>
+            <button type="button" data-ovtheme="none" class="ov-theme-btn py-1.5 px-1 rounded-xl hairline-border font-display text-[11px] font-semibold text-center transition-all" style="background-color: var(--bg-surface-elevated); color: var(--text-secondary);">
+              Sof Rasm
+            </button>
+          </div>
+
+          <!-- Text Vertical Position Selector -->
+          <div class="grid grid-cols-3 gap-1.5">
+            <button type="button" data-ovpos="top" class="ov-pos-btn py-1.5 rounded-xl hairline-border font-mono text-[11px] font-medium text-center transition-all" style="background-color: var(--bg-surface-elevated); color: var(--text-secondary);">
+              Top
+            </button>
+            <button type="button" data-ovpos="center" class="ov-pos-btn py-1.5 rounded-xl hairline-border font-mono text-[11px] font-medium text-center transition-all" style="background-color: var(--bg-surface-elevated); color: var(--text-secondary);">
+              Center
+            </button>
+            <button type="button" data-ovpos="bottom" class="ov-pos-btn py-1.5 rounded-xl hairline-border font-mono text-[11px] font-semibold text-center transition-all text-white" style="background-color: var(--accent-primary); border-color: var(--accent-primary);">
+              Bottom
+            </button>
+          </div>
+        </div>
+
+        <!-- Cover Studio Action Buttons: Generate & Download PNG -->
+        <div class="grid grid-cols-12 gap-2.5 pt-1 pb-4">
+          <button
+            id="generateCoverBtn"
+            type="button"
+            class="magnetic-btn col-span-7 py-3.5 px-4 rounded-2xl font-display text-xs font-bold tracking-wide text-white flex items-center justify-center gap-2 shadow-lg"
+            style="background-color: var(--accent-primary); box-shadow: 0 12px 26px -6px var(--accent-glow-1);"
+          >
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
+            <span id="generateCoverBtnLabel">Oblojka yaratish</span>
+          </button>
+
+          <button
+            id="downloadCoverBtn"
+            type="button"
+            class="magnetic-btn col-span-5 py-3.5 px-3 rounded-2xl hairline-border font-display text-xs font-bold flex items-center justify-center gap-1.5"
+            style="background-color: var(--bg-surface); color: var(--text-primary);"
+          >
+            <i data-lucide="download" class="w-4 h-4"></i>
+            <span id="downloadCoverBtnLabel">.PNG Yuklash</span>
+          </button>
+        </div>
+
+      </section>
+
+
+      <!-- =========================================================
+           SCREEN 3: TARIX (ARCHIVE / LOCALSTORAGE PERSISTENCE)
+      ========================================================== -->
+      <section id="screenHistory" class="screen-panel screen-hidden space-y-4">
+        
+        <!-- Archive Header & Filter Pills -->
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 id="archiveHeading" class="font-display text-lg font-bold tracking-tight">Saqlangan Eksponatlar</h2>
+            <p id="archiveSubheading" class="text-xs" style="color: var(--text-secondary);">Qurilmangizda saqlangan barcha postlar</p>
+          </div>
+          <button id="clearAllHistoryBtn" type="button" class="font-mono text-[11px] px-2.5 py-1.5 rounded-xl hairline-border hover:opacity-75 transition-opacity" style="color: var(--accent-secondary); background-color: var(--bg-surface);">
+            Tozalash
+          </button>
+        </div>
+
+        <!-- Platform Filter Bar -->
+        <div class="flex gap-1.5 overflow-x-auto pb-1">
+          <button id="filterAllBtn" type="button" data-filter="all" class="hist-filter-btn px-3 py-1.5 rounded-full font-display text-xs font-semibold text-white transition-all" style="background-color: var(--accent-primary);">
+            Barchasi
+          </button>
+          <button type="button" data-filter="telegram" class="hist-filter-btn px-3 py-1.5 rounded-full hairline-border font-display text-xs font-semibold transition-all" style="background-color: var(--bg-surface); color: var(--text-secondary);">
+            Telegram
+          </button>
+          <button type="button" data-filter="instagram" class="hist-filter-btn px-3 py-1.5 rounded-full hairline-border font-display text-xs font-semibold transition-all" style="background-color: var(--bg-surface); color: var(--text-secondary);">
+            Instagram
+          </button>
+          <button type="button" data-filter="youtube" class="hist-filter-btn px-3 py-1.5 rounded-full hairline-border font-display text-xs font-semibold transition-all" style="background-color: var(--bg-surface); color: var(--text-secondary);">
+            YouTube
+          </button>
+        </div>
+
+        <!-- History List Container -->
+        <div id="historyList" class="space-y-3 pb-6">
+          <!-- History items rendered dynamically -->
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- =========================================================
+         FLOATING GLASSMORPHIC BOTTOM TAB BAR (3 GALLERY TABS)
+    ========================================================== -->
+    <nav aria-label="Asosiy navigatsiya" class="fixed bottom-4 left-1/2 -translate-x-1/2 z-40 w-[calc(100%-32px)] max-w-[440px]" style="padding-bottom: env(safe-area-inset-bottom);">
+      <div class="glass-dock rounded-full p-1.5 grid grid-cols-3 items-center relative">
+        
+        <!-- Tab 1: STUDIYA (Post Creation) -->
+        <button type="button" data-tab="create" class="nav-tab py-2.5 px-2.5 rounded-full font-display text-[11px] font-bold tracking-wide flex items-center justify-center gap-1.5 transition-all text-white" style="background-color: var(--accent-primary);">
+          <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+          <span id="navCreateLabel">STUDIYA</span>
+        </button>
+
+        <!-- Tab 2: OBLOJKA (Cover / Visual Studio) -->
+        <button type="button" data-tab="cover" class="nav-tab relative py-2.5 px-2.5 rounded-full font-display text-[11px] font-bold tracking-wide flex items-center justify-center gap-1.5 transition-all" style="color: var(--text-secondary);">
+          <i data-lucide="frame" class="w-3.5 h-3.5"></i>
+          <span id="navCoverLabel">OBLOJKA</span>
+        </button>
+
+        <!-- Tab 3: ARXIV (Saved History) -->
+        <button type="button" data-tab="history" class="nav-tab py-2.5 px-2.5 rounded-full font-display text-[11px] font-bold tracking-wide flex items-center justify-center gap-1.5 transition-all" style="color: var(--text-secondary);">
+          <i data-lucide="archive" class="w-3.5 h-3.5"></i>
+          <span id="navHistoryLabel">ARXIV</span>
+          <span id="historyCountBadge" class="font-mono text-[10px] opacity-75">0</span>
+        </button>
+
+      </div>
+    </nav>
+
+    <!-- Minimalist Gallery Toast Notification -->
+    <div id="galleryToast" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 -translate-y-3 transition-all duration-300">
+      <div class="px-4 py-2.5 rounded-full hairline-border font-display text-xs font-semibold flex items-center gap-2 shadow-xl backdrop-blur-xl" style="background-color: var(--bg-surface); color: var(--text-primary);">
+        <span class="w-2 h-2 rounded-full" style="background-color: var(--accent-primary);"></span>
+        <span id="toastMessage">Nusxalandi</span>
+      </div>
+    </div>
+
+    <!-- Gemini API Key Configuration Modal -->
+    <div id="apiKeyModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-md" style="background-color: rgba(10, 10, 12, 0.55);">
+      <div class="w-full max-w-[400px] rounded-3xl p-5 hairline-border space-y-4 shadow-2xl" style="background-color: var(--bg-surface); color: var(--text-primary);">
+        <div class="flex items-center justify-between pb-2 hairline-b">
+          <div>
+            <span class="font-mono text-[10px] uppercase tracking-widest" style="color: var(--accent-primary);">GEMINI API ENGINE</span>
+            <h3 id="apiModalTitle" class="font-display text-base font-bold mt-0.5">API Kalit Sozlamalari</h3>
+          </div>
+          <button type="button" id="closeApiModalBtn" class="w-8 h-8 rounded-full hairline-border flex items-center justify-center" style="background-color: var(--bg-surface-elevated);">
+            <i data-lucide="x" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <p id="apiModalDesc" class="text-xs leading-relaxed" style="color: var(--text-secondary);">
+          Haqiqiy Gemini AI generatsiyasi va rasmlarni qayta ishlash uchun Google AI Studio API kalitingizni kiriting. Kalit faqat brauzeringiz xotirasida saqlanadi.
+        </p>
+
+        <div class="rounded-2xl p-3 hairline-border" style="background-color: var(--bg-surface-elevated);">
+          <input
+            id="apiKeyInput"
+            type="password"
+            placeholder="AIzaSy..."
+            class="w-full bg-transparent font-mono text-[16px] sm:text-xs focus:outline-none"
+            style="color: var(--text-primary);"
+          />
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <button type="button" id="clearApiKeyBtn" class="py-2.5 px-3 rounded-xl hairline-border font-display text-xs font-semibold" style="background-color: var(--bg-surface-elevated); color: var(--text-secondary);">
+            Tozalash
+          </button>
+          <button type="button" id="saveApiKeyBtn" class="py-2.5 px-3 rounded-xl font-display text-xs font-bold text-white" style="background-color: var(--accent-primary);">
+            Saqlash ✓
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- =========================================================
+       APPLICATION LOGIC, GEMINI API STREAMING & PHYSICS ENGINE
+  ========================================================== -->
+  <script>
+    (function() {
+      // --- Gemini API Configuration ---
+      const runtimeApiKey = ""; // Runtime environment injects API key automatically if present
+      function getEffectiveApiKey() {
+        const stored = localStorage.getItem('postcraft_gemini_api_key');
+        return (stored && stored.trim()) ? stored.trim() : runtimeApiKey;
+      }
+      const GEMINI_MODEL = "gemini-2.5-flash";
+      const GEMINI_IMAGE_MODEL = "gemini-3.1-flash-image";
+
+      // --- Bilingual Dictionary (UZ / RU) ---
+      const I18N = {
+        uz: {
+          appTitle: 'KONTENT GALEREYASI',
+          exhibitionIndices: {
+            create: '№ 01 / STUDIYA',
+            result: '№ 02 / KO‘RGAZMA',
+            cover: '№ 03 / OBLOJKA',
+            history: '№ 04 / ARXIV'
+          },
+          platformHints: {
+            telegram: 'Qisqa va lo‘nda format',
+            instagram: 'Kuchli hook + vizual hikoya',
+            youtube: 'Shorts / Community tavsifi'
+          },
+          step01: '01. Platforma Muhiti',
+          presetsTitle: 'Tezkor Namuna G‘oyalar',
+          presetsHint: '1 bosishda sinang',
+          presets: [
+            {
+              label: '☕ Qahvaxona aksiyasi',
+              biz: "Toshkent markazidagi 'Artisan Roasters' qahvaxonasi. Yangi qovurilgan maxsus qahva va issiq kruassanlar.",
+              idea: "Yomg‘irli kuz kunlarida ikkinchi qahvaga 30% chegirma va do‘stlar bilan uchrashish taklifi."
+            },
+            {
+              label: '💻 IT kurslar qabuli',
+              biz: "'NextGen Academy' — zamonaviy IT va Frontend dasturlash o‘quv markazi, 6 oylik amaliy kurslar.",
+              idea: "Yangi guruhga qabul boshlandi. Bepul birinchi sinov darsiga ro‘yxatdan o‘tish."
+            },
+            {
+              label: '🧥 Yangi kolleksiya',
+              biz: "'MODA LAB' — minimalist uslubdagi mahalliy kiyim-kechak brendi, tabiiy matolar.",
+              idea: "Kuz-Qish 2026 yangi kapsula kolleksiyasi sotuvi boshlandi. Cheklangan miqdorda."
+            }
+          ],
+          step02: '02. Biznesingiz yoki mahsulotingiz haqida',
+          bizPlaceholder: 'Masalan: Toshkentdagi minimalist qahvaxona...',
+          step03: '03. Post mavzusi va asosiy g‘oya',
+          ideaPlaceholder: 'Bugungi post nima haqida? Aksiya, yangilik yoki foydali maslahatni yozing...',
+          step04: '04. Ohang & Variantlar Soni',
+          countSuffix: 'ta',
+          tones: {
+            professional: 'Professional',
+            friendly: 'Do‘stona',
+            sales: 'Sotuvchi',
+            expert: 'Ekspert'
+          },
+          generateBtn: 'Post yaratish',
+          streaming: 'Yozilmoqda...',
+          swipeHint: 'Kartani chap/o‘ngga suring',
+          charSuffix: 'belgi',
+          copyBtn: 'Nusxalash',
+          copiedBtn: 'Nusxalandi ✓',
+          regenBtn: 'Qayta',
+          archiveHeading: 'Saqlangan Eksponatlar',
+          archiveSubheading: 'Qurilmangizda saqlangan barcha postlar',
+          clearAllBtn: 'Tozalash',
+          filterAll: 'Barchasi',
+          navCreate: 'STUDIYA',
+          navCover: 'OBLOJKA',
+          navHistory: 'ARXIV',
+          jumpToCover: 'OBLOJKA YARATISH',
+          coverRatioLabel: '01. Format Nisbati',
+          coverStyleLabel: '02. Vizual Uslub',
+          coverPromptLabel: '03. Rasm tavsifi (Prompt)',
+          syncFromPost: 'Postdan olish',
+          coverPromptPlaceholder: 'Masalan: Minimalist qahvaxona stoli, tonggi yorug‘lik, estetik kompozitsiya...',
+          overlayControlsLabel: '04. Sarlavha & Matn Qatlami',
+          coverBadgePlaceholder: 'TEG / RUKN',
+          coverHeadlinePlaceholder: 'Oblojka sarlavhasi...',
+          coverGenerating: 'Vizual yaratilmoqda...',
+          generateCoverBtn: 'Oblojka yaratish',
+          editUploadedCoverBtn: 'Rasmni AI bilan o‘zgartirish',
+          downloadCoverBtn: '.PNG Yuklash',
+          studioUploadTitle: 'Rasm tashlang (ixtiyoriy)',
+          studioUploadSub: 'AI rasmni ko‘rib, unga mos post yozib beradi',
+          studioUploadBadge: '+ FOTO',
+          studioAttachedTag: 'RASM BIRIKTIRILDI',
+          studioAttachedHint: 'Nima yozish kerakligini pastda kiriting',
+          coverUploadTitle: 'Rasm tashlang va nima qilishni yozing',
+          coverUploadSub: 'AI fonni almashtiradi, yorug‘lik va dizayn beradi',
+          coverUploadBadge: 'YUKLASH',
+          coverSourceBadge: 'ASL RASM YUKLANDI',
+          coverSourceHint: 'AI nima o‘zgartirishini pastga yozing',
+          coverEditPromptPlaceholder: 'Nima qilish kerak? Masalan: Fonini zamonaviy studiya qilib ber, yorug‘likni kuchaytir...',
+          baAfterLabel: 'AI NATIJA',
+          baBeforeLabel: 'ASL RASM',
+          smartPhotoChips: [
+            { label: '✨ Studiya foni', prompt: 'Fonini toza, zamonaviy professional fotostudiya foniga almashtir, yorug‘likni muvozanatla' },
+            { label: '🔥 Sotuvchi reklama', prompt: 'Mahsulotni yorqin, jozibador reklama banneri uslubida ajratib ko‘rsat, kontrast va ranglarni kuchaytir' },
+            { label: '🌿 Minimalist estetika', prompt: 'Minimalist san’at galereyasi estetikasi, yumshoq tabiiy soyalar va nafis muhit ber' },
+            { label: '🌙 Neon / Kechki muhit', prompt: 'Zamonaviy tungi neon yoritish va kinematografik chuqur ranglar muhitini yarat' }
+          ],
+          coverStyles: [
+            { id: 'minimal', label: 'Minimalist Galereya', promptHint: 'minimalist art gallery editorial photography, clean negative space, architectural soft shadows, high aesthetic' },
+            { id: '3d', label: '3D Render', promptHint: 'sleek modern 3D abstract sculptural render, matte studio lighting, tactile materials, octane render' },
+            { id: 'neon', label: 'Neon Kiber', promptHint: 'avant-garde neon light installation in dark exhibition space, electric blue and vivid magenta rim lighting' },
+            { id: 'editorial', label: 'Tahririyat / Jurnal', promptHint: 'high-fashion Kinfolk magazine editorial photography, natural window light, refined composition' },
+            { id: 'photo', label: 'Fotorealistik', promptHint: 'ultra-realistic commercial product photography, 85mm lens, shallow depth of field, crisp studio detail' }
+          ],
+          overlayThemes: {
+            'dark-glass': 'Dark Glass',
+            'light-editorial': 'Editorial',
+            'minimal-tag': 'Minimal',
+            'none': 'Sof Rasm'
+          },
+          overlayPositions: {
+            top: 'Yuqori',
+            center: 'Markaz',
+            bottom: 'Pastki'
+          },
+          emptyResultTitle: 'Hali post yaratilmadi',
+          emptyResultDesc: '"STUDIYA" bo‘limiga o‘tib biznesingiz va g‘oyangizni kiriting.',
+          emptyHistoryTitle: 'Arxiv hozircha bo‘sh',
+          emptyHistoryDesc: 'Yaratilgan barcha postlar shu yerda saqlanadi.',
+          variantTag: 'VARIANT',
+          variantsCountLabel: 'variant',
+          openExhibition: 'Ko‘rgazmada ochish',
+          editLabels: {
+            title: 'Sarlavha',
+            body: 'Asosiy matn',
+            cta: 'Harakatga chaqiruv (CTA)',
+            tags: 'Xeshteglar',
+            saveBtn: 'O‘zgarishlarni saqlash ✓'
+          },
+          toasts: {
+            enterInput: 'Iltimos, biznes yoki post g‘oyasini kiriting',
+            presetFilled: 'Namuna ma’lumotlar to‘ldirildi',
+            copiedFull: 'To‘liq post nusxalandi ✓',
+            copiedShort: 'Post nusxalandi ✓',
+            updated: 'Matn yangilandi ✓',
+            deleted: 'Arxivdan o‘chirildi',
+            cleared: 'Arxiv tozalandi',
+            coverPrefilled: 'Post asosida oblojka tayyorlandi',
+            coverReady: 'Oblojka tayyor ✓',
+            coverEditedReady: 'Rasm AI tomonidan qayta ishlandi ✓',
+            coverDownloaded: 'oblojka-postcraft.png yuklandi ✓',
+            photoAttached: 'Rasm yuklandi ✓',
+            photoRemoved: 'Rasm olib tashlandi',
+            invalidImage: 'Iltimos, rasm faylini tanlang',
+            apiSaved: 'Gemini API kaliti saqlandi ✓',
+            apiCleared: 'API kaliti o‘chirildi'
+          },
+          apiModal: {
+            title: 'Gemini API Sozlamalari',
+            desc: 'Real-vaqt AI generatsiyasi va rasmlarni qayta ishlash uchun Google AI Studio kalitingizni kiriting. Kalit faqat qurilmangizda saqlanadi.',
+            clearBtn: 'Tozalash',
+            saveBtn: 'Saqlash ✓'
+          },
+          defaultStyles: ['Emotsional Hook', 'Aniq & Sotuvchi', 'Interaktiv Savol']
+        },
+        ru: {
+          appTitle: 'ГАЛЕРЕЯ КОНТЕНТА',
+          exhibitionIndices: {
+            create: '№ 01 / СТУДИЯ',
+            result: '№ 02 / ВЫСТАВКА',
+            cover: '№ 03 / ОБЛОЖКА',
+            history: '№ 04 / АРХИВ'
+          },
+          platformHints: {
+            telegram: 'Краткий и чёткий формат',
+            instagram: 'Сильный хук + визуал',
+            youtube: 'Описание Shorts / Сообщества'
+          },
+          step01: '01. Атмосфера Платформы',
+          presetsTitle: 'Быстрые Идеи-Шаблоны',
+          presetsHint: 'в 1 нажатие',
+          presets: [
+            {
+              label: '☕ Акция в кофейне',
+              biz: "Кофейня 'Artisan Roasters' в центре Ташкента. Свежеобжаренный спешелти кофе и тёплые круассаны.",
+              idea: "В дождливые осенние дни скидка 30% на второй кофе и приглашение на встречу с друзьями."
+            },
+            {
+              label: '💻 Набор на IT-курсы',
+              biz: "'NextGen Academy' — современный учебный центр IT и Frontend-разработки, 6 месяцев практики.",
+              idea: "Открыт набор в новую группу. Регистрация на бесплатный первый пробный урок."
+            },
+            {
+              label: '🧥 Новая коллекция',
+              biz: "'MODA LAB' — локальный бренд одежды в стиле минимализм из натуральных тканей.",
+              idea: "Старт продаж новой капсульной коллекции Осень-Зима 2026. Ограниченный тираж."
+            }
+          ],
+          step02: '02. О вашем бизнесе или продукте',
+          bizPlaceholder: 'Например: Минималистичная кофейня в Ташкенте...',
+          step03: '03. Тема поста и главная идея',
+          ideaPlaceholder: 'О чём сегодняшний пост? Опишите акцию, новость или полезный совет...',
+          step04: '04. Тональность & Количество',
+          countSuffix: 'шт',
+          tones: {
+            professional: 'Деловой',
+            friendly: 'Дружелюбный',
+            sales: 'Продающий',
+            expert: 'Экспертный'
+          },
+          generateBtn: 'Создать пост',
+          streaming: 'Генерация...',
+          swipeHint: 'Смахните карточку влево/вправо',
+          charSuffix: 'симв.',
+          copyBtn: 'Скопировать',
+          copiedBtn: 'Скопировано ✓',
+          regenBtn: 'Заново',
+          archiveHeading: 'Сохранённые Экспонаты',
+          archiveSubheading: 'Все посты, сохранённые на устройстве',
+          clearAllBtn: 'Очистить',
+          filterAll: 'Все',
+          navCreate: 'СТУДИЯ',
+          navCover: 'ОБЛОЖКА',
+          navHistory: 'АРХИВ',
+          jumpToCover: 'СОЗДАТЬ ОБЛОЖКУ',
+          coverRatioLabel: '01. Соотношение сторон',
+          coverStyleLabel: '02. Визуальный стиль',
+          coverPromptLabel: '03. Описание изображения (Промпт)',
+          syncFromPost: 'Взять из поста',
+          coverPromptPlaceholder: 'Например: Минималистичный столик кофейни, утренний свет, эстетика...',
+          overlayControlsLabel: '04. Заголовок & Слой текста',
+          coverBadgePlaceholder: 'ТЕГ / РУБРИКА',
+          coverHeadlinePlaceholder: 'Заголовок обложки...',
+          coverGenerating: 'Создаём визуал...',
+          generateCoverBtn: 'Создать обложку',
+          editUploadedCoverBtn: 'Изменить фото с AI',
+          downloadCoverBtn: 'Скачать .PNG',
+          studioUploadTitle: 'Загрузите фото (необязательно)',
+          studioUploadSub: 'AI изучит фото и напишет продающий пост',
+          studioUploadBadge: '+ ФОТО',
+          studioAttachedTag: 'ФОТО ПРИКРЕПЛЕНО',
+          studioAttachedHint: 'Опишите ниже, какой пост нужен',
+          coverUploadTitle: 'Загрузите фото и напишите задачу',
+          coverUploadSub: 'AI заменит фон, улучшит свет и создаст обложку',
+          coverUploadBadge: 'ЗАГРУЗИТЬ',
+          coverSourceBadge: 'ОРИГИНАЛ ЗАГРУЖЕН',
+          coverSourceHint: 'Напишите ниже, что AI должен изменить',
+          coverEditPromptPlaceholder: 'Что сделать с фото? Например: Сделай современный студийный фон, добавь мягкий свет...',
+          baAfterLabel: 'РЕЗУЛЬТАТ AI',
+          baBeforeLabel: 'ОРИГИНАЛ',
+          smartPhotoChips: [
+            { label: '✨ Студийный фон', prompt: 'Замени фон на чистую современную профессиональную фотостудию, выровняй студийный свет' },
+            { label: '🔥 Продающая реклама', prompt: 'Оформи объект в стиле яркого рекламного баннера, усиль контраст и акценты' },
+            { label: '🌿 Минимализм', prompt: 'Эстетика минималистичной арт-галереи, мягкие естественные тени и чистая композиция' },
+            { label: '🌙 Неон / Вечерний стиль', prompt: 'Добавь современную неоновую подсветку и кинематографичную вечернюю атмосферу' }
+          ],
+          coverStyles: [
+            { id: 'minimal', label: 'Минимализм Галерея', promptHint: 'minimalist art gallery editorial photography, clean negative space, architectural soft shadows, high aesthetic' },
+            { id: '3d', label: '3D Рендер', promptHint: 'sleek modern 3D abstract sculptural render, matte studio lighting, tactile materials, octane render' },
+            { id: 'neon', label: 'Неон Кибер', promptHint: 'avant-garde neon light installation in dark exhibition space, electric blue and vivid magenta rim lighting' },
+            { id: 'editorial', label: 'Журнал / Эдиториал', promptHint: 'high-fashion Kinfolk magazine editorial photography, natural window light, refined composition' },
+            { id: 'photo', label: 'Фотореализм', promptHint: 'ultra-realistic commercial product photography, 85mm lens, shallow depth of field, crisp studio detail' }
+          ],
+          overlayThemes: {
+            'dark-glass': 'Dark Glass',
+            'light-editorial': 'Журнал',
+            'minimal-tag': 'Минимал',
+            'none': 'Чистое фото'
+          },
+          overlayPositions: {
+            top: 'Сверху',
+            center: 'По центру',
+            bottom: 'Снизу'
+          },
+          emptyResultTitle: 'Посты ещё не созданы',
+          emptyResultDesc: 'Перейдите в раздел «СТУДИЯ» и опишите ваш бизнес и идею.',
+          emptyHistoryTitle: 'Архив пока пуст',
+          emptyHistoryDesc: 'Все сгенерированные посты будут сохраняться здесь.',
+          variantTag: 'ВАРИАНТ',
+          variantsCountLabel: 'вар.',
+          openExhibition: 'Открыть на выставке',
+          editLabels: {
+            title: 'Заголовок',
+            body: 'Основной текст',
+            cta: 'Призыв к действию (CTA)',
+            tags: 'Хештеги',
+            saveBtn: 'Сохранить изменения ✓'
+          },
+          toasts: {
+            enterInput: 'Пожалуйста, укажите бизнес или идею поста',
+            presetFilled: 'Пример успешно подставлен',
+            copiedFull: 'Полный пост скопирован ✓',
+            copiedShort: 'Пост скопирован ✓',
+            updated: 'Текст обновлён ✓',
+            deleted: 'Удалено из архива',
+            cleared: 'Архив очищен',
+            coverPrefilled: 'Данные поста перенесены в обложку',
+            coverReady: 'Обложка готова ✓',
+            coverEditedReady: 'Фото успешно обработано AI ✓',
+            coverDownloaded: 'oblojka-postcraft.png скачан ✓',
+            photoAttached: 'Фото загружено ✓',
+            photoRemoved: 'Фото удалено',
+            invalidImage: 'Пожалуйста, выберите файл изображения',
+            apiSaved: 'Ключ Gemini API сохранён ✓',
+            apiCleared: 'Ключ API удалён'
+          },
+          apiModal: {
+            title: 'Настройки Gemini API',
+            desc: 'Введите ключ Google AI Studio для генерации постов и обработки фото в реальном времени. Ключ хранится только в вашем браузере.',
+            clearBtn: 'Очистить',
+            saveBtn: 'Сохранить ✓'
+          },
+          defaultStyles: ['Эмоциональный хук', 'Чёткий и продающий', 'Интерактивный вопрос']
+        }
+      };
+
+      // --- State Management ---
+      const state = {
+        lang: localStorage.getItem('postcraft_lang') || 'uz',
+        theme: localStorage.getItem('kg_theme') || 'light',
+        platform: 'telegram', // 'telegram' | 'instagram' | 'youtube'
+        tone: 'professional', // 'professional' | 'friendly' | 'sales' | 'expert'
+        variantCount: 3,
+        activeTab: 'create', // 'create' | 'result' | 'cover' | 'history'
+        isGenerating: false,
+        isEditing: false,
+        variants: [], // Array of { id, styleLabel, title, body, cta, hashtags }
+        activeCardIndex: 0,
+        history: [],
+        historyFilter: 'all',
+        // Uploaded Photo for Studio Post Generator
+        studioPhoto: null, // { base64: string, mimeType: string, dataUrl: string }
+        // Cover / Oblojka Studio State
+        cover: {
+          ratio: '4:3', // '1:1' | '9:16' | '16:9' | '4:3'
+          styleId: 'minimal',
+          overlayTheme: 'dark-glass', // 'dark-glass' | 'light-editorial' | 'minimal-tag' | 'none'
+          overlayPos: 'bottom', // 'top' | 'center' | 'bottom'
+          isGenerating: false,
+          uploadedSource: null, // { base64: string, mimeType: string, dataUrl: string, imgEl: HTMLImageElement }
+          aiEditedImage: null,  // HTMLImageElement (result of AI image-to-image edit)
+          baseImage: null,      // HTMLImageElement (result of text-to-image)
+          viewMode: 'after',    // 'after' | 'before'
+          hasTransformedUpload: false,
+          seed: 42
+        }
+      };
+
+      // --- Platform Metadata & Prompts ---
+      const PLATFORM_META = {
+        telegram: {
+          label: 'TELEGRAM',
+          defaultRatio: '4:3',
+          maxChars: 1024,
+          promptRuleUz: "Telegram kanali uchun yoz. Matn lo‘nda, mantiqiy abzatslarga bo‘lingan, ortiqcha bo‘yoqlarsiz, o‘qishga qulay va ishonchli bo‘lsin.",
+          promptRuleRu: "Пиши для Telegram-канала. Текст должен быть лаконичным, разбитым на логические абзацы, без лишней воды, лёгким для чтения и вызывающим доверие."
+        },
+        instagram: {
+          label: 'INSTAGRAM',
+          defaultRatio: '1:1',
+          maxChars: 2200,
+          promptRuleUz: "Instagram posti uchun yoz. Birinchi jumla (Hook) diqqatni darhol tortsin, hissiyotli va vizual tasavvur uyg‘otadigan hikoya (storytelling) bo‘lsin, oxirida 5-7 ta dolzarb xeshteg qo‘sh.",
+          promptRuleRu: "Пиши для поста в Instagram. Первое предложение (Хук) должно мгновенно цеплять внимание, текст — эмоциональный и визуальный сторителлинг, в конце добавь 5-7 релевантных хештегов."
+        },
+        youtube: {
+          label: 'YOUTUBE',
+          defaultRatio: '16:9',
+          maxChars: 1500,
+          promptRuleUz: "YouTube Shorts tavsifi yoki Community posti uchun yoz. Qiziqish uyg‘otuvchi sarlavha, videoning qisqa qiymati va obuna bo‘lish / izoh yozishga kuchli chaqiruv (CTA) bo‘lsin.",
+          promptRuleRu: "Пиши для описания YouTube Shorts или поста в Сообществе. Интригующий заголовок, краткая ценность ролика и сильный призыв подписаться / оставить комментарий (CTA)."
+        }
+      };
+
+      // --- DOM Elements ---
+      const htmlEl = document.documentElement;
+      const bodyEl = document.body;
+      const appMainTitle = document.getElementById('appMainTitle');
+      const themeToggleBtn = document.getElementById('themeToggleBtn');
+      const themeIconMoon = document.getElementById('themeIconMoon');
+      const themeIconSun = document.getElementById('themeIconSun');
+      const exhibitionIndex = document.getElementById('exhibitionIndex');
+      const platformMoodBadge = document.getElementById('platformMoodBadge');
+      const platformSpecHint = document.getElementById('platformSpecHint');
+      const platformSlider = document.getElementById('platformSlider');
+      const presetsContainer = document.getElementById('presetsContainer');
+      const businessInput = document.getElementById('businessInput');
+      const ideaInput = document.getElementById('ideaInput');
+      const bizCounter = document.getElementById('bizCounter');
+      const ideaCounter = document.getElementById('ideaCounter');
+      const generateBtn = document.getElementById('generateBtn');
+      const generateBtnText = document.getElementById('generateBtnText');
+
+      const screenCreate = document.getElementById('screenCreate');
+      const screenResult = document.getElementById('screenResult');
+      const screenCover = document.getElementById('screenCover');
+      const screenHistory = document.getElementById('screenHistory');
+
+      const variantPills = document.getElementById('variantPills');
+      const deckContainer = document.getElementById('deckContainer');
+      const deckCounterDisplay = document.getElementById('deckCounterDisplay');
+      const charCountDisplay = document.getElementById('charCountDisplay');
+      const streamingIndicator = document.getElementById('streamingIndicator');
+      const streamingTextLabel = document.getElementById('streamingTextLabel');
+
+      const copyActiveBtn = document.getElementById('copyActiveBtn');
+      const copyBtnLabel = document.getElementById('copyBtnLabel');
+      const regenerateBtn = document.getElementById('regenerateBtn');
+      const regenIcon = document.getElementById('regenIcon');
+      const regenBtnLabel = document.getElementById('regenBtnLabel');
+      const editToggleBtn = document.getElementById('editToggleBtn');
+      const jumpToCoverBtn = document.getElementById('jumpToCoverBtn');
+      const jumpToCoverLabel = document.getElementById('jumpToCoverLabel');
+
+      // Cover Studio DOM Elements
+      const coverPreviewFrame = document.getElementById('coverPreviewFrame');
+      const coverCompositeCanvas = document.getElementById('coverCompositeCanvas');
+      const coverLoadingOverlay = document.getElementById('coverLoadingOverlay');
+      const coverPlatformTag = document.getElementById('coverPlatformTag');
+      const coverStylesContainer = document.getElementById('coverStylesContainer');
+      const coverPromptInput = document.getElementById('coverPromptInput');
+      const coverBadgeInput = document.getElementById('coverBadgeInput');
+      const coverHeadlineInput = document.getElementById('coverHeadlineInput');
+      const syncFromPostBtn = document.getElementById('syncFromPostBtn');
+      const generateCoverBtn = document.getElementById('generateCoverBtn');
+      const generateCoverBtnLabel = document.getElementById('generateCoverBtnLabel');
+      const downloadCoverBtn = document.getElementById('downloadCoverBtn');
+      const downloadCoverBtnLabel = document.getElementById('downloadCoverBtnLabel');
+
+      // Photo Upload Elements (Studio & Cover)
+      const studioPhotoInput = document.getElementById('studioPhotoInput');
+      const studioDropzone = document.getElementById('studioDropzone');
+      const studioDropEmpty = document.getElementById('studioDropEmpty');
+      const studioDropPreview = document.getElementById('studioDropPreview');
+      const studioPreviewImg = document.getElementById('studioPreviewImg');
+      const removeStudioPhotoBtn = document.getElementById('removeStudioPhotoBtn');
+
+      const coverPhotoInput = document.getElementById('coverPhotoInput');
+      const coverDropzone = document.getElementById('coverDropzone');
+      const coverDropEmpty = document.getElementById('coverDropEmpty');
+      const coverDropPreview = document.getElementById('coverDropPreview');
+      const coverSourceThumb = document.getElementById('coverSourceThumb');
+      const removeCoverPhotoBtn = document.getElementById('removeCoverPhotoBtn');
+      const coverSmartChipsRow = document.getElementById('coverSmartChipsRow');
+      const beforeAfterBar = document.getElementById('beforeAfterBar');
+
+      const historyList = document.getElementById('historyList');
+      const historyCountBadge = document.getElementById('historyCountBadge');
+      const clearAllHistoryBtn = document.getElementById('clearAllHistoryBtn');
+
+      const galleryToast = document.getElementById('galleryToast');
+      const toastMessage = document.getElementById('toastMessage');
+
+      // API Key Modal DOM
+      const apiSettingsBtn = document.getElementById('apiSettingsBtn');
+      const apiKeyStatusDot = document.getElementById('apiKeyStatusDot');
+      const apiKeyModal = document.getElementById('apiKeyModal');
+      const closeApiModalBtn = document.getElementById('closeApiModalBtn');
+      const apiKeyInput = document.getElementById('apiKeyInput');
+      const saveApiKeyBtn = document.getElementById('saveApiKeyBtn');
+      const clearApiKeyBtn = document.getElementById('clearApiKeyBtn');
+
+      // --- Helper for current translation dictionary ---
+      function t() {
+        return I18N[state.lang] || I18N.uz;
+      }
+
+      // --- Initialization ---
+      function init() {
+        applyTheme(state.theme);
+        applyLanguage(state.lang, false);
+        updateApiKeyIndicator();
+        loadSavedContext();
+        loadHistory();
+        initDefaultCoverState();
+        setupEventListeners();
+        attachMagneticPhysics();
+        renderCoverCanvas();
+        lucide.createIcons();
+      }
+
+      function updateApiKeyIndicator() {
+        const activeKey = getEffectiveApiKey();
+        apiKeyStatusDot.style.backgroundColor = activeKey ? '#10B981' : '#F59E0B';
+      }
+
+      // --- Language Application (UZ / RU) ---
+      function applyLanguage(lang, showNotification = true) {
+        state.lang = lang === 'ru' ? 'ru' : 'uz';
+        localStorage.setItem('postcraft_lang', state.lang);
+        htmlEl.setAttribute('lang', state.lang);
+
+        const dict = t();
+
+        // Update Language Toggle Buttons
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+          const isCurrent = btn.dataset.lang === state.lang;
+          if (isCurrent) {
+            btn.classList.add('text-white');
+            btn.style.backgroundColor = 'var(--accent-primary)';
+            btn.style.color = '#FFFFFF';
+          } else {
+            btn.classList.remove('text-white');
+            btn.style.backgroundColor = 'transparent';
+            btn.style.color = 'var(--text-secondary)';
+          }
+        });
+
+        // Header & Stage Titles
+        appMainTitle.textContent = dict.appTitle;
+        exhibitionIndex.textContent = dict.exhibitionIndices[state.activeTab] || dict.exhibitionIndices.create;
+        platformSpecHint.textContent = dict.platformHints[state.platform];
+
+        // Form Labels & Placeholders
+        document.getElementById('labelPlatformStep').textContent = dict.step01;
+        document.getElementById('labelPresetsTitle').textContent = dict.presetsTitle;
+        document.getElementById('labelPresetsHint').textContent = dict.presetsHint;
+        document.getElementById('labelBusinessStep').textContent = dict.step02;
+        businessInput.placeholder = dict.bizPlaceholder;
+        document.getElementById('labelIdeaStep').textContent = dict.step03;
+        ideaInput.placeholder = dict.ideaPlaceholder;
+        document.getElementById('labelToneStep').textContent = dict.step04;
+
+        // Variant Count Buttons
+        document.querySelectorAll('.count-btn').forEach(btn => {
+          btn.textContent = `${btn.dataset.count} ${dict.countSuffix}`;
+        });
+
+        // Tone Buttons
+        document.querySelectorAll('.tone-btn').forEach(btn => {
+          const key = btn.dataset.tone;
+          if (dict.tones[key]) btn.textContent = dict.tones[key];
+        });
+
+        // Action & Navigation Labels
+        generateBtnText.textContent = dict.generateBtn;
+        streamingTextLabel.textContent = dict.streaming;
+        document.getElementById('swipeHintLabel').textContent = dict.swipeHint;
+        copyBtnLabel.textContent = dict.copyBtn;
+        regenBtnLabel.textContent = dict.regenBtn;
+        jumpToCoverLabel.textContent = dict.jumpToCover;
+
+        // Cover Studio Labels
+        document.getElementById('labelCoverRatio').textContent = dict.coverRatioLabel;
+        document.getElementById('labelCoverStyle').textContent = dict.coverStyleLabel;
+        document.getElementById('labelCoverPrompt').textContent = dict.coverPromptLabel;
+        syncFromPostBtn.textContent = dict.syncFromPost;
+        coverPromptInput.placeholder = state.cover.uploadedSource ? dict.coverEditPromptPlaceholder : dict.coverPromptPlaceholder;
+        document.getElementById('labelOverlayControls').textContent = dict.overlayControlsLabel;
+        coverBadgeInput.placeholder = dict.coverBadgePlaceholder;
+        coverHeadlineInput.placeholder = dict.coverHeadlinePlaceholder;
+        document.getElementById('coverGeneratingLabel').textContent = dict.coverGenerating;
+        generateCoverBtnLabel.textContent = state.cover.uploadedSource ? dict.editUploadedCoverBtn : dict.generateCoverBtn;
+        downloadCoverBtnLabel.textContent = dict.downloadCoverBtn;
+
+        // Photo Dropzone & Before/After Labels
+        document.getElementById('studioUploadTitle').textContent = dict.studioUploadTitle;
+        document.getElementById('studioUploadSub').textContent = dict.studioUploadSub;
+        document.getElementById('studioUploadBadge').textContent = dict.studioUploadBadge;
+        document.getElementById('studioAttachedTag').textContent = dict.studioAttachedTag;
+        document.getElementById('studioAttachedHint').textContent = dict.studioAttachedHint;
+
+        document.getElementById('coverUploadTitle').textContent = dict.coverUploadTitle;
+        document.getElementById('coverUploadSub').textContent = dict.coverUploadSub;
+        document.getElementById('coverUploadBadge').textContent = dict.coverUploadBadge;
+        document.getElementById('coverSourceBadge').textContent = dict.coverSourceBadge;
+        document.getElementById('coverSourceHint').textContent = dict.coverSourceHint;
+
+        document.querySelectorAll('.ba-toggle-btn').forEach(btn => {
+          btn.textContent = btn.dataset.viewmode === 'before' ? dict.baBeforeLabel : dict.baAfterLabel;
+        });
+
+        document.querySelectorAll('.ov-theme-btn').forEach(btn => {
+          const thKey = btn.dataset.ovtheme;
+          if (dict.overlayThemes[thKey]) btn.textContent = dict.overlayThemes[thKey];
+        });
+        document.querySelectorAll('.ov-pos-btn').forEach(btn => {
+          const posKey = btn.dataset.ovpos;
+          if (dict.overlayPositions[posKey]) btn.textContent = dict.overlayPositions[posKey];
+        });
+
+        document.getElementById('archiveHeading').textContent = dict.archiveHeading;
+        document.getElementById('archiveSubheading').textContent = dict.archiveSubheading;
+        clearAllHistoryBtn.textContent = dict.clearAllBtn;
+        document.getElementById('filterAllBtn').textContent = dict.filterAll;
+
+        document.getElementById('navCreateLabel').textContent = dict.navCreate;
+        document.getElementById('navCoverLabel').textContent = dict.navCover;
+        document.getElementById('navHistoryLabel').textContent = dict.navHistory;
+
+        document.getElementById('apiModalTitle').textContent = dict.apiModal.title;
+        document.getElementById('apiModalDesc').textContent = dict.apiModal.desc;
+        clearApiKeyBtn.textContent = dict.apiModal.clearBtn;
+        saveApiKeyBtn.textContent = dict.apiModal.saveBtn;
+        // Re-render Presets, Cover Styles, Smart Chips, Deck, and History in selected language
+        renderPresets();
+        renderCoverStyleChips();
+        renderSmartPhotoChips();
+        updateCharCount();
+        renderCoverCanvas();
+        if (state.activeTab === 'result') renderDeck(state.isGenerating);
+        if (state.activeTab === 'history') renderHistory();
+
+        if (showNotification) {
+          showToast(state.lang === 'ru' ? 'Язык: Русский' : 'Til: O‘zbekcha');
+          triggerHaptic(10);
+        }
+      }
+
+      // --- Render Sample Preset Chips ---
+      function renderPresets() {
+        const dict = t();
+        presetsContainer.innerHTML = dict.presets.map((p, idx) => `
+          <button type="button" data-pidx="${idx}" class="preset-chip shrink-0 px-3 py-1.5 rounded-full hairline-border text-xs font-medium transition-all hover:opacity-80 active:scale-95" style="background-color: var(--bg-surface);">
+            ${escapeHtml(p.label)}
+          </button>
+        `).join('');
+
+        document.querySelectorAll('.preset-chip').forEach(chip => {
+          chip.addEventListener('click', () => {
+            const preset = dict.presets[parseInt(chip.dataset.pidx, 10)];
+            if (!preset) return;
+            businessInput.value = preset.biz;
+            ideaInput.value = preset.idea;
+            bizCounter.textContent = `${businessInput.value.length}/300`;
+            ideaCounter.textContent = `${ideaInput.value.length}/600`;
+            showToast(dict.toasts.presetFilled);
+            triggerHaptic(10);
+          });
+        });
+      }
+
+      // --- Haptic Feedback Helper ---
+      function triggerHaptic(ms = 12) {
+        if (navigator.vibrate) {
+          try { navigator.vibrate(ms); } catch (e) {}
+        }
+      }
+
+      // --- Toast Notification ---
+      let toastTimeout;
+      function showToast(msg) {
+        toastMessage.textContent = msg;
+        galleryToast.classList.remove('opacity-0', '-translate-y-3');
+        galleryToast.classList.add('opacity-100', 'translate-y-0');
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => {
+          galleryToast.classList.add('opacity-0', '-translate-y-3');
+          galleryToast.classList.remove('opacity-100', 'translate-y-0');
+        }, 2300);
+      }
+
+      // --- Theme Management (Light / Dark Mode) ---
+      function applyTheme(theme) {
+        state.theme = theme;
+        localStorage.setItem('kg_theme', theme);
+        if (theme === 'dark') {
+          htmlEl.classList.add('dark');
+          themeIconMoon.classList.add('hidden');
+          themeIconSun.classList.remove('hidden');
+        } else {
+          htmlEl.classList.remove('dark');
+          themeIconSun.classList.add('hidden');
+          themeIconMoon.classList.remove('hidden');
+        }
+      }
+
+      // --- Platform Selection & Dynamic Atmosphere ---
+      function selectPlatform(platform) {
+        state.platform = platform;
+        bodyEl.setAttribute('data-platform', platform);
+        const meta = PLATFORM_META[platform];
+        platformMoodBadge.textContent = meta.label;
+        platformSpecHint.textContent = t().platformHints[platform];
+
+        const buttons = document.querySelectorAll('.plat-btn');
+        const indexMap = { telegram: 0, instagram: 1, youtube: 2 };
+        const idx = indexMap[platform];
+
+        // Slide magnetic indicator pill
+        platformSlider.style.transform = `translateX(calc(${idx * 100}% + ${idx * 2}px))`;
+
+        buttons.forEach((btn, i) => {
+          if (i === idx) {
+            btn.classList.add('text-white');
+            btn.style.color = '#FFFFFF';
+          } else {
+            btn.classList.remove('text-white');
+            btn.style.color = 'var(--text-secondary)';
+          }
+        });
+
+        // Auto-select platform-aware aspect ratio for Cover Studio
+        setCoverRatio(meta.defaultRatio);
+
+        updateCharCount();
+        renderCoverCanvas();
+        triggerHaptic(10);
+      }
+
+      // --- Navigation & Screen Morphing ---
+      function switchTab(tabName, triggerMorph = false) {
+        state.activeTab = tabName;
+
+        const screens = {
+          create: screenCreate,
+          result: screenResult,
+          cover: screenCover,
+          history: screenHistory
+        };
+
+        exhibitionIndex.textContent = t().exhibitionIndices[tabName] || t().exhibitionIndices.create;
+
+        Object.entries(screens).forEach(([key, el]) => {
+          if (key === tabName) {
+            el.classList.remove('screen-hidden');
+            el.classList.add('screen-active');
+            if (triggerMorph && (key === 'result' || key === 'cover')) {
+              el.classList.remove('morph-stage-enter');
+              void el.offsetWidth; // trigger reflow
+              el.classList.add('morph-stage-enter');
+            }
+          } else {
+            el.classList.remove('screen-active', 'morph-stage-enter');
+            el.classList.add('screen-hidden');
+          }
+        });
+
+        // Update Floating Glass Bottom Tab Bar
+        const activeNavTab = tabName === 'result' ? 'create' : tabName;
+        document.querySelectorAll('.nav-tab').forEach(btn => {
+          const isCurrent = btn.dataset.tab === activeNavTab;
+          if (isCurrent) {
+            btn.classList.add('text-white');
+            btn.style.backgroundColor = 'var(--accent-primary)';
+            btn.style.color = '#FFFFFF';
+          } else {
+            btn.classList.remove('text-white');
+            btn.style.backgroundColor = 'transparent';
+            btn.style.color = 'var(--text-secondary)';
+          }
+        });
+
+        if (tabName === 'result') {
+          renderDeck(state.isGenerating);
+        }
+        if (tabName === 'cover') {
+          renderCoverCanvas();
+        }
+        if (tabName === 'history') {
+          renderHistory();
+        }
+      }
+
+      // --- LocalStorage Context & History ---
+      function loadSavedContext() {
+        const savedBiz = localStorage.getItem('kg_business_info');
+        if (savedBiz) {
+          businessInput.value = savedBiz;
+          bizCounter.textContent = `${savedBiz.length}/300`;
+        }
+      }
+
+      function loadHistory() {
+        try {
+          const raw = localStorage.getItem('kg_history');
+          state.history = raw ? JSON.parse(raw) : [];
+        } catch (e) {
+          state.history = [];
+        }
+        updateHistoryBadge();
+      }
+
+      function saveToHistory(variants) {
+        if (!variants || variants.length === 0) return;
+        const entry = {
+          id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+          createdAt: Date.now(),
+          lang: state.lang,
+          platform: state.platform,
+          tone: state.tone,
+          business: businessInput.value.trim(),
+          idea: ideaInput.value.trim(),
+          variants: JSON.parse(JSON.stringify(variants))
+        };
+
+        state.history.unshift(entry);
+        if (state.history.length > 40) state.history.pop();
+
+        try {
+          localStorage.setItem('kg_history', JSON.stringify(state.history));
+        } catch (e) {}
+        updateHistoryBadge();
+      }
+
+      function updateHistoryBadge() {
+        historyCountBadge.textContent = state.history.length;
+      }
+
+      // --- Magnetic Button Physics ---
+      function attachMagneticPhysics() {
+        document.querySelectorAll('.magnetic-btn').forEach(btn => {
+          btn.addEventListener('pointermove', (e) => {
+            const rect = btn.getBoundingClientRect();
+            const relX = e.clientX - rect.left - rect.width / 2;
+            const relY = e.clientY - rect.top - rect.height / 2;
+            const pullX = Math.max(-7, Math.min(7, relX * 0.22));
+            const pullY = Math.max(-5, Math.min(5, relY * 0.22));
+            btn.style.transform = `translate(${pullX}px, ${pullY}px)`;
+          });
+
+          btn.addEventListener('pointerleave', () => {
+            btn.style.transform = 'translate(0px, 0px)';
+          });
+
+          btn.addEventListener('pointerdown', () => {
+            btn.style.transform = 'scale(0.97)';
+          });
+
+          btn.addEventListener('pointerup', () => {
+            btn.style.transform = 'translate(0px, 0px)';
+          });
+        });
+      }
+
+      // --- Wrap Newly Streamed Text in Blur-In Spans ---
+      function formatBlurText(text, animate = false) {
+        if (!text) return '';
+        if (!animate) return escapeHtml(text).replace(/\n/g, '<br>');
+        const words = text.split(/(\s+)/);
+        return words.map((part, idx) => {
+          if (/^\s+$/.test(part)) return part.replace(/\n/g, '<br>');
+          const isRecent = idx >= words.length - 6;
+          if (isRecent) {
+            return `<span class="blur-word">${escapeHtml(part)}</span>`;
+          }
+          return escapeHtml(part);
+        }).join('');
+      }
+
+      function escapeHtml(str) {
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      // --- Parse Structured Delimiters from Stream ---
+      function parseStreamedVariants(rawText, expectedCount) {
+        const blocks = rawText.split(/===VARIANT_\d+===|\[VARIANT\]/i).slice(1);
+        const parsed = [];
+        const defaultStyles = t().defaultStyles;
+
+        for (let i = 0; i < expectedCount; i++) {
+          const block = blocks[i] || '';
+          const styleMatch = block.match(/\[STYLE\]:?\s*(.*)/i);
+          const titleMatch = block.match(/\[(?:HEADLINE|TITLE)\]:?\s*([\s\S]*?)(?=\[BODY\]|\[CTA\]|\[HASHTAGS\]|$)/i);
+          const bodyMatch = block.match(/\[BODY\]:?\s*([\s\S]*?)(?=\[CTA\]|\[HASHTAGS\]|$)/i);
+          const ctaMatch = block.match(/\[CTA\]:?\s*([\s\S]*?)(?=\[HASHTAGS\]|$)/i);
+          const tagsMatch = block.match(/\[HASHTAGS\]:?\s*([\s\S]*?)(?=\[\/VARIANT\]|===VARIANT_|$)/i);
+
+          parsed.push({
+            id: `var-${i + 1}`,
+            styleLabel: styleMatch ? styleMatch[1].trim() : defaultStyles[i % 3],
+            title: titleMatch ? titleMatch[1].trim() : '',
+            body: bodyMatch ? bodyMatch[1].trim() : '',
+            cta: ctaMatch ? ctaMatch[1].trim() : '',
+            hashtags: tagsMatch ? tagsMatch[1].trim() : ''
+          });
+        }
+
+        return parsed;
+      }
+
+      // --- Bilingual Fallback Content Generator (UZ & RU) ---
+      function buildFallbackVariants(biz, idea, platform, lang, count) {
+        if (lang === 'ru') {
+          const bizShort = biz || "Наш проект";
+          const ideaShort = idea || "Новое предложение и уникальные возможности";
+
+          const templatesRu = {
+            telegram: [
+              {
+                styleLabel: "Чёткий и ценный",
+                title: `⚡ ${ideaShort.slice(0, 58)}`,
+                body: `Важные новости от команды ${bizShort}.\n\nМы подготовили решение, которое экономит ваше время и даёт максимальный результат. Сегодняшнее предложение создано специально для наших подписчиков.\n\n• Гарантия высокого качества\n• Оперативный сервис\n• Ограниченные условия`,
+                cta: `👉 Свяжитесь с нами прямо сейчас, чтобы узнать подробности и забронировать!`,
+                hashtags: `#новости #ташкент #бизнес #качество #предложение`
+              },
+              {
+                styleLabel: "Проблема и решение",
+                title: `Почему действовать нужно именно сейчас?`,
+                body: `Многие тратят слишком много времени на поиск надёжного сервиса. ${bizShort} упрощает каждый шаг.\n\n${ideaShort} — это не просто анонс, а самый короткий путь к результату, который вы давно искали.`,
+                cta: `📩 Остались вопросы? Напишите в комментариях или свяжитесь с менеджером.`,
+                hashtags: `#бизнес #решение #сервис #узбекистан #результат`
+              },
+              {
+                styleLabel: "Интерактивный вопрос",
+                title: `А вы уже пробовали такой формат? 🤔`,
+                body: `Каждый день наши клиенты делятся впечатлениями о ${bizShort}. Теперь очередь за вами!\n\nПоводом стала наша новинка: ${ideaShort}.`,
+                cta: `💬 Напишите «+» в комментариях — отправим все детали в директ!`,
+                hashtags: `#опрос #сообщество #тренд #обсуждение`
+              }
+            ],
+            instagram: [
+              {
+                styleLabel: "Эмоциональный хук",
+                title: `Остановитесь на секунду и представьте... ✨`,
+                body: `Когда речь идёт о ${bizShort}, каждая деталь создаёт особое настроение.\n\n${ideaShort} — повод порадовать себя уже сегодня и почувствовать разницу с первого взгляда. Сохраняйте пост, чтобы не потерять!`,
+                cta: `👇 Отметьте друга в комментариях, с кем разделите этот момент!`,
+                hashtags: `#ташкент #эстетика #стиль #вдохновение #новинка #рекомендации`
+              },
+              {
+                styleLabel: "Чёткий и продающий",
+                title: `🔥 ${ideaShort.slice(0, 54)}`,
+                body: `${bizShort} представляет обновлённый подход к вашему комфорту. Ничего лишнего — только эстетика, качество и забота о каждом клиенте.`,
+                cta: `🔗 Переходите по ссылке в шапке профиля или пишите в Direct прямо сейчас!`,
+                hashtags: `#акция #скидки #ташкент #покупки #бренд`
+              },
+              {
+                styleLabel: "Интерактивный сторителлинг",
+                title: `3 причины выбрать именно это сегодня 💡`,
+                body: `1️⃣ Безупречное качество от ${bizShort}\n2️⃣ Внимание к мельчайшим деталям\n3️⃣ Специальные условия: ${ideaShort}`,
+                cta: `❤️ Ставьте лайк и напишите в комментариях, какой пункт для вас важнее всего!`,
+                hashtags: `#лайфстайл #выбор #советы #узбекистан #топ`
+              }
+            ],
+            youtube: [
+              {
+                styleLabel: "Интрига для Shorts",
+                title: `${ideaShort.slice(0, 56)} | Полный обзор`,
+                body: `В этом выпуске от ${bizShort} разбираем главные детали и показываем реальный результат без фильтров.\n\nПолезно, динамично и по делу — смотрите до конца!`,
+                cta: `🔔 Подписывайтесь на канал и пишите своё мнение в комментариях!`,
+                hashtags: `#shorts #обзор #ташкент #тренды #youtube`
+              },
+              {
+                styleLabel: "Экспертный разбор",
+                title: `Как ${bizShort} меняет правила игры?`,
+                body: `Делимся закулисьем и рассказываем, как работает ${ideaShort} на практике. Сохраняйте видео, чтобы применить эти идеи у себя.`,
+                cta: `👍 Поддержите видео лайком — это помогает развивать канал!`,
+                hashtags: `#эксперт #разбор #опыт #советы`
+              },
+              {
+                styleLabel: "Пост для Сообщества",
+                title: `Готовы к новому уровню вместе с ${bizShort}? 🚀`,
+                body: `Мы запустили: ${ideaShort}. Нам очень важна ваша обратная связь перед следующим большим выпуском!`,
+                cta: `👇 Напишите в комментариях, какую тему разобрать в следующем видео!`,
+                hashtags: `#сообщество #анонс #новоевидео`
+              }
+            ]
+          };
+
+          const listRu = templatesRu[platform] || templatesRu.telegram;
+          return listRu.slice(0, count).map((item, i) => ({ id: `var-${i + 1}`, ...item }));
+        }
+
+        // Uzbek (UZ) Fallback Templates
+        const bizShortUz = biz || "Bizning loyihamiz";
+        const ideaShortUz = idea || "Yangi taklif va noyob imkoniyatlar";
+
+        const templatesUz = {
+          telegram: [
+            {
+              styleLabel: "Aniq va foydali",
+              title: `⚡ ${ideaShortUz.slice(0, 58)}`,
+              body: `${bizShortUz} jamoasidan muhim yangilik.\n\nBiz vaqtingizni tejaydigan va maksimal natija beradigan yechimni tayyorladik. Bugungi taklif aynan obunachilarimiz uchun yaratilgan.\n\n• Yuqori sifat kafolati\n• Tezkor va qulay xizmat\n• Cheklangan maxsus shartlar`,
+              cta: `👉 Batafsil ma’lumot olish va band qilish uchun hoziroq biz bilan bog‘laning!`,
+              hashtags: `#yangilik #toshkent #biznes #sifat #taklif`
+            },
+            {
+              styleLabel: "Muammo va yechim",
+              title: `Nega aynan hozir harakat qilish kerak?`,
+              body: `Ko‘pchilik ishonchli xizmat izlab ko‘p vaqt yo‘qotadi. ${bizShortUz} esa har bir qadamni osonlashtiradi.\n\n${ideaShortUz} — bu shunchaki e’lon emas, balki siz izlagan natijaga eng qisqa yo‘ldir.`,
+              cta: `📩 Savollaringiz bormi? Izohlarda yozing yoki menejerimizga murojaat qiling.`,
+              hashtags: `#biznes #yechim #xizmat #ozbekiston #natija`
+            },
+            {
+              styleLabel: "Interaktiv savol",
+              title: `Siz ham bu formatni sinab ko‘rdingizmi? 🤔`,
+              body: `Har kuni mijozlarimiz ${bizShortUz} haqida o‘z taassurotlari bilan bo‘lishishmoqda. Endi navbat sizga!\n\nSababi esa yangiligimiz: ${ideaShortUz}.`,
+              cta: `💬 Izohlarda «+» belgisini qoldiring — barcha tafsilotlarni yuboramiz!`,
+              hashtags: `#sorovnoma #jamoa #trend #muhokama`
+            }
+          ],
+          instagram: [
+            {
+              styleLabel: "Emotsional Hook",
+              title: `Bir soniya to‘xtang va tasavvur qiling... ✨`,
+              body: `${bizShortUz} haqida gap ketganda, har bir detal o‘zgacha kayfiyat yaratadi.\n\n${ideaShortUz} — bugunoq o‘zingizni xursand qilish va ilk daqiqadanoq farqni his etish uchun ajoyib sabab. Yo‘qotib qo‘ymaslik uchun saqlab oling!`,
+              cta: `👇 Bu lahzani kim bilan bo‘lishishni xohlasangiz, izohlarda belgilang!`,
+              hashtags: `#toshkent #estetika #uslub #ilhom #yangilik #tavsiya`
+            },
+            {
+              styleLabel: "Aniq & Sotuvchi",
+              title: `🔥 ${ideaShortUz.slice(0, 54)}`,
+              body: `${bizShortUz} qulayligingiz uchun yangilangan yondashuvni taqdim etadi. Ortiqcha hashamatsiz — faqat estetika, sifat va har bir mijozga e’tibor.`,
+              cta: `🔗 Profil sarlavhasidagi havola orqali o‘ting yoki hoziroq Direct’ga yozing!`,
+              hashtags: `#aksiya #chegirma #toshkent #xarid #brend`
+            },
+            {
+              styleLabel: "Interaktiv hikoya",
+              title: `Bugunoq tanlash uchun 3 ta sabab 💡`,
+              body: `1️⃣ ${bizShortUz} tomonidan kafolatlangan sifat\n2️⃣ Eng kichik detallargacha e’tibor\n3️⃣ Maxsus imkoniyat: ${ideaShortUz}`,
+              cta: `❤️ Layk bosing va siz uchun qaysi jihat muhimroq ekanini izohda yozing!`,
+              hashtags: `#hayot #tanlov #maslahat #ozbekiston #top`
+            }
+          ],
+          youtube: [
+            {
+              styleLabel: "Shorts uchun intriga",
+              title: `${ideaShortUz.slice(0, 56)} | To‘liq sharh`,
+              body: `${bizShortUz} kanalining ushbu sonida asosiy detallarni tahlil qilamiz va haqiqiy natijani ko‘rsatamiz.\n\nFoydali, tezkor va aniq — oxirigacha tomosha qiling!`,
+              cta: `🔔 Kanalga obuna bo‘ling va fikringizni izohlarda qoldiring!`,
+              hashtags: `#shorts #sharh #toshkent #trend #youtube`
+            },
+            {
+              styleLabel: "Ekspert tahlili",
+              title: `${bizShortUz} o‘yin qoidalarini qanday o‘zgartirmoqda?`,
+              body: `Sahna orti jarayonlari va ${ideaShortUz} amalda qanday ishlashi bilan bo‘lishamiz. Keyinchalik qo‘llash uchun videoni saqlab qo‘ying.`,
+              cta: `👍 Videoni layk bilan qo‘llab-quvvatlang — bu kanal rivojiga yordam beradi!`,
+              hashtags: `#ekspert #tahlil #tajriba #maslahatlar`
+            },
+            {
+              styleLabel: "Community posti",
+              title: `${bizShortUz} bilan yangi bosqichga tayyormisiz? 🚀`,
+              body: `Biz yangi loyihani boshladik: ${ideaShortUz}. Keyingi katta sonimizdan oldin sizning fikringiz biz uchun juda muhim!`,
+              cta: `👇 Keyingi videoda qaysi mavzuni yoritishimizni izohlarda yozib qoldiring!`,
+              hashtags: `#community #elon #yangivideo`
+            }
+          ]
+        };
+
+        const listUz = templatesUz[platform] || templatesUz.telegram;
+        return listUz.slice(0, count).map((item, i) => ({ id: `var-${i + 1}`, ...item }));
+      }
+
+      // --- Image Upload, Compression & Base64 Helper ---
+      function processUploadedImageFile(file) {
+        return new Promise((resolve, reject) => {
+          if (!file || !file.type || !file.type.startsWith('image/')) {
+            reject(new Error('Invalid image file'));
+            return;
+          }
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => {
+              const MAX_DIM = 1024;
+              let w = img.width;
+              let h = img.height;
+              if (w > MAX_DIM || h > MAX_DIM) {
+                if (w > h) {
+                  h = Math.round((h * MAX_DIM) / w);
+                  w = MAX_DIM;
+                } else {
+                  w = Math.round((w * MAX_DIM) / h);
+                  h = MAX_DIM;
+                }
+              }
+              const offCanvas = document.createElement('canvas');
+              offCanvas.width = w;
+              offCanvas.height = h;
+              const ctx = offCanvas.getContext('2d');
+              ctx.drawImage(img, 0, 0, w, h);
+
+              const dataUrl = offCanvas.toDataURL('image/jpeg', 0.88);
+              const base64 = dataUrl.split(',')[1];
+              const cleanImg = new Image();
+              cleanImg.onload = () => {
+                resolve({ base64, mimeType: 'image/jpeg', dataUrl, imgEl: cleanImg });
+              };
+              cleanImg.src = dataUrl;
+            };
+            img.onerror = () => reject(new Error('Failed to decode image'));
+            img.src = e.target.result;
+          };
+          reader.onerror = () => reject(new Error('Failed to read file'));
+          reader.readAsDataURL(file);
+        });
+      }
+
+      async function handleStudioPhotoUpload(file) {
+        const dict = t();
+        try {
+          const processed = await processUploadedImageFile(file);
+          state.studioPhoto = processed;
+          studioPreviewImg.src = processed.dataUrl;
+          studioDropEmpty.classList.add('hidden');
+          studioDropPreview.classList.remove('hidden');
+          showToast(dict.toasts.photoAttached);
+          triggerHaptic(12);
+        } catch (err) {
+          showToast(dict.toasts.invalidImage);
+        }
+      }
+
+      function clearStudioPhoto(notify = true) {
+        state.studioPhoto = null;
+        studioPhotoInput.value = '';
+        studioPreviewImg.src = '';
+        studioDropPreview.classList.add('hidden');
+        studioDropEmpty.classList.remove('hidden');
+        if (notify) {
+          showToast(t().toasts.photoRemoved);
+          triggerHaptic(8);
+        }
+      }
+
+      async function handleCoverPhotoUpload(file) {
+        const dict = t();
+        try {
+          const processed = await processUploadedImageFile(file);
+          state.cover.uploadedSource = processed;
+          state.cover.aiEditedImage = null;
+          state.cover.baseImage = null;
+          state.cover.hasTransformedUpload = false;
+          state.cover.viewMode = 'after';
+
+          coverSourceThumb.src = processed.dataUrl;
+          coverDropEmpty.classList.add('hidden');
+          coverDropPreview.classList.remove('hidden');
+          coverSmartChipsRow.classList.remove('hidden');
+          beforeAfterBar.classList.add('hidden');
+
+          coverPromptInput.placeholder = dict.coverEditPromptPlaceholder;
+          generateCoverBtnLabel.textContent = dict.editUploadedCoverBtn;
+
+          renderSmartPhotoChips();
+          renderCoverCanvas();
+          showToast(dict.toasts.photoAttached);
+          triggerHaptic(12);
+        } catch (err) {
+          showToast(dict.toasts.invalidImage);
+        }
+      }
+
+      function clearCoverPhoto(notify = true) {
+        const dict = t();
+        state.cover.uploadedSource = null;
+        state.cover.aiEditedImage = null;
+        state.cover.hasTransformedUpload = false;
+        state.cover.viewMode = 'after';
+
+        coverPhotoInput.value = '';
+        coverSourceThumb.src = '';
+        coverDropPreview.classList.add('hidden');
+        coverDropEmpty.classList.remove('hidden');
+        coverSmartChipsRow.classList.add('hidden');
+        beforeAfterBar.classList.add('hidden');
+
+        coverPromptInput.placeholder = dict.coverPromptPlaceholder;
+        generateCoverBtnLabel.textContent = dict.generateCoverBtn;
+
+        renderCoverCanvas();
+        if (notify) {
+          showToast(dict.toasts.photoRemoved);
+          triggerHaptic(8);
+        }
+      }
+
+      function renderSmartPhotoChips() {
+        const dict = t();
+        coverSmartChipsRow.innerHTML = dict.smartPhotoChips.map((chip, idx) => `
+          <button type="button" data-schip="${idx}" class="smart-photo-chip shrink-0 px-3 py-1.5 rounded-full hairline-border font-display text-[11px] font-semibold transition-all hover:opacity-80 active:scale-95" style="background-color: var(--bg-surface); color: var(--text-primary);">
+            ${escapeHtml(chip.label)}
+          </button>
+        `).join('');
+
+        document.querySelectorAll('.smart-photo-chip').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const chip = dict.smartPhotoChips[parseInt(btn.dataset.schip, 10)];
+            if (!chip) return;
+            coverPromptInput.value = chip.prompt;
+            triggerHaptic(10);
+            if (!state.cover.isGenerating) {
+              generateCoverImage();
+            }
+          });
+        });
+      }
+
+      // --- Real Gemini API Streaming Integration with Multimodal Image + Bilingual Prompts & Fallback ---
+      async function generatePosts() {
+        const dict = t();
+        const biz = businessInput.value.trim();
+        const idea = ideaInput.value.trim();
+        const hasPhoto = Boolean(state.studioPhoto);
+
+        if (!biz && !idea && !hasPhoto) {
+          showToast(dict.toasts.enterInput);
+          ideaInput.focus();
+          triggerHaptic(25);
+          return;
+        }
+
+        // Persist business info for convenience
+        if (biz) localStorage.setItem('kg_business_info', biz);
+
+        state.isGenerating = true;
+        state.isEditing = false;
+        state.activeCardIndex = 0;
+
+        // Initialize empty placeholder cards for immediate morphing UI
+        state.variants = Array.from({ length: state.variantCount }, (_, i) => ({
+          id: `var-${i + 1}`,
+          styleLabel: dict.defaultStyles[i % 3],
+          title: '',
+          body: '',
+          cta: '',
+          hashtags: ''
+        }));
+
+        // Morph transition to Exhibition Screen
+        switchTab('result', true);
+        streamingIndicator.classList.remove('hidden');
+        streamingIndicator.classList.add('inline-flex');
+        triggerHaptic(15);
+
+        const platMeta = PLATFORM_META[state.platform];
+        const toneLabel = dict.tones[state.tone] || state.tone;
+
+        const systemInstruction = state.lang === 'ru'
+          ? `Ты профессиональный SMM-копирайтер и контент-директор.
+Твоя задача: на основе информации о бизнесе и идеи поста создать ровно ${state.variantCount} разных варианта готового поста для платформы ${platMeta.label} на естественном, живом и грамотном РУССКОМ языке.
+
+Правило платформы: ${platMeta.promptRuleRu}
+Тональность поста (Tone): ${toneLabel}.
+
+СТРОГИЙ ШАБЛОН ФОРМАТИРОВАНИЯ (не пиши никаких вступлений или заключений, используй только указанные теги):
+===VARIANT_1===
+[STYLE]: <Краткое название стиля, например: Эмоциональный хук>
+[HEADLINE]: <Цепляющий заголовок>
+[BODY]: <Основной текст поста с абзацами>
+[CTA]: <Чёткий призыв к действию>
+[HASHTAGS]: <3-6 релевантных хештегов>`
+          : `Sen O'zbekiston bozori uchun ixtisoslashgan yuqori darajadagi SMM kopirayter va kontent-direktorsan.
+Vazifang: Foydalanuvchi bergan biznes ma'lumoti va post g'oyasi asosida ${platMeta.label} platformasi uchun aynan ${state.variantCount} ta turlicha uslubdagi tayyor post variantini tabiiy va savodli O'ZBEK tilida (lotin alifbosida) yaratish.
+
+Platforma qoidasi: ${platMeta.promptRuleUz}
+Post ohangi (Tone): ${toneLabel}.
+
+QAT'IY FORMATLASH SHABLONI (hech qanday kirish yoki yakuniy izoh yozma, faqat quyidagi teglardan foydalan):
+===VARIANT_1===
+[STYLE]: <Qisqa uslub nomi, masalan: Emotsional Hook>
+[HEADLINE]: <Diqqatni tortuvchi sarlavha>
+[BODY]: <Asosiy post matni, abzatslar bilan>
+[CTA]: <Aniq harakatga chaqiruv>
+[HASHTAGS]: <3-6 ta mos xeshteglar>`;
+
+        const userPrompt = state.lang === 'ru'
+          ? `Бизнес/Продукт: ${biz || "Определи по прикреплённому фото"}\nТема и идея поста: ${idea || "Проанализируй фото и предложи лучший пост под его содержание"}\nКоличество вариантов: ${state.variantCount} (разделяй тегами ===VARIANT_1===, ===VARIANT_2===, ===VARIANT_3===)`
+          : `Biznes/Mahsulot: ${biz || "Yuklangan rasm asosida aniqla"}\nPost mavzusi va g'oyasi: ${idea || "Rasmni tahlil qilib, unga eng mos post yozib ber"}\nVariantlar soni: ${state.variantCount} (===VARIANT_1===, ===VARIANT_2===, ===VARIANT_3=== teglari bilan ajrat)`;
+
+        const userParts = [{ text: userPrompt }];
+        if (hasPhoto && state.studioPhoto?.base64) {
+          userParts.push({
+            inlineData: {
+              mimeType: state.studioPhoto.mimeType || 'image/jpeg',
+              data: state.studioPhoto.base64
+            }
+          });
+        }
+
+        try {
+          const activeKey = getEffectiveApiKey();
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:streamGenerateContent?alt=sse&key=${activeKey}`;
+
+          const response = await fetchWithRetry(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ role: 'user', parts: userParts }],
+              systemInstruction: { parts: [{ text: systemInstruction }] },
+              generationConfig: {
+                temperature: 0.78,
+                maxOutputTokens: 1800
+              }
+            })
+          });
+
+          if (!response.ok || !response.body) {
+            throw new Error('Stream javobi olinmadi');
+          }
+
+          const reader = response.body.getReader();
+          const decoder = new TextDecoder('utf-8');
+          let accumulatedText = '';
+          let buffer = '';
+
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            buffer += decoder.decode(value, { stream: true });
+            const lines = buffer.split('\n');
+            buffer = lines.pop() || '';
+
+            for (const line of lines) {
+              const trimmed = line.trim();
+              if (!trimmed.startsWith('data:')) continue;
+              const jsonStr = trimmed.slice(5).trim();
+              if (!jsonStr || jsonStr === '[DONE]') continue;
+
+              try {
+                const parsedChunk = JSON.parse(jsonStr);
+                const textPiece = parsedChunk?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+                if (textPiece) {
+                  accumulatedText += textPiece;
+                  state.variants = parseStreamedVariants(accumulatedText, state.variantCount);
+                  renderDeck(true);
+                }
+              } catch (parseErr) {
+                // Ignore incomplete JSON line fragments
+              }
+            }
+          }
+
+          // Final clean parse check
+          const finalParsed = parseStreamedVariants(accumulatedText, state.variantCount);
+          if (!finalParsed[0]?.title && !finalParsed[0]?.body) {
+            throw new Error('Bo‘sh natija');
+          }
+          state.variants = finalParsed;
+          finalizeGeneration();
+
+        } catch (err) {
+          // Graceful simulated Blur-In Typewriter streaming with high-quality bilingual fallback
+          await runSimulatedBlurStream(biz, idea);
+        }
+      }
+
+      // Exponential Backoff Fetch Helper
+      async function fetchWithRetry(url, options, retries = 2) {
+        let delay = 800;
+        for (let i = 0; i <= retries; i++) {
+          try {
+            const res = await fetch(url, options);
+            if (res.ok || (res.status !== 429 && res.status < 500)) return res;
+          } catch (e) {
+            if (i === retries) throw e;
+          }
+          await new Promise(r => setTimeout(r, delay));
+          delay *= 2;
+        }
+        throw new Error('Tarmoq xatosi');
+      }
+
+      // Smooth simulated blur-in typewriter stream if API key isn't active in standalone preview
+      async function runSimulatedBlurStream(biz, idea) {
+        const fallbackSet = buildFallbackVariants(biz, idea, state.platform, state.lang, state.variantCount);
+        const rawTemplate = fallbackSet.map((v, idx) =>
+          `===VARIANT_${idx + 1}===\n[STYLE]: ${v.styleLabel}\n[HEADLINE]: ${v.title}\n[BODY]: ${v.body}\n[CTA]: ${v.cta}\n[HASHTAGS]: ${v.hashtags}`
+        ).join('\n');
+
+        let cursor = 0;
+        const stepSize = 18;
+
+        while (cursor < rawTemplate.length) {
+          cursor = Math.min(rawTemplate.length, cursor + stepSize);
+          const slice = rawTemplate.slice(0, cursor);
+          state.variants = parseStreamedVariants(slice, state.variantCount);
+          renderDeck(true);
+          await new Promise(r => setTimeout(r, 24));
+        }
+
+        state.variants = fallbackSet;
+        finalizeGeneration();
+      }
+
+      function finalizeGeneration() {
+        state.isGenerating = false;
+        streamingIndicator.classList.add('hidden');
+        streamingIndicator.classList.remove('inline-flex');
+        renderDeck(false);
+        saveToHistory(state.variants);
+        triggerHaptic(15);
+      }
+
+      // --- Cover / Oblojka Studio Core Functions ---
+      function initDefaultCoverState() {
+        coverBadgeInput.value = PLATFORM_META[state.platform].label;
+        coverHeadlineInput.value = state.lang === 'ru'
+          ? 'Новая эстетика вашего бренда'
+          : 'Brendingizning yangi estetikasi';
+        setCoverRatio(PLATFORM_META[state.platform].defaultRatio);
+        renderCoverStyleChips();
+      }
+
+      function setCoverRatio(ratio) {
+        state.cover.ratio = ratio;
+        coverPreviewFrame.setAttribute('data-ratio', ratio);
+        coverPlatformTag.textContent = `${PLATFORM_META[state.platform].label} • ${ratio}`;
+
+        document.querySelectorAll('.ratio-btn').forEach(btn => {
+          const isCurrent = btn.dataset.ratio === ratio;
+          if (isCurrent) {
+            btn.classList.add('text-white');
+            btn.style.backgroundColor = 'var(--accent-primary)';
+            btn.style.borderColor = 'var(--accent-primary)';
+            btn.style.color = '#FFFFFF';
+          } else {
+            btn.classList.remove('text-white');
+            btn.style.backgroundColor = 'var(--bg-surface)';
+            btn.style.borderColor = 'var(--border-hairline)';
+            btn.style.color = 'var(--text-secondary)';
+          }
+        });
+
+        renderCoverCanvas();
+      }
+
+      function renderCoverStyleChips() {
+        const dict = t();
+        coverStylesContainer.innerHTML = dict.coverStyles.map(st => {
+          const isCurrent = st.id === state.cover.styleId;
+          return `
+            <button type="button" data-cstyle="${st.id}" class="cstyle-btn shrink-0 px-3 py-1.5 rounded-full font-display text-xs font-semibold transition-all ${isCurrent ? 'text-white' : 'hairline-border'}"
+              style="${isCurrent ? 'background-color: var(--accent-primary);' : 'background-color: var(--bg-surface); color: var(--text-secondary);'}">
+              ${escapeHtml(st.label)}
+            </button>
+          `;
+        }).join('');
+
+        document.querySelectorAll('.cstyle-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            state.cover.styleId = btn.dataset.cstyle;
+            renderCoverStyleChips();
+            renderCoverCanvas();
+            triggerHaptic(8);
+          });
+        });
+      }
+
+      function syncCoverFromActivePost(postVariant = null, platformOverride = null) {
+        const targetPlatform = platformOverride || state.platform;
+        if (platformOverride && platformOverride !== state.platform) {
+          selectPlatform(platformOverride);
+        }
+
+        const variant = postVariant || state.variants[state.activeCardIndex];
+        const biz = businessInput.value.trim();
+        const idea = ideaInput.value.trim();
+
+        const rawHeadline = (variant && variant.title) ? variant.title : (idea || biz);
+        const cleanHeadline = rawHeadline.replace(/^[^\p{L}\p{N}]+/u, '').trim();
+
+        coverBadgeInput.value = PLATFORM_META[targetPlatform].label;
+        if (cleanHeadline) {
+          coverHeadlineInput.value = cleanHeadline.slice(0, 80);
+        }
+
+        const promptParts = [biz, cleanHeadline].filter(Boolean);
+        if (promptParts.length > 0) {
+          coverPromptInput.value = promptParts.join(' — ').slice(0, 380);
+        }
+
+        state.cover.seed = Math.floor(Math.random() * 9000) + 1000;
+        renderCoverCanvas();
+      }
+
+      async function generateCoverImage() {
+        const dict = t();
+        const styleObj = dict.coverStyles.find(s => s.id === state.cover.styleId) || dict.coverStyles[0];
+        const uploaded = state.cover.uploadedSource;
+        const userDesc = coverPromptInput.value.trim() || coverHeadlineInput.value.trim() || businessInput.value.trim() || (uploaded ? 'Enhance lighting, studio background and editorial aesthetic' : 'Modern architectural art gallery exhibition');
+
+        state.cover.isGenerating = true;
+        coverLoadingOverlay.classList.remove('hidden');
+        triggerHaptic(15);
+
+        if (uploaded) {
+          // --- IMAGE-TO-IMAGE EDITING FLOW ---
+          const editPrompt = `Edit and transform the attached photo according to this instruction: "${userDesc}". Apply a ${styleObj.promptHint} aesthetic while preserving the main subject cleanly. Do not add watermarks or messy embedded text.`;
+
+          try {
+            const activeKey = getEffectiveApiKey();
+            if (!activeKey) {
+              throw new Error('Offline studio filter fallback');
+            }
+
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_IMAGE_MODEL}:generateContent?key=${activeKey}`;
+            const response = await fetchWithRetry(url, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                contents: [{
+                  role: 'user',
+                  parts: [
+                    { text: editPrompt },
+                    {
+                      inlineData: {
+                        mimeType: uploaded.mimeType || 'image/jpeg',
+                        data: uploaded.base64
+                      }
+                    }
+                  ]
+                }],
+                generationConfig: {
+                  responseModalities: ['TEXT', 'IMAGE'],
+                  imageConfig: { aspectRatio: state.cover.ratio }
+                }
+              })
+            });
+
+            const result = await response.json();
+            const part = result?.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
+            if (!part || !part.inlineData?.data) {
+              throw new Error('Tahrirlangan rasm qaytmadi');
+            }
+
+            const imgSrc = `data:${part.inlineData.mimeType || 'image/png'};base64,${part.inlineData.data}`;
+            const img = new Image();
+            img.onload = () => {
+              state.cover.aiEditedImage = img;
+              state.cover.hasTransformedUpload = true;
+              state.cover.viewMode = 'after';
+              updateBeforeAfterToggleUI();
+              finishCoverGeneration(true);
+            };
+            img.onerror = () => {
+              throw new Error('Rasmni yuklashda xatolik');
+            };
+            img.src = imgSrc;
+
+          } catch (err) {
+            // Studio-grade Canvas Image Enhancement Fallback (preserves uploaded photo + applies color grading, studio framing & lighting)
+            await new Promise(r => setTimeout(r, 700));
+            state.cover.aiEditedImage = null;
+            state.cover.hasTransformedUpload = true;
+            state.cover.viewMode = 'after';
+            state.cover.seed = Date.now() % 100000;
+            updateBeforeAfterToggleUI();
+            finishCoverGeneration(true);
+          }
+          return;
+        }
+
+        // --- TEXT-TO-IMAGE GENERATION FLOW ---
+        const fullPrompt = `${userDesc}. Visual style: ${styleObj.promptHint}. No embedded text, no watermarks, clean editorial composition suitable for typography overlay.`;
+
+        try {
+          const activeKey = getEffectiveApiKey();
+          if (!activeKey) {
+            throw new Error('Offline procedural gallery fallback');
+          }
+
+          const url = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_IMAGE_MODEL}:generateContent?key=${activeKey}`;
+          const response = await fetchWithRetry(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ role: 'user', parts: [{ text: fullPrompt }] }],
+              generationConfig: {
+                responseModalities: ['IMAGE'],
+                imageConfig: { aspectRatio: state.cover.ratio }
+              }
+            })
+          });
+
+          const result = await response.json();
+          const part = result?.candidates?.[0]?.content?.parts?.find(p => p.inlineData);
+          if (!part || !part.inlineData?.data) {
+            throw new Error('Rasm ma’lumoti topilmadi');
+          }
+
+          const imgSrc = `data:${part.inlineData.mimeType || 'image/png'};base64,${part.inlineData.data}`;
+          const img = new Image();
+          img.onload = () => {
+            state.cover.baseImage = img;
+            finishCoverGeneration(false);
+          };
+          img.onerror = () => {
+            state.cover.baseImage = null;
+            state.cover.seed = Date.now() % 100000;
+            finishCoverGeneration(false);
+          };
+          img.src = imgSrc;
+
+        } catch (err) {
+          // Seamless gallery-grade procedural artwork fallback when offline or no API key
+          await new Promise(r => setTimeout(r, 650));
+          state.cover.baseImage = null;
+          state.cover.seed = Date.now() % 100000;
+          finishCoverGeneration(false);
+        }
+      }
+
+      function updateBeforeAfterToggleUI() {
+        if (!state.cover.hasTransformedUpload || !state.cover.uploadedSource) {
+          beforeAfterBar.classList.add('hidden');
+          return;
+        }
+        beforeAfterBar.classList.remove('hidden');
+        document.querySelectorAll('.ba-toggle-btn').forEach(btn => {
+          const isCurrent = btn.dataset.viewmode === state.cover.viewMode;
+          if (isCurrent) {
+            btn.classList.add('text-white');
+            btn.style.backgroundColor = 'var(--accent-primary)';
+            btn.style.color = '#FFFFFF';
+          } else {
+            btn.classList.remove('text-white');
+            btn.style.backgroundColor = 'transparent';
+            btn.style.color = 'var(--text-secondary)';
+          }
+        });
+      }
+
+      function finishCoverGeneration(wasImageEdit = false) {
+        state.cover.isGenerating = false;
+        coverLoadingOverlay.classList.add('hidden');
+        renderCoverCanvas();
+        showToast(wasImageEdit ? t().toasts.coverEditedReady : t().toasts.coverReady);
+        triggerHaptic(15);
+      }
+
+      function getCanvasResolution(ratio) {
+        switch (ratio) {
+          case '9:16': return { w: 1080, h: 1920 };
+          case '16:9': return { w: 1920, h: 1080 };
+          case '4:3':  return { w: 1440, h: 1080 };
+          case '1:1':
+          default:     return { w: 1200, h: 1200 };
+        }
+      }
+
+      function renderCoverCanvas() {
+        const canvas = coverCompositeCanvas;
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const { w, h } = getCanvasResolution(state.cover.ratio);
+        canvas.width = w;
+        canvas.height = h;
+
+        const uploaded = state.cover.uploadedSource;
+
+        // 1. Base Visual Layer (Uploaded Photo / AI Edited Photo / Text-to-Image / Procedural Art)
+        if (uploaded) {
+          if (state.cover.viewMode === 'before') {
+            // Raw Original Photo
+            drawCoverImageProp(ctx, uploaded.imgEl, 0, 0, w, h);
+          } else if (state.cover.aiEditedImage) {
+            // Gemini Image-to-Image Result
+            drawCoverImageProp(ctx, state.cover.aiEditedImage, 0, 0, w, h);
+          } else if (state.cover.hasTransformedUpload) {
+            // Enhanced Studio-Framed Photo Fallback (Gallery Backdrop + Studio Lighting Grade)
+            drawStudioEnhancedUploadedPhoto(ctx, uploaded.imgEl, w, h, state.platform, state.cover.styleId);
+          } else {
+            // Freshly uploaded preview before generation
+            drawCoverImageProp(ctx, uploaded.imgEl, 0, 0, w, h);
+          }
+        } else if (state.cover.baseImage) {
+          drawCoverImageProp(ctx, state.cover.baseImage, 0, 0, w, h);
+        } else {
+          drawProceduralGalleryArt(ctx, w, h, state.platform, state.cover.styleId, state.cover.seed);
+        }
+
+        // 2. Editorial Typography & Glass Overlay Layer (skip overlay in raw 'before' inspection)
+        const theme = state.cover.overlayTheme;
+        if (theme !== 'none' && !(uploaded && state.cover.viewMode === 'before')) {
+          drawEditorialOverlay(ctx, w, h, {
+            badge: (coverBadgeInput.value || '').trim().toUpperCase(),
+            headline: (coverHeadlineInput.value || '').trim(),
+            theme: theme,
+            position: state.cover.overlayPos,
+            platform: state.platform
+          });
+        }
+
+        // 3. Subtle 1px Architectural Gallery Frame Border
+        ctx.save();
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.22)';
+        ctx.lineWidth = Math.max(2, Math.round(w * 0.002));
+        ctx.strokeRect(1, 1, w - 2, h - 2);
+        ctx.restore();
+      }
+
+      function drawStudioEnhancedUploadedPhoto(ctx, imgEl, w, h, platform, styleId) {
+        // Render atmospheric gallery backdrop first
+        drawProceduralGalleryArt(ctx, w, h, platform, styleId, state.cover.seed);
+
+        // Apply studio color grading & framed exhibition mat around uploaded subject
+        const framePad = Math.round(Math.min(w, h) * 0.075);
+        const innerW = w - framePad * 2;
+        const innerH = h - framePad * 2;
+        const radius = Math.round(Math.min(w, h) * 0.032);
+
+        ctx.save();
+        roundRectPath(ctx, framePad, framePad, innerW, innerH, radius);
+        ctx.clip();
+
+        if (styleId === 'neon') {
+          ctx.filter = 'contrast(1.16) saturate(1.25) brightness(0.96)';
+        } else if (styleId === 'minimal') {
+          ctx.filter = 'contrast(1.06) saturate(0.92) brightness(1.05)';
+        } else {
+          ctx.filter = 'contrast(1.12) saturate(1.14) brightness(1.03)';
+        }
+
+        drawCoverImageProp(ctx, imgEl, framePad, framePad, innerW, innerH);
+        ctx.restore();
+
+        // Crisp gallery frame border
+        ctx.save();
+        roundRectPath(ctx, framePad, framePad, innerW, innerH, radius);
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+        ctx.lineWidth = Math.max(3, Math.round(w * 0.003));
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      function drawCoverImageProp(ctx, img, x, y, w, h) {
+        const iw = img.width, ih = img.height;
+        const r = Math.min(w / iw, h / ih);
+        let nw = iw * r, nh = ih * r;
+        let ar = 1;
+        if (nw < w) ar = w / nw;
+        if (Math.abs(ar - 1) < 1e-14 && nh < h) ar = h / nh;
+        nw *= ar;
+        nh *= ar;
+        const cw = iw / (nw / w);
+        const ch = ih / (nh / h);
+        const cx = (iw - cw) * 0.5;
+        const cy = (ih - ch) * 0.5;
+        ctx.drawImage(img, cx, cy, cw, ch, x, y, w, h);
+      }
+
+      function drawProceduralGalleryArt(ctx, w, h, platform, styleId, seed) {
+        const palettes = {
+          telegram: { bg1: '#070B19', bg2: '#0F2557', c1: '#0057FF', c2: '#38BDF8', c3: '#E0F2FE' },
+          instagram: { bg1: '#140713', bg2: '#3B0A2A', c1: '#FF2A85', c2: '#0057FF', c3: '#FFE4F0' },
+          youtube: { bg1: '#14060A', bg2: '#3D0817', c1: '#FF1E38', c2: '#0057FF', c3: '#FFE4E8' }
+        };
+        const pal = palettes[platform] || palettes.telegram;
+
+        // Pseudo-random deterministic generator from seed
+        let s = seed || 42;
+        const rand = () => {
+          s = (s * 1664525 + 1013904223) % 4294967296;
+          return s / 4294967296;
+        };
+
+        ctx.save();
+        if (styleId === 'minimal' || styleId === 'editorial') {
+          // Architectural Gallery Alabaster / Obsidian Split
+          const isLight = styleId === 'minimal';
+          ctx.fillStyle = isLight ? '#F4F4F0' : '#0E0E12';
+          ctx.fillRect(0, 0, w, h);
+
+          // Sculptural Accent Orb
+          const orbX = w * (0.25 + rand() * 0.5);
+          const orbY = h * (0.22 + rand() * 0.45);
+          const radius = Math.min(w, h) * 0.42;
+          const grad = ctx.createRadialGradient(orbX, orbY, radius * 0.05, orbX, orbY, radius);
+          grad.addColorStop(0, pal.c1);
+          grad.addColorStop(0.6, pal.c2 + '88');
+          grad.addColorStop(1, 'transparent');
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.arc(orbX, orbY, radius, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Architectural Grid Lines
+          ctx.strokeStyle = isLight ? 'rgba(10,10,12,0.08)' : 'rgba(255,255,255,0.09)';
+          ctx.lineWidth = Math.max(2, w * 0.0018);
+          const pad = Math.min(w, h) * 0.06;
+          ctx.strokeRect(pad, pad, w - pad * 2, h - pad * 2);
+
+          ctx.beginPath();
+          ctx.moveTo(pad, h * 0.5);
+          ctx.lineTo(w - pad, h * 0.5);
+          ctx.stroke();
+        } else {
+          // Deep Atmospheric Exhibition Backdrop (3D / Neon / Photo)
+          const bgGrad = ctx.createLinearGradient(0, 0, w, h);
+          bgGrad.addColorStop(0, pal.bg1);
+          bgGrad.addColorStop(1, pal.bg2);
+          ctx.fillStyle = bgGrad;
+          ctx.fillRect(0, 0, w, h);
+
+          // Luminous Layered Geometry
+          for (let i = 0; i < 3; i++) {
+            const gx = w * (0.2 + rand() * 0.6);
+            const gy = h * (0.2 + rand() * 0.6);
+            const gr = Math.min(w, h) * (0.25 + rand() * 0.3);
+            const g = ctx.createRadialGradient(gx, gy, 0, gx, gy, gr);
+            g.addColorStop(0, (i % 2 === 0 ? pal.c1 : pal.c2) + 'CC');
+            g.addColorStop(1, 'transparent');
+            ctx.fillStyle = g;
+            ctx.beginPath();
+            ctx.arc(gx, gy, gr, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          // Kinetic Exhibition Ring
+          ctx.strokeStyle = pal.c3 + '44';
+          ctx.lineWidth = Math.max(3, w * 0.003);
+          ctx.beginPath();
+          ctx.arc(w * 0.5, h * 0.46, Math.min(w, h) * 0.28, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      function drawEditorialOverlay(ctx, w, h, opts) {
+        const { badge, headline, theme, position, platform } = opts;
+        if (!badge && !headline) return;
+
+        const accentMap = {
+          telegram: '#0057FF',
+          instagram: '#FF2A85',
+          youtube: '#FF1E38'
+        };
+        const accent = accentMap[platform] || '#0057FF';
+        const pad = Math.round(Math.min(w, h) * 0.065);
+        const maxTextW = w - pad * 2.6;
+
+        // Typography sizing proportional to canvas width
+        const titleSize = Math.round(Math.min(w, h) * 0.058);
+        const badgeSize = Math.round(Math.min(w, h) * 0.022);
+        const lineHeight = Math.round(titleSize * 1.22);
+
+        ctx.save();
+        ctx.font = `700 ${titleSize}px "Space Grotesk", "Plus Jakarta Sans", sans-serif`;
+        const lines = headline ? wrapCanvasText(ctx, headline, maxTextW).slice(0, 4) : [];
+
+        const badgeBlockH = badge ? badgeSize + Math.round(pad * 0.45) : 0;
+        const textBlockH = lines.length * lineHeight;
+        const cardInnerPad = Math.round(pad * 0.75);
+        const boxH = badgeBlockH + textBlockH + cardInnerPad * 2;
+        const boxW = w - pad * 2;
+
+        let boxY = h - pad - boxH;
+        if (position === 'top') boxY = pad;
+        if (position === 'center') boxY = Math.round((h - boxH) / 2);
+
+        if (theme === 'dark-glass' || theme === 'light-editorial') {
+          const isDark = theme === 'dark-glass';
+          roundRectPath(ctx, pad, boxY, boxW, boxH, Math.round(pad * 0.45));
+          ctx.fillStyle = isDark ? 'rgba(10, 10, 14, 0.76)' : 'rgba(250, 250, 248, 0.90)';
+          ctx.fill();
+          ctx.strokeStyle = isDark ? 'rgba(255, 255, 255, 0.16)' : 'rgba(10, 10, 12, 0.14)';
+          ctx.lineWidth = Math.max(2, Math.round(w * 0.0018));
+          ctx.stroke();
+        } else if (theme === 'minimal-tag') {
+          // Subtle readability gradient behind text
+          const grad = ctx.createLinearGradient(0, boxY - pad, 0, boxY + boxH + pad);
+          grad.addColorStop(0, 'rgba(0,0,0,0)');
+          grad.addColorStop(0.5, 'rgba(0,0,0,0.68)');
+          grad.addColorStop(1, 'rgba(0,0,0,0.78)');
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, Math.max(0, boxY - pad), w, Math.min(h, boxH + pad * 2));
+        }
+
+        let cursorY = boxY + cardInnerPad;
+        const contentX = pad + cardInnerPad;
+
+        // Draw Category Badge Pill
+        if (badge) {
+          ctx.font = `600 ${badgeSize}px "JetBrains Mono", monospace`;
+          const badgeMetrics = ctx.measureText(badge);
+          const pillW = badgeMetrics.width + badgeSize * 1.4;
+          const pillH = badgeSize * 1.75;
+
+          roundRectPath(ctx, contentX, cursorY, pillW, pillH, pillH / 2);
+          ctx.fillStyle = accent;
+          ctx.fill();
+
+          ctx.fillStyle = '#FFFFFF';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(badge, contentX + badgeSize * 0.7, cursorY + pillH / 2 + 1);
+          cursorY += pillH + Math.round(pad * 0.35);
+        }
+
+        // Draw Main Headline
+        if (lines.length > 0) {
+          ctx.font = `700 ${titleSize}px "Space Grotesk", "Plus Jakarta Sans", sans-serif`;
+          ctx.fillStyle = theme === 'light-editorial' ? '#0A0A0C' : '#FFFFFF';
+          ctx.textBaseline = 'top';
+          lines.forEach((line, idx) => {
+            ctx.fillText(line, contentX, cursorY + idx * lineHeight);
+          });
+        }
+
+        ctx.restore();
+      }
+
+      function wrapCanvasText(ctx, text, maxWidth) {
+        const words = text.split(/\s+/);
+        const lines = [];
+        let currentLine = words[0] || '';
+        for (let i = 1; i < words.length; i++) {
+          const word = words[i];
+          const width = ctx.measureText(currentLine + ' ' + word).width;
+          if (width < maxWidth) {
+            currentLine += ' ' + word;
+          } else {
+            lines.push(currentLine);
+            currentLine = word;
+          }
+        }
+        if (currentLine) lines.push(currentLine);
+        return lines;
+      }
+
+      function roundRectPath(ctx, x, y, width, height, radius) {
+        ctx.beginPath();
+        ctx.moveTo(x + radius, y);
+        ctx.lineTo(x + width - radius, y);
+        ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+        ctx.lineTo(x + width, y + height - radius);
+        ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+        ctx.lineTo(x + radius, y + height);
+        ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+        ctx.lineTo(x, y + radius);
+        ctx.quadraticCurveTo(x, y, x + radius, y);
+        ctx.closePath();
+      }
+
+      function downloadCoverPng() {
+        renderCoverCanvas();
+        const dataUrl = coverCompositeCanvas.toDataURL('image/png', 1.0);
+        const link = document.createElement('a');
+        link.download = 'oblojka-postcraft.png';
+        link.href = dataUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        // Attach cover data URL to latest matching history entry if available
+        if (state.history.length > 0) {
+          state.history[0].coverDataUrl = dataUrl;
+          try {
+            localStorage.setItem('kg_history', JSON.stringify(state.history));
+          } catch (e) {}
+        }
+
+        showToast(t().toasts.coverDownloaded);
+        triggerHaptic(18);
+      }
+
+      // --- Render 3D Interactive Card Deck / Stack ---
+      function renderDeck(isStreaming = false) {
+        const dict = t();
+        const total = state.variants.length;
+        if (total === 0) {
+          deckContainer.innerHTML = `
+            <div class="rounded-3xl p-8 hairline-border text-center space-y-3" style="background-color: var(--bg-surface);">
+              <p class="font-display text-base font-semibold">${escapeHtml(dict.emptyResultTitle)}</p>
+              <p class="text-xs" style="color: var(--text-secondary);">${escapeHtml(dict.emptyResultDesc)}</p>
+            </div>
+          `;
+          return;
+        }
+
+        // Update Top Variant Switcher Pills
+        variantPills.innerHTML = state.variants.map((v, idx) => {
+          const isActive = idx === state.activeCardIndex;
+          return `
+            <button type="button" data-vidx="${idx}" class="v-pill-btn px-3 py-1.5 rounded-full font-display text-xs font-semibold transition-all ${isActive ? 'text-white shadow-sm' : 'hairline-border'}"
+              style="${isActive ? 'background-color: var(--accent-primary);' : 'background-color: var(--bg-surface); color: var(--text-secondary);'}">
+              0${idx + 1}
+            </button>
+          `;
+        }).join('');
+
+        document.querySelectorAll('.v-pill-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            state.activeCardIndex = parseInt(btn.dataset.vidx, 10);
+            state.isEditing = false;
+            renderDeck(false);
+            triggerHaptic(8);
+          });
+        });
+
+        // Update Counter
+        deckCounterDisplay.textContent = `0${state.activeCardIndex + 1} / 0${total}`;
+        updateCharCount();
+
+        // Render Layered Cards in Stack Order
+        deckContainer.innerHTML = '';
+
+        // Render from back to front so active card sits on top cleanly
+        for (let offset = total - 1; offset >= 0; offset--) {
+          const actualIdx = (state.activeCardIndex + offset) % total;
+          const variant = state.variants[actualIdx];
+          const isFront = offset === 0;
+
+          const card = document.createElement('article');
+          card.className = 'deck-card p-5 flex flex-col justify-between';
+          card.dataset.idx = actualIdx;
+
+          // 3D Stack Depth Geometry
+          const scale = 1 - offset * 0.045;
+          const translateY = offset * 14;
+          const rotateZ = offset === 0 ? 0 : (offset % 2 === 1 ? 1.4 : -1.4);
+          const opacity = offset === 0 ? 1 : Math.max(0.45, 1 - offset * 0.28);
+
+          card.style.zIndex = total - offset;
+          card.style.transform = `translate3d(0, ${translateY}px, 0) scale(${scale}) rotate(${rotateZ}deg)`;
+          card.style.opacity = opacity;
+
+          if (isFront) {
+            card.style.borderColor = 'var(--border-strong)';
+          }
+
+          // Card Inner Markup
+          const animateWords = isStreaming && isFront;
+          const editMode = isFront && state.isEditing && !isStreaming;
+
+          card.innerHTML = `
+            <div class="space-y-3.5">
+              <!-- Card Top Header -->
+              <div class="flex items-center justify-between pb-2.5 hairline-b">
+                <div class="flex items-center gap-2">
+                  <span class="font-mono text-[11px] font-semibold px-2 py-0.5 rounded-md" style="background-color: var(--bg-surface-elevated); color: var(--accent-primary);">
+                    ${dict.variantTag} 0${actualIdx + 1}
+                  </span>
+                  <span class="font-display text-xs font-medium" style="color: var(--text-secondary);">
+                    ${escapeHtml(variant.styleLabel)}
+                  </span>
+                </div>
+                <span class="font-mono text-[10px] uppercase" style="color: var(--text-muted);">
+                  ${PLATFORM_META[state.platform].label}
+                </span>
+              </div>
+
+              ${editMode ? `
+                <!-- Inline Edit Form -->
+                <div class="space-y-2.5">
+                  <div>
+                    <label class="font-mono text-[10px] uppercase" style="color: var(--text-muted);">${dict.editLabels.title}</label>
+                    <input id="editTitleInput" type="text" value="${escapeHtml(variant.title)}" class="w-full mt-1 p-2 rounded-xl hairline-border bg-transparent font-display text-base font-bold focus:outline-none" />
+                  </div>
+                  <div>
+                    <label class="font-mono text-[10px] uppercase" style="color: var(--text-muted);">${dict.editLabels.body}</label>
+                    <textarea id="editBodyInput" rows="5" class="w-full mt-1 p-2 rounded-xl hairline-border bg-transparent text-sm leading-relaxed focus:outline-none">${escapeHtml(variant.body)}</textarea>
+                  </div>
+                  <div>
+                    <label class="font-mono text-[10px] uppercase" style="color: var(--text-muted);">${dict.editLabels.cta}</label>
+                    <input id="editCtaInput" type="text" value="${escapeHtml(variant.cta)}" class="w-full mt-1 p-2 rounded-xl hairline-border bg-transparent text-xs font-semibold focus:outline-none" />
+                  </div>
+                  <div>
+                    <label class="font-mono text-[10px] uppercase" style="color: var(--text-muted);">${dict.editLabels.tags}</label>
+                    <input id="editTagsInput" type="text" value="${escapeHtml(variant.hashtags)}" class="w-full mt-1 p-2 rounded-xl hairline-border bg-transparent font-mono text-xs focus:outline-none" />
+                  </div>
+                  <button type="button" id="saveInlineEditBtn" class="w-full py-2.5 rounded-xl font-display text-xs font-bold text-white" style="background-color: var(--accent-primary);">
+                    ${dict.editLabels.saveBtn}
+                  </button>
+                </div>
+              ` : `
+                <!-- Gallery Exhibition Read View -->
+                <div class="space-y-3 max-h-[340px] overflow-y-auto pr-1">
+                  <!-- Sarlavha (Hook) -->
+                  <h3 class="font-display text-[18px] font-bold leading-snug tracking-tight" style="color: var(--text-primary);">
+                    ${formatBlurText(variant.title || (isStreaming ? '...' : ''), animateWords)}
+                  </h3>
+
+                  <!-- Asosiy Matn (Body) -->
+                  <div class="text-[14.5px] leading-[1.65]" style="color: var(--text-secondary);">
+                    ${formatBlurText(variant.body, animateWords)}
+                  </div>
+
+                  <!-- Harakatga chaqiruv (CTA) -->
+                  ${variant.cta ? `
+                    <div class="p-3 rounded-xl hairline-border text-[13.5px] font-semibold leading-snug" style="background-color: var(--bg-surface-elevated); color: var(--text-primary);">
+                      ${formatBlurText(variant.cta, animateWords)}
+                    </div>
+                  ` : ''}
+
+                  <!-- Xeshteglar -->
+                  ${variant.hashtags ? `
+                    <div class="pt-1 font-mono text-[11.5px] leading-relaxed break-words" style="color: var(--accent-primary);">
+                      ${formatBlurText(variant.hashtags, animateWords)}
+                    </div>
+                  ` : ''}
+                </div>
+              `}
+            </div>
+          `;
+
+          // Attach Swipe/Drag Gesture Physics to Front Card
+          if (isFront && !editMode) {
+            attachDeckDragGesture(card, total);
+          }
+
+          deckContainer.appendChild(card);
+
+          // Dynamically adjust container height to fit front card cleanly
+          if (isFront) {
+            requestAnimationFrame(() => {
+              const h = card.offsetHeight;
+              if (h > 100) {
+                deckContainer.style.minHeight = `${h + (total - 1) * 14 + 8}px`;
+              }
+            });
+          }
+        }
+
+        // Bind Inline Save if Editing
+        const saveEditBtn = document.getElementById('saveInlineEditBtn');
+        if (saveEditBtn) {
+          saveEditBtn.addEventListener('click', () => {
+            const activeVar = state.variants[state.activeCardIndex];
+            activeVar.title = document.getElementById('editTitleInput').value.trim();
+            activeVar.body = document.getElementById('editBodyInput').value.trim();
+            activeVar.cta = document.getElementById('editCtaInput').value.trim();
+            activeVar.hashtags = document.getElementById('editTagsInput').value.trim();
+            state.isEditing = false;
+            renderDeck(false);
+            showToast(dict.toasts.updated);
+            triggerHaptic(12);
+          });
+        }
+      }
+
+      // --- Touch & Pointer Drag / Swipe Physics for Card Deck ---
+      function attachDeckDragGesture(card, total) {
+        if (total <= 1) return;
+        let startX = 0;
+        let currentX = 0;
+        let isDragging = false;
+
+        card.addEventListener('pointerdown', (e) => {
+          if (e.target.closest('button, input, textarea')) return;
+          isDragging = true;
+          startX = e.clientX;
+          currentX = 0;
+          card.classList.add('dragging');
+          card.setPointerCapture(e.pointerId);
+        });
+
+        card.addEventListener('pointermove', (e) => {
+          if (!isDragging) return;
+          currentX = e.clientX - startX;
+          const rotate = currentX * 0.045;
+          card.style.transform = `translate3d(${currentX}px, 0, 0) rotate(${rotate}deg)`;
+        });
+
+        const endDrag = (e) => {
+          if (!isDragging) return;
+          isDragging = false;
+          card.classList.remove('dragging');
+          try { card.releasePointerCapture(e.pointerId); } catch (err) {}
+
+          const threshold = 75;
+          if (Math.abs(currentX) > threshold) {
+            // Fling card out and cycle to next variant
+            const direction = currentX > 0 ? 1 : -1;
+            card.style.transform = `translate3d(${direction * 340}px, 24px, 0) rotate(${direction * 16}deg)`;
+            card.style.opacity = '0';
+            triggerHaptic(14);
+
+            setTimeout(() => {
+              state.activeCardIndex = (state.activeCardIndex + 1) % total;
+              renderDeck(false);
+            }, 190);
+          } else {
+            // Spring back to center
+            card.style.transform = 'translate3d(0, 0, 0) scale(1) rotate(0deg)';
+          }
+        };
+
+        card.addEventListener('pointerup', endDrag);
+        card.addEventListener('pointercancel', endDrag);
+      }
+
+      // --- Format Full Post String for Clipboard ---
+      function formatFullPost(variant) {
+        if (!variant) return '';
+        return [
+          variant.title,
+          variant.body,
+          variant.cta,
+          variant.hashtags
+        ].filter(Boolean).join('\n\n').trim();
+      }
+
+      function updateCharCount() {
+        const suffix = t().charSuffix;
+        const activeVar = state.variants[state.activeCardIndex];
+        if (!activeVar) {
+          charCountDisplay.textContent = `0 ${suffix}`;
+          return;
+        }
+        const fullText = formatFullPost(activeVar);
+        const max = PLATFORM_META[state.platform].maxChars;
+        charCountDisplay.textContent = `${fullText.length} / ${max} ${suffix}`;
+      }
+
+      // --- Reliable Cross-Platform One-Tap Copy ---
+      function copyTextToClipboard(text) {
+        if (!text) return;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+        } else {
+          fallbackCopy(text);
+        }
+      }
+
+      function fallbackCopy(text) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) {}
+        document.body.removeChild(ta);
+      }
+
+      // --- Render History / Archive Screen ---
+      function renderHistory() {
+        const dict = t();
+        const locale = state.lang === 'ru' ? 'ru-RU' : 'uz-UZ';
+        const filtered = state.historyFilter === 'all'
+          ? state.history
+          : state.history.filter(item => item.platform === state.historyFilter);
+
+        if (filtered.length === 0) {
+          historyList.innerHTML = `
+            <div class="rounded-3xl p-8 hairline-border text-center space-y-2" style="background-color: var(--bg-surface);">
+              <p class="font-display text-sm font-semibold">${escapeHtml(dict.emptyHistoryTitle)}</p>
+              <p class="text-xs" style="color: var(--text-secondary);">${escapeHtml(dict.emptyHistoryDesc)}</p>
+            </div>
+          `;
+          return;
+        }
+
+        historyList.innerHTML = filtered.map(item => {
+          const date = new Date(item.createdAt);
+          const timeStr = date.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
+          const dateStr = date.toLocaleDateString(locale, { day: '2-digit', month: 'short' });
+          const firstVar = item.variants[0] || {};
+          const itemLang = (item.lang || 'uz').toUpperCase();
+
+          return `
+            <div class="rounded-2xl p-4 hairline-border space-y-3 transition-all" style="background-color: var(--bg-surface);">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-1.5">
+                  <span class="font-mono text-[10px] font-semibold uppercase px-2 py-0.5 rounded-full hairline-border" style="color: var(--accent-primary);">
+                    ${item.platform}
+                  </span>
+                  <span class="font-mono text-[10px] uppercase px-1.5 py-0.5 rounded-md" style="background-color: var(--bg-surface-elevated); color: var(--text-secondary);">
+                    ${itemLang}
+                  </span>
+                  <span class="font-mono text-[11px]" style="color: var(--text-muted);">
+                    ${dateStr}, ${timeStr}
+                  </span>
+                </div>
+                <span class="font-mono text-[10px]" style="color: var(--text-secondary);">
+                  ${item.variants.length} ${dict.variantsCountLabel}
+                </span>
+              </div>
+
+              <div>
+                <h4 class="font-display text-sm font-bold line-clamp-1">${escapeHtml(firstVar.title || item.idea)}</h4>
+                <p class="text-xs mt-1 line-clamp-2 leading-relaxed" style="color: var(--text-secondary);">
+                  ${escapeHtml(firstVar.body || '')}
+                </p>
+              </div>
+
+              <div class="flex items-center justify-between pt-2 hairline-t">
+                <div class="flex items-center gap-3">
+                  <button type="button" data-open-id="${item.id}" class="hist-open-btn font-display text-xs font-semibold flex items-center gap-1" style="color: var(--accent-primary);">
+                    <span>${dict.openExhibition}</span>
+                    <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+                  </button>
+                  <button type="button" data-cover-id="${item.id}" class="hist-cover-btn font-display text-xs font-semibold flex items-center gap-1" style="color: var(--text-secondary);">
+                    <i data-lucide="frame" class="w-3.5 h-3.5"></i>
+                    <span>${dict.navCover}</span>
+                  </button>
+                </div>
+
+                <div class="flex items-center gap-2">
+                  <button type="button" data-copy-id="${item.id}" class="hist-copy-btn px-3 py-1.5 rounded-xl hairline-border font-display text-[11px] font-semibold flex items-center gap-1 active:scale-95" style="background-color: var(--bg-surface-elevated);">
+                    <i data-lucide="copy" class="w-3 h-3"></i>
+                    <span>${dict.copyBtn}</span>
+                  </button>
+                  <button type="button" data-del-id="${item.id}" aria-label="Delete" class="hist-del-btn p-1.5 rounded-xl hairline-border hover:opacity-75" style="color: var(--text-muted);">
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        lucide.createIcons();
+
+        // Bind History Actions
+        document.querySelectorAll('.hist-open-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const found = state.history.find(h => h.id === btn.dataset.openId);
+            if (found) {
+              selectPlatform(found.platform);
+              state.variants = JSON.parse(JSON.stringify(found.variants));
+              state.activeCardIndex = 0;
+              switchTab('result', true);
+              triggerHaptic(12);
+            }
+          });
+        });
+
+        document.querySelectorAll('.hist-cover-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const found = state.history.find(h => h.id === btn.dataset.coverId);
+            if (found) {
+              syncCoverFromActivePost(found.variants[0], found.platform);
+              switchTab('cover', true);
+              showToast(dict.toasts.coverPrefilled);
+              triggerHaptic(12);
+            }
+          });
+        });
+
+        document.querySelectorAll('.hist-copy-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const found = state.history.find(h => h.id === btn.dataset.copyId);
+            if (found && found.variants[0]) {
+              copyTextToClipboard(formatFullPost(found.variants[0]));
+              showToast(dict.toasts.copiedShort);
+              triggerHaptic(15);
+            }
+          });
+        });
+
+        document.querySelectorAll('.hist-del-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            state.history = state.history.filter(h => h.id !== btn.dataset.delId);
+            localStorage.setItem('kg_history', JSON.stringify(state.history));
+            updateHistoryBadge();
+            renderHistory();
+            showToast(dict.toasts.deleted);
+            triggerHaptic(10);
+          });
+        });
+      }
+
+      // --- Setup All Event Listeners ---
+      function setupEventListeners() {
+        // Language Toggle (UZ / RU)
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            if (btn.dataset.lang !== state.lang) {
+              applyLanguage(btn.dataset.lang, true);
+            }
+          });
+        });
+
+        // Theme Toggle
+        themeToggleBtn.addEventListener('click', () => {
+          applyTheme(state.theme === 'light' ? 'dark' : 'light');
+          triggerHaptic(10);
+        });
+
+        // API Key Settings Modal Listeners
+        apiSettingsBtn.addEventListener('click', () => {
+          apiKeyInput.value = localStorage.getItem('postcraft_gemini_api_key') || '';
+          apiKeyModal.classList.remove('hidden');
+          triggerHaptic(10);
+        });
+        closeApiModalBtn.addEventListener('click', () => {
+          apiKeyModal.classList.add('hidden');
+        });
+        apiKeyModal.addEventListener('click', (e) => {
+          if (e.target === apiKeyModal) apiKeyModal.classList.add('hidden');
+        });
+        saveApiKeyBtn.addEventListener('click', () => {
+          const val = apiKeyInput.value.trim();
+          if (val) {
+            localStorage.setItem('postcraft_gemini_api_key', val);
+          } else {
+            localStorage.removeItem('postcraft_gemini_api_key');
+          }
+          updateApiKeyIndicator();
+          apiKeyModal.classList.add('hidden');
+          showToast(t().toasts.apiSaved);
+          triggerHaptic(14);
+        });
+        clearApiKeyBtn.addEventListener('click', () => {
+          localStorage.removeItem('postcraft_gemini_api_key');
+          apiKeyInput.value = '';
+          updateApiKeyIndicator();
+          showToast(t().toasts.apiCleared);
+          triggerHaptic(10);
+        });
+
+        // Platform Selector Buttons
+        document.querySelectorAll('.plat-btn').forEach(btn => {
+          btn.addEventListener('click', () => selectPlatform(btn.dataset.plat));
+        });
+
+        // Character Counters
+        businessInput.addEventListener('input', () => {
+          bizCounter.textContent = `${businessInput.value.length}/300`;
+        });
+        ideaInput.addEventListener('input', () => {
+          ideaCounter.textContent = `${ideaInput.value.length}/600`;
+        });
+
+        // Variant Count Toggle (2 or 3)
+        document.querySelectorAll('.count-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            state.variantCount = parseInt(btn.dataset.count, 10);
+            document.querySelectorAll('.count-btn').forEach(b => {
+              const active = parseInt(b.dataset.count, 10) === state.variantCount;
+              if (active) {
+                b.classList.add('text-white');
+                b.style.backgroundColor = 'var(--accent-primary)';
+                b.style.color = '#FFFFFF';
+              } else {
+                b.classList.remove('text-white');
+                b.style.backgroundColor = 'transparent';
+                b.style.color = 'var(--text-secondary)';
+              }
+            });
+            triggerHaptic(8);
+          });
+        });
+
+        // Tone Pills
+        document.querySelectorAll('.tone-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            state.tone = btn.dataset.tone;
+            document.querySelectorAll('.tone-btn').forEach(b => {
+              const active = b.dataset.tone === state.tone;
+              if (active) {
+                b.classList.add('text-white');
+                b.style.backgroundColor = 'var(--accent-primary)';
+                b.style.borderColor = 'var(--accent-primary)';
+                b.style.color = '#FFFFFF';
+              } else {
+                b.classList.remove('text-white');
+                b.style.backgroundColor = 'var(--bg-surface)';
+                b.style.borderColor = 'var(--border-hairline)';
+                b.style.color = 'var(--text-secondary)';
+              }
+            });
+            triggerHaptic(8);
+          });
+        });
+
+        // Generate CTA
+        generateBtn.addEventListener('click', () => {
+          if (!state.isGenerating) generatePosts();
+        });
+
+        // Regenerate CTA
+        regenerateBtn.addEventListener('click', () => {
+          if (!state.isGenerating) {
+            regenIcon.classList.add('animate-spin');
+            setTimeout(() => regenIcon.classList.remove('animate-spin'), 600);
+            generatePosts();
+          }
+        });
+
+        // One-Tap Copy Button with Morph Confirmation
+        copyActiveBtn.addEventListener('click', () => {
+          const dict = t();
+          const activeVar = state.variants[state.activeCardIndex];
+          if (!activeVar) return;
+          copyTextToClipboard(formatFullPost(activeVar));
+          triggerHaptic(18);
+
+          const origBg = copyActiveBtn.style.backgroundColor;
+          copyBtnLabel.textContent = dict.copiedBtn;
+          copyActiveBtn.style.backgroundColor = "#10B981";
+          showToast(dict.toasts.copiedFull);
+
+          setTimeout(() => {
+            copyBtnLabel.textContent = t().copyBtn;
+            copyActiveBtn.style.backgroundColor = origBg || 'var(--accent-primary)';
+          }, 1800);
+        });
+
+        // Inline Edit Toggle
+        editToggleBtn.addEventListener('click', () => {
+          if (state.isGenerating || state.variants.length === 0) return;
+          state.isEditing = !state.isEditing;
+          renderDeck(false);
+          triggerHaptic(10);
+        });
+
+        // Quick-Jump from Post Card to Cover / Oblojka Studio
+        jumpToCoverBtn.addEventListener('click', () => {
+          syncCoverFromActivePost();
+          switchTab('cover', true);
+          showToast(t().toasts.coverPrefilled);
+          triggerHaptic(14);
+        });
+
+        // Studio Photo Upload & Drag-and-Drop Listeners
+        studioDropzone.addEventListener('click', (e) => {
+          if (e.target.closest('#removeStudioPhotoBtn')) return;
+          studioPhotoInput.click();
+        });
+        studioPhotoInput.addEventListener('change', (e) => {
+          if (e.target.files && e.target.files[0]) {
+            handleStudioPhotoUpload(e.target.files[0]);
+          }
+        });
+        removeStudioPhotoBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          clearStudioPhoto(true);
+        });
+        ['dragenter', 'dragover'].forEach(evt => {
+          studioDropzone.addEventListener(evt, (e) => {
+            e.preventDefault();
+            studioDropzone.classList.add('drag-over');
+          });
+        });
+        ['dragleave', 'drop'].forEach(evt => {
+          studioDropzone.addEventListener(evt, (e) => {
+            e.preventDefault();
+            studioDropzone.classList.remove('drag-over');
+          });
+        });
+        studioDropzone.addEventListener('drop', (e) => {
+          const file = e.dataTransfer?.files?.[0];
+          if (file) handleStudioPhotoUpload(file);
+        });
+
+        // Cover Studio Photo Upload & Drag-and-Drop Listeners
+        coverDropzone.addEventListener('click', (e) => {
+          if (e.target.closest('#removeCoverPhotoBtn')) return;
+          coverPhotoInput.click();
+        });
+        coverPhotoInput.addEventListener('change', (e) => {
+          if (e.target.files && e.target.files[0]) {
+            handleCoverPhotoUpload(e.target.files[0]);
+          }
+        });
+        removeCoverPhotoBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          clearCoverPhoto(true);
+        });
+        ['dragenter', 'dragover'].forEach(evt => {
+          coverDropzone.addEventListener(evt, (e) => {
+            e.preventDefault();
+            coverDropzone.classList.add('drag-over');
+          });
+        });
+        ['dragleave', 'drop'].forEach(evt => {
+          coverDropzone.addEventListener(evt, (e) => {
+            e.preventDefault();
+            coverDropzone.classList.remove('drag-over');
+          });
+        });
+        coverDropzone.addEventListener('drop', (e) => {
+          const file = e.dataTransfer?.files?.[0];
+          if (file) handleCoverPhotoUpload(file);
+        });
+
+        // Before / After Comparison Toggle
+        document.querySelectorAll('.ba-toggle-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            state.cover.viewMode = btn.dataset.viewmode;
+            updateBeforeAfterToggleUI();
+            renderCoverCanvas();
+            triggerHaptic(8);
+          });
+        });
+
+        // Cover Studio Controls
+        document.querySelectorAll('.ratio-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            setCoverRatio(btn.dataset.ratio);
+            triggerHaptic(8);
+          });
+        });
+
+        syncFromPostBtn.addEventListener('click', () => {
+          syncCoverFromActivePost();
+          showToast(t().toasts.coverPrefilled);
+          triggerHaptic(10);
+        });
+
+        coverBadgeInput.addEventListener('input', renderCoverCanvas);
+        coverHeadlineInput.addEventListener('input', renderCoverCanvas);
+
+        document.querySelectorAll('.ov-theme-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            state.cover.overlayTheme = btn.dataset.ovtheme;
+            document.getElementById('overlayThemeName').textContent = btn.dataset.ovtheme.toUpperCase();
+            document.querySelectorAll('.ov-theme-btn').forEach(b => {
+              const active = b.dataset.ovtheme === state.cover.overlayTheme;
+              if (active) {
+                b.classList.add('text-white');
+                b.style.backgroundColor = 'var(--accent-primary)';
+                b.style.borderColor = 'var(--accent-primary)';
+                b.style.color = '#FFFFFF';
+              } else {
+                b.classList.remove('text-white');
+                b.style.backgroundColor = 'var(--bg-surface-elevated)';
+                b.style.borderColor = 'var(--border-hairline)';
+                b.style.color = 'var(--text-secondary)';
+              }
+            });
+            renderCoverCanvas();
+            triggerHaptic(8);
+          });
+        });
+
+        document.querySelectorAll('.ov-pos-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            state.cover.overlayPos = btn.dataset.ovpos;
+            document.querySelectorAll('.ov-pos-btn').forEach(b => {
+              const active = b.dataset.ovpos === state.cover.overlayPos;
+              if (active) {
+                b.classList.add('text-white');
+                b.style.backgroundColor = 'var(--accent-primary)';
+                b.style.borderColor = 'var(--accent-primary)';
+                b.style.color = '#FFFFFF';
+              } else {
+                b.classList.remove('text-white');
+                b.style.backgroundColor = 'var(--bg-surface-elevated)';
+                b.style.borderColor = 'var(--border-hairline)';
+                b.style.color = 'var(--text-secondary)';
+              }
+            });
+            renderCoverCanvas();
+            triggerHaptic(8);
+          });
+        });
+
+        generateCoverBtn.addEventListener('click', () => {
+          if (!state.cover.isGenerating) generateCoverImage();
+        });
+
+        downloadCoverBtn.addEventListener('click', downloadCoverPng);
+
+        // Bottom Navigation Tabs
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+          tab.addEventListener('click', () => {
+            switchTab(tab.dataset.tab, false);
+            triggerHaptic(8);
+          });
+        });
+
+        // History Filters
+        document.querySelectorAll('.hist-filter-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            state.historyFilter = btn.dataset.filter;
+            document.querySelectorAll('.hist-filter-btn').forEach(b => {
+              const active = b.dataset.filter === state.historyFilter;
+              if (active) {
+                b.classList.add('text-white');
+                b.style.backgroundColor = 'var(--accent-primary)';
+                b.style.color = '#FFFFFF';
+              } else {
+                b.classList.remove('text-white');
+                b.style.backgroundColor = 'var(--bg-surface)';
+                b.style.color = 'var(--text-secondary)';
+              }
+            });
+            renderHistory();
+            triggerHaptic(8);
+          });
+        });
+
+        // Clear All History
+        clearAllHistoryBtn.addEventListener('click', () => {
+          state.history = [];
+          localStorage.removeItem('kg_history');
+          updateHistoryBadge();
+          renderHistory();
+          showToast(t().toasts.cleared);
+          triggerHaptic(15);
+        });
+      }
+
+      // Launch App
+      init();
+    })();
+  </script>
+</body>
+</html>
