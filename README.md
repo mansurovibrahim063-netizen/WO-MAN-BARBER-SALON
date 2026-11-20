@@ -32,7 +32,7 @@ WOMAN_ADMIN_PASSWORD="sizning-parolingiz" python server.py
 
 ## 2. Birinchi sozlash (5 daqiqa)
 
-1. **Ustalar.** Admin panel → *Ustalarni Boshqarish*. Namuna sifatida qo'yilgan ismlarni (Marcus Vance va boshqalar) haqiqiy ustalaringizga almashtiring yoki o'chiring.
+1. **Ustalar.** Erkaklar zali barberlari (Akrom, Axror, Jamoliddin) suratlari bilan qo'shilgan. Ayollar zalidagi ismlar hali namunaviy: admin panel → *Ustalarni Boshqarish* bo'limida almashtiring yoki o'chiring. Agar server avval ishga tushirilgan bo'lsa, ustalar ro'yxati `data/specialists.json` da turadi, o'zgarishlarni admin paneldan kiriting.
 2. **Telegram.** `TELEGRAM_BOT_GUIDE.md` dagi qadamlarni bajaring: bot tokeni, admin havolasi, ustalar havolalari.
 3. **Aloqa ma'lumotlari.** `site-config.js` faylida telefon, manzil, Instagram va Telegram'ni yozing. Bo'sh qatorlar saytda ko'rinmaydi.
 4. **Xizmatlar va narxlar.** `app.js` dagi `servicesCatalog`: erkaklar zali narxlari salonning rasmiy narxlar ro'yxatidan olingan. Ayollar zali narxlari hali kiritilmagan (`price: null` → saytda "Narxini so'rang"). Narxni faqat shu yerda o'zgartirasiz: yozilish oynasi, "Xizmatlar" oynasi va bosh sahifa shu ro'yxatdan oladi. Ish vaqti (`index.html` footer) va sayt matnlari namuna sifatida yozilgan, salonga moslang.

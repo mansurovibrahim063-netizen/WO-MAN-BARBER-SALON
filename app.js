@@ -731,6 +731,19 @@ document.addEventListener('DOMContentLoaded', () => {
   async function refreshBookingData() {
     await Promise.all([loadSpecialists(), loadBusySlots(selectedDate)]);
     renderBookingSpecialists(selectedSalon);
+    renderHeroTeam();
+  }
+
+  // Home page: photos and names of the men's studio barbers who are on duty
+  function renderHeroTeam() {
+    const box = document.getElementById('heroTeamHomme');
+    if (!box) return;
+    const team = specialists.filter(s => s.salon === 'homme' && s.onDuty !== false);
+    box.classList.toggle('is-hidden', team.length === 0);
+    box.querySelector('.avatar-stack').innerHTML = team.slice(0, 5)
+      .map(s => `<img src="${esc(s.img || DEFAULT_AVATAR)}" alt="${esc(s.name)}" loading="lazy">`).join('');
+    box.querySelectorAll('.avatar-stack img').forEach(img => img.addEventListener('error', () => { img.src = DEFAULT_AVATAR; }, { once: true }));
+    box.querySelector('.team-names').textContent = team.map(s => s.name).join(' • ');
   }
 
   document.querySelectorAll('[data-open-booking], [data-book-service]').forEach(btn => {

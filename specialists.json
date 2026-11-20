@@ -1,39 +1,39 @@
 [
   {
     "id": "sp-m1",
-    "name": "Marcus Vance",
+    "name": "Akrom",
     "role": "Barber",
     "salon": "homme",
-    "phone": "",
+    "phone": "+998 97 548 77 97",
     "telegram": "",
     "chatId": "",
     "onDuty": true,
     "experience": "",
-    "img": ""
+    "img": "assets/barber-akrom.jpg"
   },
   {
     "id": "sp-m2",
-    "name": "Julian Drake",
+    "name": "Axror",
     "role": "Barber",
     "salon": "homme",
-    "phone": "",
+    "phone": "+998 77 071 78 37",
     "telegram": "",
     "chatId": "",
     "onDuty": true,
     "experience": "",
-    "img": ""
+    "img": "assets/barber-axror.jpg"
   },
   {
     "id": "sp-m3",
-    "name": "Leo Saint",
+    "name": "Jamoliddin",
     "role": "Barber",
     "salon": "homme",
-    "phone": "",
+    "phone": "+998 97 977 59 94",
     "telegram": "",
     "chatId": "",
     "onDuty": true,
     "experience": "",
-    "img": ""
+    "img": "assets/barber-jamoliddin.jpg"
   },
   {
     "id": "sp-f1",

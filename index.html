@@ -251,16 +251,12 @@
           </button>
         </div>
 
-        <!-- Hidden: the ratings/review counts here were invented. Show real numbers, then remove "is-hidden". -->
-        <div class="panel-footer-meta is-hidden">
-          <div class="avatar-stack">
-            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80" alt="Marcus Vance">
-            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&q=80" alt="Julian Drake">
-            <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=120&q=80" alt="Leo Saint">
-          </div>
+        <!-- Our barbers: filled by app.js from the staff list in the admin panel (hidden while empty) -->
+        <div class="panel-footer-meta is-hidden" id="heroTeamHomme">
+          <div class="avatar-stack"></div>
           <div class="meta-stats">
-            <div class="meta-rating" data-i18n="homme_meta_rating">★ 4.98 (840+ sharh)</div>
-            <span class="meta-label" data-i18n="homme_meta_role">Bosh sartaroshlar & mutaxassislar</span>
+            <div class="meta-rating team-names"></div>
+            <span class="meta-label" data-i18n="homme_team_label">Bizning barberlar</span>
           </div>
         </div>
       </div>

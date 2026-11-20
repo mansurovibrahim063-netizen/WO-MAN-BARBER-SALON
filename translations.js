@@ -7,6 +7,7 @@
 
 const WOMAN_TRANSLATIONS = {
   uz: {
+    homme_team_label: "Bizning barberlar",
     salon_toggle_homme: "MAN (Erkaklar)",
     salon_toggle_femme: "WO (Ayollar)",
     look_1_tag: "Erkaklar • Skin feyd",
@@ -45,8 +46,6 @@ const WOMAN_TRANSLATIONS = {
     homme_desc: "Benuqson feydlar, an'anaviy qaynoq sochiqli xavfli ustara tarashlari va soqol arxitekturasi. Mukammallikni qadrlovchi zamonaviy erkaklar uchun.",
     btn_book_homme: "Erkaklar saloniga yozilish",
     btn_view_homme_menu: "Erkaklar xizmatlari",
-    homme_meta_rating: "★ 4.98 (840+ sharh)",
-    homme_meta_role: "Bosh sartaroshlar & mutaxassislar",
 
     // Hero Femme
     femme_badge: "WO // AYOLLAR ZALI",
@@ -152,6 +151,7 @@ const WOMAN_TRANSLATIONS = {
   },
 
   ru: {
+    homme_team_label: "Наши барберы",
     salon_toggle_homme: "MAN (Мужской зал)",
     salon_toggle_femme: "WO (Женский зал)",
     look_1_tag: "Мужской зал • Скин-фейд",
@@ -190,8 +190,6 @@ const WOMAN_TRANSLATIONS = {
     homme_desc: "Безупречные фейды, классическое бритье опасной бритвой с горячими полотенцами и авторское моделирование бороды. Для современных джентльменов.",
     btn_book_homme: "Записаться в мужской зал",
     btn_view_homme_menu: "Услуги мужского зала",
-    homme_meta_rating: "★ 4.98 (840+ отзывов)",
-    homme_meta_role: "Топ-барберы и мастера бритья",
 
     // Hero Femme
     femme_badge: "WO // ЖЕНСКИЙ ЗАЛ",

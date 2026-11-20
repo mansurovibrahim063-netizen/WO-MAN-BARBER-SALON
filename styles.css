@@ -1777,3 +1777,22 @@ body {
 #menuListFemme .service-card-select {
   cursor: default;
 }
+
+/* Real barber photos */
+#heroTeamHomme .avatar-stack img {
+  width: 44px;
+  height: 44px;
+  margin-left: -10px;
+  border: 2px solid #0b0b0f;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.25);
+}
+
+#heroTeamHomme .avatar-stack img:first-child {
+  margin-left: 0;
+}
+
+.specialist-item img {
+  width: 64px;
+  height: 64px;
+  object-position: center 30%;
+}
