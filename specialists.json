@@ -34,41 +34,5 @@
     "onDuty": true,
     "experience": "",
     "img": "assets/barber-jamoliddin.jpg"
-  },
-  {
-    "id": "sp-f1",
-    "name": "Elena Rostova",
-    "role": "Stilist",
-    "salon": "femme",
-    "phone": "",
-    "telegram": "",
-    "chatId": "",
-    "onDuty": true,
-    "experience": "",
-    "img": ""
-  },
-  {
-    "id": "sp-f2",
-    "name": "Camille Laurent",
-    "role": "Stilist",
-    "salon": "femme",
-    "phone": "",
-    "telegram": "",
-    "chatId": "",
-    "onDuty": true,
-    "experience": "",
-    "img": ""
-  },
-  {
-    "id": "sp-f3",
-    "name": "Sienna Blake",
-    "role": "Stilist",
-    "salon": "femme",
-    "phone": "",
-    "telegram": "",
-    "chatId": "",
-    "onDuty": false,
-    "experience": "",
-    "img": ""
   }
 ]
