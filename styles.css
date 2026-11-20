@@ -1796,3 +1796,22 @@ body {
   height: 64px;
   object-position: center 30%;
 }
+
+/* Shown only when index.html is opened as a file instead of through server.py */
+.server-hint {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  z-index: 1000;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  background: #24061a;
+  border: 1px solid var(--pink-border);
+  box-shadow: 0 0 24px var(--pink-glow);
+  color: #ffffff;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}

@@ -39,10 +39,35 @@ def ensure_data_dir():
                 shutil.copyfile(seed_specs, _path(SPECIALISTS))
             else:
                 write_json(SPECIALISTS, [])
+        else:
+            _replace_old_sample_staff(seed_specs)
         if not os.path.exists(_path(APPOINTMENTS)):
             write_json(APPOINTMENTS, [])
         if not os.path.exists(_path(CONFIG)):
             write_json(CONFIG, {})
+
+
+# Placeholder staff shipped by earlier versions of the site. A data folder
+# created back then still lists them, so they are swapped for the real staff
+# in ./specialists.json. Masters added in the admin panel are never touched.
+OLD_SAMPLE_STAFF = {"Marcus Vance", "Julian Drake", "Leo Saint",
+                    "Elena Rostova", "Camille Laurent", "Sienna Blake"}
+
+
+def _replace_old_sample_staff(seed_path):
+    live = read_json(SPECIALISTS, [])
+    if not isinstance(live, list) or not any(s.get("name") in OLD_SAMPLE_STAFF for s in live):
+        return
+    kept = [s for s in live if s.get("name") not in OLD_SAMPLE_STAFF]
+    try:
+        with open(seed_path, "r", encoding="utf-8") as f:
+            seed = json.load(f)
+    except (OSError, ValueError):
+        seed = []
+    taken_ids = {s.get("id") for s in kept}
+    taken_names = {s.get("name") for s in kept}
+    added = [s for s in seed if s.get("id") not in taken_ids and s.get("name") not in taken_names]
+    write_json(SPECIALISTS, added + kept)
 
 
 def read_json(name, default):

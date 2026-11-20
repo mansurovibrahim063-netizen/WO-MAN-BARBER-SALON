@@ -343,6 +343,7 @@ document.addEventListener('DOMContentLoaded', () => {
       pickStaff: { uz: 'Iltimos, ustani tanlang!', ru: 'Пожалуйста, выберите мастера!' },
       needInfo: { uz: 'Iltimos, ismingiz va telefon raqamingizni kiriting!', ru: 'Пожалуйста, введите имя и номер!' },
       sending: { uz: 'Yuborilmoqda...', ru: 'Отправка...' },
+      openViaServer: { uz: "Sayt fayl sifatida ochilgan, shuning uchun ustalar va yozilish ishlamaydi. Loyiha papkasida `python server.py` ni ishga tushiring va brauzerda http://localhost:8000 ni oching.", ru: "Сайт открыт как файл, поэтому мастера и запись не работают. Запустите `python server.py` в папке проекта и откройте в браузере http://localhost:8000." },
       netError: { uz: "Ulanishda xatolik. Internetni tekshirib, qayta urinib ko'ring.", ru: 'Ошибка соединения. Проверьте интернет и попробуйте снова.' }
     };
     return (t[key] && (t[key][currentLang] || t[key].uz)) || key;
@@ -385,7 +386,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (list.length === 0) {
       selectedSpecialist = null;
-      specialistSelectList.innerHTML = `<p style="font-size: 0.8rem; color: var(--text-muted); padding: 10px;">${esc(specialistsLoadFailed ? uiText('loadFailed') : uiText('noStaff'))}</p>`;
+      const msg = !specialistsLoadFailed ? uiText('noStaff') : (location.protocol === 'file:' ? uiText('openViaServer') : uiText('loadFailed'));
+      specialistSelectList.innerHTML = `<p style="font-size: 0.8rem; color: var(--text-muted); padding: 10px;">${esc(msg)}</p>`;
       renderTimeSlots();
       return;
     }
@@ -684,6 +686,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderBookingSpecialists(selectedSalon);
     renderServiceLists();
     applySalonConfig();
+    if (document.getElementById('serverHint')) renderServerHint();
   }
 
   // --- Contact details from site-config.js (empty values stay hidden) ---
@@ -732,6 +735,21 @@ document.addEventListener('DOMContentLoaded', () => {
     await Promise.all([loadSpecialists(), loadBusySlots(selectedDate)]);
     renderBookingSpecialists(selectedSalon);
     renderHeroTeam();
+    renderServerHint();
+  }
+
+  // Opened by double-clicking index.html: nothing can load without server.py, so say how to open it
+  function renderServerHint() {
+    let hint = document.getElementById('serverHint');
+    if (location.protocol !== 'file:') { if (hint) hint.remove(); return; }
+    if (!hint) {
+      hint = document.createElement('div');
+      hint.id = 'serverHint';
+      hint.className = 'server-hint';
+      hint.setAttribute('role', 'alert');
+      document.body.appendChild(hint);
+    }
+    hint.textContent = '⚠️ ' + uiText('openViaServer');
   }
 
   // Home page: photos and names of the men's studio barbers who are on duty

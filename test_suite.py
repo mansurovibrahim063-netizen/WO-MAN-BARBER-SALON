@@ -140,11 +140,32 @@ def test_bot_logic():
     assert_true(True, "unknown booking id is handled without crashing")
 
 
+def test_old_sample_staff_is_replaced():
+    print("\n--- Test 5: old sample staff in an existing data folder is replaced ---")
+    import subprocess
+    tmp = tempfile.mkdtemp(prefix="woman-migrate-")
+    old_samples = [
+        {"id": "sp-m1", "name": "Marcus Vance", "role": "Master Fade Specialist", "salon": "homme", "onDuty": True, "linkCode": "abc"},
+        {"id": "sp-f1", "name": "Elena Rostova", "role": "Creative Color Director", "salon": "femme", "onDuty": True},
+        {"id": "sp-own1", "name": "Dilnoza", "role": "Stilist", "salon": "femme", "onDuty": True},
+    ]
+    with open(os.path.join(tmp, "specialists.json"), "w", encoding="utf-8") as f:
+        json.dump(old_samples, f)
+    code = "import storage; storage.ensure_data_dir(); import json; print(json.dumps([s['name'] for s in storage.load_specialists()]))"
+    out = subprocess.run([sys.executable, "-c", code], cwd=DIR, capture_output=True, text=True,
+                         env=dict(os.environ, WOMAN_DATA_DIR=tmp)).stdout.strip()
+    names = json.loads(out or "[]")
+    assert_true("Marcus Vance" not in names and "Elena Rostova" not in names, f"sample staff removed {names}")
+    assert_true(all(n in names for n in ("Akrom", "Axror", "Jamoliddin")), "real barbers added to the existing data folder")
+    assert_true("Dilnoza" in names, "masters added in the admin panel are kept")
+
+
 if __name__ == "__main__":
     test_file_integrity()
     test_html_components()
     test_translations()
     test_bot_logic()
+    test_old_sample_staff_is_replaced()
     print("\n=======================================================")
     print("ALL TESTS PASSED")
     print("=======================================================")
