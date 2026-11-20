@@ -52,7 +52,8 @@ def test_file_integrity():
 def test_html_components():
     print("\n--- Test 2: HTML hooks & branding ---")
     html = read("index.html")
-    assert_true('data-lang="uz"' in html and 'data-lang="en"' in html and 'data-lang="ru"' in html, "index.html: uz/en/ru")
+    assert_true('data-lang="uz"' in html and 'data-lang="ru"' in html, "index.html: uz/ru")
+    assert_true('data-lang="en"' not in html and 'data-lang="en"' not in read("admin.html"), "no English switch")
     assert_true("admin.html" in html, "index.html links the admin panel (footer)")
     assert_true("bookingModal" in html and "clientNameInput" in html and "clientPhoneInput" in html, "index.html: booking form")
     assert_true("assets/logo.png" in html, "index.html uses the WO&MAN logo")
@@ -79,12 +80,12 @@ def test_translations():
     print("\n--- Test 3: Translations ---")
     content = read("translations.js")
     assert_true("WOMAN_TRANSLATIONS" in content, "translations.js defines WOMAN_TRANSLATIONS")
-    assert_true("uz:" in content and "en:" in content and "ru:" in content, "uz/en/ru present")
+    assert_true("uz:" in content and "ru:" in content and "\n  en: {" not in content, "uz/ru present, English removed")
     keys = {}
-    for lang in ("uz", "en", "ru"):
+    for lang in ("uz", "ru"):
         block = re.search(rf"\n  {lang}: \{{(.*?)\n  \}}", content, re.S).group(1)
         keys[lang] = set(re.findall(r"^\s{4}(\w+):", block, re.M))
-    assert_true(keys["uz"] == keys["en"] == keys["ru"], "all three languages have the same keys")
+    assert_true(keys["uz"] == keys["ru"], "Uzbek and Russian have the same keys")
 
 
 def test_bot_logic():

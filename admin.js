@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let specialists = [];
   let tgStatus = null;
   let authToken = storeGet('sessionStorage', 'woman_admin_token');
-  let currentLang = storeGet('localStorage', 'woman_lang') || 'uz';
+  let currentLang = ['uz', 'ru'].includes(storeGet('localStorage', 'woman_lang')) ? storeGet('localStorage', 'woman_lang') : 'uz';
   let refreshTimer = null;
 
   // --- DOM Elements ---
@@ -221,38 +221,6 @@ document.addEventListener('DOMContentLoaded', () => {
       status_cancelled: "Bekor qilingan",
       no_appts: "Buyurtmalar topilmadi"
     },
-    en: {
-      admin_tag: "Operations Portal",
-      btn_back: "← Back to Website",
-      btn_logout: "Log out",
-      stat_total: "Total Bookings",
-      stat_total_sub: "All time records",
-      stat_homme: "♂ Men's Studio",
-      stat_femme: "♀ Women's Studio",
-      stat_today: "Today's Slots",
-      stat_today_sub: "Active reservations",
-      stat_barbers: "Masters",
-      stat_barbers_sub: "Active specialists",
-      tab_appts: "Time Slots & Bookings",
-      tab_specs: "Masters Management",
-      tab_telegram: "Telegram Bot",
-      th_client: "Client",
-      th_salon: "Studio",
-      th_service: "Service",
-      th_master: "Master",
-      th_datetime: "Date & Time Slot",
-      th_source: "Source",
-      th_status: "Status",
-      th_actions: "Actions",
-      search_ph: "Search by client name, phone, or ID...",
-      btn_new_booking: "+ Add New Booking",
-      btn_add_barber: "+ Add New Master",
-      status_confirmed: "Confirmed",
-      status_pending: "Pending",
-      status_completed: "Completed",
-      status_cancelled: "Cancelled",
-      no_appts: "No appointments found"
-    },
     ru: {
       admin_tag: "Панель Управления",
       btn_back: "← На сайт",
@@ -293,7 +261,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function applyLanguage(lang) {
+    if (!adminDict[lang]) lang = 'uz';
     currentLang = lang;
+    document.documentElement.lang = lang;
     storeSet('localStorage', 'woman_lang', lang);
     const d = adminDict[lang] || adminDict.uz;
 
@@ -401,9 +371,9 @@ document.addEventListener('DOMContentLoaded', () => {
         <td><span class="status-badge ${STATUS_CLASS[item.status] || 'status-pending'}">${esc(statusLabel(item.status))}</span></td>
         <td>
           <div class="action-btns-cell">
-            <button class="btn-action-icon btn-confirm" title="Tasdiqlash (Confirm)" data-action="confirm">✓</button>
-            <button class="btn-action-icon" title="Yakunlash (Complete)" data-action="complete">★</button>
-            <button class="btn-action-icon btn-delete" title="Bekor qilish (Cancel)" data-action="cancel">✕</button>
+            <button class="btn-action-icon btn-confirm" title="Tasdiqlash" data-action="confirm">✓</button>
+            <button class="btn-action-icon" title="Yakunlash" data-action="complete">★</button>
+            <button class="btn-action-icon btn-delete" title="Bekor qilish" data-action="cancel">✕</button>
           </div>
         </td>
       `;
@@ -463,8 +433,8 @@ document.addEventListener('DOMContentLoaded', () => {
         ? `<span class="sub-badge badge-homme" style="font-size: 0.65rem; padding: 2px 8px;">♂ MAN</span>`
         : `<span class="sub-badge badge-femme" style="font-size: 0.65rem; padding: 2px 8px;">♀ WO</span>`;
       const dutyBadge = sp.onDuty
-        ? `<span class="status-badge status-confirmed">Ishda (On Duty)</span>`
-        : `<span class="status-badge status-cancelled">Dam olishda (Off)</span>`;
+        ? `<span class="status-badge status-confirmed">Ishda</span>`
+        : `<span class="status-badge status-cancelled">Dam olishda</span>`;
       const tgLinked = sp.chatId
         ? `<span style="font-size: 0.7rem; color: #34d399;">🟢 Telegram ulangan</span>`
         : `<span style="font-size: 0.7rem; color: #94a3b8;">⚪ Telegram ulanmagan</span>`;
@@ -493,7 +463,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <div style="display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border-subtle); padding-top: 0.75rem;">
           <div>${dutyBadge}</div>
           <div style="display: flex; gap: 6px;">
-            <button class="btn-panel btn-panel-secondary" style="padding: 6px 12px; font-size: 0.75rem;" data-action="toggle-duty">${sp.onDuty ? 'Off' : 'On'}</button>
+            <button class="btn-panel btn-panel-secondary" style="padding: 6px 12px; font-size: 0.75rem;" data-action="toggle-duty">${sp.onDuty ? 'Dam olishga' : 'Ishga'}</button>
             <button class="btn-panel btn-panel-secondary" style="padding: 6px 12px; font-size: 0.75rem;" data-action="edit-barber">✏️ Tahrirlash</button>
             <button class="btn-panel btn-panel-secondary" style="padding: 6px 10px; font-size: 0.75rem; color: #f87171;" data-action="delete-barber">🗑</button>
           </div>
@@ -536,7 +506,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Add / Edit Master Modal ---
   function openAddBarberModal() {
-    barberModalTitle.textContent = currentLang === 'uz' ? "Yangi Usta Qo'shish" : (currentLang === 'ru' ? 'Добавить мастера' : 'Add New Master');
+    barberModalTitle.textContent = currentLang === 'ru' ? 'Добавить мастера' : "Yangi Usta Qo'shish";
     barberEditId.value = '';
     [barberNameInput, barberRoleInput, barberPhoneInput, barberTelegramInput, barberChatIdInput, barberImgInput, barberExpInput]
       .forEach(el => { el.value = ''; });
@@ -546,7 +516,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function openEditBarberModal(barber) {
-    barberModalTitle.textContent = currentLang === 'uz' ? `${barber.name}ni Tahrirlash` : (currentLang === 'ru' ? `Редактировать: ${barber.name}` : `Edit ${barber.name}`);
+    barberModalTitle.textContent = currentLang === 'ru' ? `Редактировать: ${barber.name}` : `${barber.name}ni Tahrirlash`;
     barberEditId.value = barber.id;
     barberNameInput.value = barber.name || '';
     barberSalonSelect.value = barber.salon || 'homme';

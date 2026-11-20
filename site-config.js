@@ -20,7 +20,6 @@ window.SALON_CONFIG = {
   // Manzil (har bir tilda)
   address: {
     uz: "",
-    en: "",
     ru: ""
   },
 

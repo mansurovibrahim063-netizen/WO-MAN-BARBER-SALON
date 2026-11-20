@@ -31,7 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // --- Current Language State ---
-  let currentLang = storageGet('woman_lang') || 'uz';
+  const LANGS = ['uz', 'ru'];
+  let currentLang = LANGS.includes(storageGet('woman_lang')) ? storageGet('woman_lang') : 'uz';
 
   // --- DOM Elements ---
   const heroContainer = document.getElementById('splitHero');
@@ -244,31 +245,31 @@ document.addEventListener('DOMContentLoaded', () => {
   // WO: prices not provided yet -> price: null shows "price on request".
   const servicesCatalog = {
     homme: [
-      { id: 'h1',  price: 60000,  title: { uz: 'Soch olish', en: 'Haircut', ru: 'Стрижка' } },
-      { id: 'h2',  price: 100000, title: { uz: 'Soch + soqol', en: 'Haircut + beard', ru: 'Стрижка + борода' } },
-      { id: 'h3',  price: 50000,  title: { uz: 'Bolalar soch olishi', en: "Kids' haircut", ru: 'Детская стрижка' } },
-      { id: 'h4',  price: 50000,  title: { uz: 'Ukladka', en: 'Styling', ru: 'Укладка' } },
-      { id: 'h5',  price: 50000,  title: { uz: "Soch bo'yash", en: 'Hair colouring', ru: 'Окрашивание волос' } },
-      { id: 'h6',  price: 40000,  title: { uz: 'Soqol', en: 'Beard', ru: 'Борода' } },
-      { id: 'h7',  price: 30000,  title: { uz: 'Vosk', en: 'Waxing', ru: 'Воск' } },
-      { id: 'h8',  price: 40000,  title: { uz: 'Yuz maskasi', en: 'Face mask', ru: 'Маска для лица' } },
-      { id: 'h9',  price: 50000,  title: { uz: 'Bosh massaji', en: 'Head massage', ru: 'Массаж головы' } },
-      { id: 'h10', price: 400000, title: { uz: 'Kuyov obrazi', en: 'Groom look', ru: 'Образ жениха' } }
+      { id: 'h1',  price: 60000,  title: { uz: 'Soch olish', ru: 'Стрижка' } },
+      { id: 'h2',  price: 100000, title: { uz: 'Soch + soqol', ru: 'Стрижка + борода' } },
+      { id: 'h3',  price: 50000,  title: { uz: 'Bolalar soch olishi', ru: 'Детская стрижка' } },
+      { id: 'h4',  price: 50000,  title: { uz: 'Ukladka', ru: 'Укладка' } },
+      { id: 'h5',  price: 50000,  title: { uz: "Soch bo'yash", ru: 'Окрашивание волос' } },
+      { id: 'h6',  price: 40000,  title: { uz: 'Soqol', ru: 'Борода' } },
+      { id: 'h7',  price: 30000,  title: { uz: 'Vosk', ru: 'Воск' } },
+      { id: 'h8',  price: 40000,  title: { uz: 'Yuz maskasi', ru: 'Маска для лица' } },
+      { id: 'h9',  price: 50000,  title: { uz: 'Bosh massaji', ru: 'Массаж головы' } },
+      { id: 'h10', price: 400000, title: { uz: 'Kuyov obrazi', ru: 'Образ жениха' } }
     ],
     femme: [
-      { id: 'f1', price: null, title: { uz: 'Soch turmagi va ukladka', en: 'Haircut & blow-dry', ru: 'Стрижка и укладка' } },
-      { id: 'f2', price: null, title: { uz: 'Balayaj', en: 'Balayage', ru: 'Балаяж' } },
-      { id: 'f3', price: null, title: { uz: 'Keratin', en: 'Keratin treatment', ru: 'Кератин' } },
-      { id: 'f4', price: null, title: { uz: 'Soch parvarishi', en: 'Hair care', ru: 'Уход за волосами' } }
+      { id: 'f1', price: null, title: { uz: 'Soch turmagi va ukladka', ru: 'Стрижка и укладка' } },
+      { id: 'f2', price: null, title: { uz: 'Balayaj', ru: 'Балаяж' } },
+      { id: 'f3', price: null, title: { uz: 'Keratin', ru: 'Кератин' } },
+      { id: 'f4', price: null, title: { uz: 'Soch parvarishi', ru: 'Уход за волосами' } }
     ]
   };
 
   function formatPrice(price, lang = currentLang) {
     if (price == null) {
-      return { uz: "Narxini so'rang", en: 'Price on request', ru: 'Цена по запросу' }[lang] || "Narxini so'rang";
+      return { uz: "Narxini so'rang", ru: 'Цена по запросу' }[lang] || "Narxini so'rang";
     }
     const grouped = String(price).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-    return `${grouped} ${{ uz: "so'm", en: 'UZS', ru: 'сум' }[lang] || "so'm"}`;
+    return `${grouped} ${{ uz: "so'm", ru: 'сум' }[lang] || "so'm"}`;
   }
 
   function serviceTitle(srv, lang = currentLang) {
@@ -334,15 +335,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function uiText(key) {
     const t = {
-      busy: { uz: 'Band', en: 'Booked', ru: 'Занято' },
-      past: { uz: "O'tgan", en: 'Past', ru: 'Прошло' },
-      noStaff: { uz: 'Hozircha bu zalda bo\'sh ustalar yo\'q', en: 'No masters available right now', ru: 'Сейчас нет свободных мастеров' },
-      loadFailed: { uz: "Ustalar ro'yxatini yuklab bo'lmadi. Sahifani yangilang yoki bizga qo'ng'iroq qiling.", en: 'Could not load the masters. Refresh the page or call us.', ru: 'Не удалось загрузить мастеров. Обновите страницу или позвоните нам.' },
-      pickSlot: { uz: "Iltimos, bo'sh vaqtni tanlang!", en: 'Please pick a free time slot!', ru: 'Пожалуйста, выберите свободное время!' },
-      pickStaff: { uz: 'Iltimos, ustani tanlang!', en: 'Please pick a master!', ru: 'Пожалуйста, выберите мастера!' },
-      needInfo: { uz: 'Iltimos, ismingiz va telefon raqamingizni kiriting!', en: 'Please enter your name and phone number!', ru: 'Пожалуйста, введите имя и номер!' },
-      sending: { uz: 'Yuborilmoqda...', en: 'Sending...', ru: 'Отправка...' },
-      netError: { uz: "Ulanishda xatolik. Internetni tekshirib, qayta urinib ko'ring.", en: 'Connection error. Check your internet and try again.', ru: 'Ошибка соединения. Проверьте интернет и попробуйте снова.' }
+      busy: { uz: 'Band', ru: 'Занято' },
+      past: { uz: "O'tgan", ru: 'Прошло' },
+      noStaff: { uz: 'Hozircha bu zalda bo\'sh ustalar yo\'q', ru: 'Сейчас нет свободных мастеров' },
+      loadFailed: { uz: "Ustalar ro'yxatini yuklab bo'lmadi. Sahifani yangilang yoki bizga qo'ng'iroq qiling.", ru: 'Не удалось загрузить мастеров. Обновите страницу или позвоните нам.' },
+      pickSlot: { uz: "Iltimos, bo'sh vaqtni tanlang!", ru: 'Пожалуйста, выберите свободное время!' },
+      pickStaff: { uz: 'Iltimos, ustani tanlang!', ru: 'Пожалуйста, выберите мастера!' },
+      needInfo: { uz: 'Iltimos, ismingiz va telefon raqamingizni kiriting!', ru: 'Пожалуйста, введите имя и номер!' },
+      sending: { uz: 'Yuborilmoqda...', ru: 'Отправка...' },
+      netError: { uz: "Ulanishda xatolik. Internetni tekshirib, qayta urinib ko'ring.", ru: 'Ошибка соединения. Проверьте интернет и попробуйте снова.' }
     };
     return (t[key] && (t[key][currentLang] || t[key].uz)) || key;
   }
@@ -658,7 +659,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // --- Trilingual Language Switcher ---
   function setLanguage(lang) {
+    if (!LANGS.includes(lang)) lang = 'uz';
     currentLang = lang;
+    document.documentElement.lang = lang;
     storageSet('woman_lang', lang);
 
     langBtns.forEach(btn => {

@@ -2,12 +2,29 @@
  * WO&MAN Beauty Studio - Trilingual Localization Dictionary
  * Languages:
  * - uz: O'zbek tili
- * - en: English
  * - ru: Русский язык
  */
 
 const WOMAN_TRANSLATIONS = {
   uz: {
+    salon_toggle_homme: "MAN (Erkaklar)",
+    salon_toggle_femme: "WO (Ayollar)",
+    look_1_tag: "Erkaklar • Skin feyd",
+    look_1_title: "Past taper va tekstura",
+    look_2_tag: "Ayollar • Hajmli rang",
+    look_2_title: "Shampan rangli balayaj",
+    look_3_tag: "Erkaklar • Soqol",
+    look_3_title: "Soqol konturi va qirish",
+    look_4_tag: "Ayollar • Ukladka",
+    look_4_title: "Ipakdek to'lqinlar",
+    look_5_tag: "Erkaklar • Kalta soch",
+    look_5_title: "Teksturali kalta soch",
+    look_6_tag: "Ayollar • Rang va kesim",
+    look_6_title: "Espresso rangli yaltiroq soch",
+    look_7_tag: "Erkaklar • Klassika",
+    look_7_title: "Klassik taper va qirish",
+    look_8_tag: "Ayollar • Blond",
+    look_8_title: "Muzdek blond balayaj",
     // Brand & Nav
     brand_tagline: "GO'ZALLIK STUDIYASI",
     nav_homme: "Erkaklar",
@@ -47,7 +64,7 @@ const WOMAN_TRANSLATIONS = {
     // Philosophy
     philosophy_label: "WO&MAN Kontseptsiyasi",
     philosophy_title_1: "BITTA FLAGMAN BINO.",
-    philosophy_title_2: "IKKITA ALOHIDA SANCTUARY.",
+    philosophy_title_2: "IKKITA ALOHIDA MAKON.",
     philosophy_subtitle: "An'anaviy salonlardan farqli o'laroq, WO&MAN bir tom ostida erkaklar va ayollar uchun akustik va vizual jihatdan mustaqil ikkita alohida makon yaratdi.",
     
     homme_card_badge: "MAN — Erkaklar zali",
@@ -134,134 +151,25 @@ const WOMAN_TRANSLATIONS = {
     admin_title: "WO&MAN Admin Boshqaruv Markazi"
   },
 
-  en: {
-    // Brand & Nav
-    brand_tagline: "BEAUTY STUDIO",
-    nav_homme: "Men",
-    nav_femme: "Women",
-    nav_split: "Split 50/50",
-    nav_services: "Services",
-    nav_lookbook: "Lookbook",
-    nav_admin: "Admin Panel",
-    nav_telegram: "Telegram Bot",
-    btn_reserve_chair: "Book Time Slot",
-    btn_reserve_online: "Book Online",
-    sound_fx: "Sound FX",
-
-    // Hero Homme
-    homme_badge: "MAN // MEN'S STUDIO",
-    homme_title_1: "THE ART OF",
-    homme_title_2: "PRECISION & CRAFT",
-    homme_desc: "Bespoke scissor craft, razor-sharp skin fades, and ritualistic hot-towel straight-razor shaves. Engineered for the modern gentleman.",
-    btn_book_homme: "Book a Barber",
-    btn_view_homme_menu: "Men's Services",
-    homme_meta_rating: "★ 4.98 (840+ reviews)",
-    homme_meta_role: "Master Barbers & Specialists",
-
-    // Hero Femme
-    femme_badge: "WO // WOMEN'S STUDIO",
-    femme_title_1: "THE ESSENCE OF",
-    femme_title_2: "ELEGANCE & RADIANCE",
-    femme_desc: "Dimensional balayage, bespoke botanical restorations, and red-carpet runway blowouts in an exclusive luminous sanctuary.",
-    btn_book_femme: "Book a Stylist",
-    btn_view_femme_menu: "Women's Services",
-    femme_meta_rating: "★ 4.99 (920+ reviews)",
-    femme_meta_role: "Master Colorists & Stylists",
-
-    // Split Divider
-    divider_hint: "Drag or hover to explore",
-
-    // Philosophy
-    philosophy_label: "The WO&MAN Concept",
-    philosophy_title_1: "ONE FLAGSHIP ROOF.",
-    philosophy_title_2: "TWO DEDICATED SANCTUARIES.",
-    philosophy_subtitle: "We reimagined the traditional salon experience: two architecturally isolated spaces under one roof, each dedicated to its unique craft and energy.",
-    
-    homme_card_badge: "MAN — Men's Studio",
-    homme_card_title: "Acoustic Leather & Steel",
-    homme_card_desc: "Dark walnut wood, hand-stitched leather Belmont recliners, and precision Japanese steel blades for effortless rejuvenation.",
-    homme_feat_1: "Complimentary bar: Single-malt scotch & artisanal espresso",
-    homme_feat_2: "Eucalyptus steam: Three-layer organic hot towel ritual",
-    homme_feat_3: "Facial architecture: Hair-to-beard bone contouring",
-    homme_feat_4: "VIP acoustic isolation: Low-frequency chill audio lounge",
-
-    femme_card_badge: "WO — Women's Studio",
-    femme_card_title: "Natural Light & Haute Color",
-    femme_card_desc: "5500K color-accurate daylight optics, private reclining wash beds, and custom tableside micro-pigment balayage formulation.",
-    femme_feat_1: "Prosecco bar: Chilled brut champagne & botanical teas",
-    femme_feat_2: "Color apothecary: Bespoke formulas blended tableside",
-    femme_feat_3: "Silk wash sanctuary: Lay-flat Japanese head spa chairs",
-    femme_feat_4: "Editorial finish: Runway blowouts tailored to natural bounce",
-
-    // Lookbook
-    lookbook_label: "WO&MAN Lookbook",
-    lookbook_title: "PRECISION IN EVERY STRAND",
-    lookbook_subtitle: "Explore recent masterpieces crafted by our master barbers and color directors.",
-    filter_all: "All Styles (8)",
-    filter_homme: "♂ Men: Fades & Beards",
-    filter_femme: "♀ Women: Balayage & Blowouts",
-
-    // Reviews
-    reviews_label: "Client Accolades",
-    reviews_title: "EXCELLENCE PRAISED BY CLIENTS",
-    rev_1_quote: "\"The split layout of VSM is brilliant. My husband booked with Marcus for an executive shave while I got a dimensional balayage with Elena. Outstanding experience!\"",
-    rev_1_author: "Victoria & David C.",
-    rev_1_role: "VIP Members • 2 Years",
-    rev_2_quote: "\"Finding a barber who understands head anatomy and beard contouring is rare. Julian Drake at VSM Homme is a master craftsman. Outstanding service.\"",
-    rev_2_author: "Alexander Mercer",
-    rev_2_role: "Verified Homme Client",
-    rev_3_quote: "\"The daylight studio in the Femme salon is remarkable — true color fidelity without any false warmth. My balayage looks sublime!\"",
-    rev_3_author: "Sophia Sterling",
-    rev_3_role: "Fashion Editor & Stylist",
-
-    // Telegram Bot Promo Section
-    tg_banner_badge: "GOT A QUESTION?",
-    tg_banner_title: "MESSAGE US ON TELEGRAM",
-    tg_banner_desc: "Questions about services, prices or free times? Message us on Telegram and we will reply quickly.",
-    btn_open_tg_bot: "Message us on Telegram",
-
-    // Footer
-    footer_about: "The premier dual salon atelier uniting bespoke male grooming and haute female styling under one roof.",
-    footer_studios: "STUDIOS",
-    footer_hours: "HOURS",
-    footer_mon_fri: "Mon – Fri",
-    footer_sat: "Saturday",
-    footer_sun: "Sunday",
-    footer_contact: "CONCIERGE & BOOKING",
-    footer_rights: "© 2026 WO&MAN Beauty Studio. All rights reserved.",
-    footer_admin_link: "Admin Management Portal",
-
-    // Booking Modal
-    modal_book_title: "Book Your Time Slot",
-    modal_step_1: "1. Select Sanctuary",
-    modal_step_2: "2. Select Service",
-    modal_step_3: "3. Select Specialist",
-    modal_step_4: "4. Select Date",
-    modal_step_5: "5. Select Available Time Slot",
-    modal_step_6: "6. Client Details",
-    placeholder_name: "Your Full Name",
-    placeholder_phone: "+1 (555) 000-0000",
-    placeholder_notes: "Special requests or notes (optional)",
-    btn_confirm_slot: "Confirm Time Slot Reservation",
-    btn_book_via_bot: "Message us on Telegram",
-    toast_success: "Booking received! Your master will confirm and we will contact you.",
-    toast_slot_busy: "This slot has just been reserved. Please choose another time.",
-
-    // Menu Modal
-    menu_modal_title: "WO&MAN Services Directory",
-    tab_homme_menu: "♂ Men's Services",
-    tab_femme_menu: "♀ Women's Services",
-    btn_book_this_service: "Book Slot for this Service",
-
-    // Dates
-    date_today: "Today",
-    date_tomorrow: "Tomorrow",
-
-    // Admin
-    admin_title: "WO&MAN Admin Operations Portal"
-  },
-
   ru: {
+    salon_toggle_homme: "MAN (Мужской зал)",
+    salon_toggle_femme: "WO (Женский зал)",
+    look_1_tag: "Мужской зал • Скин-фейд",
+    look_1_title: "Низкий тейпер и текстура",
+    look_2_tag: "Женский зал • Объёмный цвет",
+    look_2_title: "Балаяж цвета шампань",
+    look_3_tag: "Мужской зал • Борода",
+    look_3_title: "Контур бороды и бритьё",
+    look_4_tag: "Женский зал • Укладка",
+    look_4_title: "Шёлковые локоны",
+    look_5_tag: "Мужской зал • Кроп",
+    look_5_title: "Текстурный кроп",
+    look_6_tag: "Женский зал • Цвет и стрижка",
+    look_6_title: "Глянцевый эспрессо",
+    look_7_tag: "Мужской зал • Классика",
+    look_7_title: "Классический тейпер и бритьё",
+    look_8_tag: "Женский зал • Блонд",
+    look_8_title: "Ледяной блонд-балаяж",
     // Brand & Nav
     brand_tagline: "СТУДИЯ КРАСОТЫ",
     nav_homme: "Мужской",

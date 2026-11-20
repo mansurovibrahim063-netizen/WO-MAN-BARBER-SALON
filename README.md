@@ -2,7 +2,7 @@
 
 Erkaklar (**MAN**) va ayollar (**WO**) zali uchun sayt, onlayn yozilish, admin panel va ustalar uchun Telegram bot.
 
-- **Sayt** (`index.html`): xizmatlar, usta, sana va vaqtni tanlab yozilish. Uch tilda: o'zbek, rus, ingliz.
+- **Sayt** (`index.html`): xizmatlar, usta, sana va vaqtni tanlab yozilish. Ikki tilda: o'zbek va rus.
 - **Admin panel** (`admin.html`): parol bilan kiriladi. Buyurtmalar, ustalar, Telegram sozlamalari.
 - **Telegram bot**: har bir yangi buyurtma ustaga (Qabul / Rad tugmalari bilan) va adminga keladi.
 - **Server** (`server.py`): hammasini bitta dasturda ishlatadi. Faqat Python 3 kerak, qo'shimcha o'rnatish shart emas.
@@ -84,7 +84,7 @@ index.html        sayt
 admin.html        admin panel
 app.js            sayt logikasi (yozilish)
 admin.js          admin panel logikasi
-translations.js   UZ / EN / RU matnlar
+translations.js   UZ / RU matnlar
 site-config.js    telefon, manzil, Instagram, Telegram
 styles.css        dizayn (qora + pushti + oq, logotip ranglari)
 assets/           logotip va ikonkalar
