@@ -58,7 +58,10 @@ def test_html_components():
     assert_true("assets/logo.png" in html, "index.html uses the WO&MAN logo")
     assert_true("site-config.js" in html, "index.html loads site-config.js")
     assert_true("VSMBarbershopBot" not in html, "index.html: no old VSM bot links")
-    assert_true("$65" not in html and "$240" not in html, "index.html: no hardcoded prices")
+    app = read("app.js")
+    for price in ("60000", "100000", "400000"):
+        assert_true(f"price: {price}" in app, f"price list in app.js has {price}")
+    assert_true("daqiqa" not in html and "daq<" not in html, "index.html shows prices, not durations")
 
     admin = read("admin.html")
     for hook in ["viewAppointments", "viewSpecialists", "viewTelegram", "barberModal", "tgBotTokenInput",

@@ -35,7 +35,7 @@ WOMAN_ADMIN_PASSWORD="sizning-parolingiz" python server.py
 1. **Ustalar.** Admin panel → *Ustalarni Boshqarish*. Namuna sifatida qo'yilgan ismlarni (Marcus Vance va boshqalar) haqiqiy ustalaringizga almashtiring yoki o'chiring.
 2. **Telegram.** `TELEGRAM_BOT_GUIDE.md` dagi qadamlarni bajaring: bot tokeni, admin havolasi, ustalar havolalari.
 3. **Aloqa ma'lumotlari.** `site-config.js` faylida telefon, manzil, Instagram va Telegram'ni yozing. Bo'sh qatorlar saytda ko'rinmaydi.
-4. **Matnlarni tekshiring.** Xizmatlar ro'yxati (`app.js` dagi `servicesCatalog`), ish vaqti (`index.html` footer) va sayt matnlari namuna sifatida yozilgan. Salonga moslang.
+4. **Xizmatlar va narxlar.** `app.js` dagi `servicesCatalog`: erkaklar zali narxlari salonning rasmiy narxlar ro'yxatidan olingan. Ayollar zali narxlari hali kiritilmagan (`price: null` → saytda "Narxini so'rang"). Narxni faqat shu yerda o'zgartirasiz: yozilish oynasi, "Xizmatlar" oynasi va bosh sahifa shu ro'yxatdan oladi. Ish vaqti (`index.html` footer) va sayt matnlari namuna sifatida yozilgan, salonga moslang.
 5. **Rasmlar.** Lukbuk rasmlari namunaviy stok fotolar. Iloji bo'lsa o'z ishlaringiz rasmlari bilan almashtiring. "Mijozlar fikrlari" bo'limi va reytinglar yashirilgan, chunki ular to'qib chiqarilgan edi. Haqiqiy sharhlar bo'lsa, qo'shib yoqing.
 
 ## 3. Ma'lumotlar qayerda saqlanadi?

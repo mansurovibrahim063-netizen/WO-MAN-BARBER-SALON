@@ -1758,3 +1758,22 @@ body {
     font-size: 0.78rem;
   }
 }
+
+/* Prices: gold-free brand look; women's side in magenta */
+.service-price-tag {
+  white-space: nowrap;
+  margin-left: 1rem;
+  font-variant-numeric: tabular-nums;
+}
+
+#menuContentFemme .service-price-tag,
+.booking-modal.salon-is-femme .service-price-tag {
+  color: var(--pink-bright);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+#menuListHomme .service-card-select,
+#menuListFemme .service-card-select {
+  cursor: default;
+}

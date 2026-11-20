@@ -238,61 +238,64 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // --- Service Catalog Data (No Prices, Only Durations) ---
+  // --- Services & prices (so'm) ---
+  // MAN: from the salon's official price list. Change prices here only:
+  // the booking form, the "Xizmatlar" window and the home page all read this list.
+  // WO: prices not provided yet -> price: null shows "price on request".
   const servicesCatalog = {
     homme: [
-      {
-        id: 'h1',
-        title: { uz: 'Klassik & Skin Feyd', en: 'Executive Precision Cut & Fade', ru: 'Точный скин-фейд и стрижка' },
-        duration: { uz: '45 daqiqa', en: '45 mins', ru: '45 минут' },
-        desc: { uz: 'Maslahatlashuv, ustarali feyd, bo\'yinga qaynoq sochiq va ukladka.', en: 'Precision razor fade, hot lather neck shave & styling.', ru: 'Консультация, чистый скин-фейд, горячее бритье шеи и укладка.' }
-      },
-      {
-        id: 'h2',
-        title: { uz: 'Qirollik Tarash Rituali', en: 'Royal Hot Towel Shave Ritual', ru: 'Королевское бритье опасной бритвой' },
-        duration: { uz: '40 daqiqa', en: '40 mins', ru: '40 минут' },
-        desc: { uz: 'Yog\'li ekstraktlar, 3 bosqichli bug\'li sochiq va xavfli ustarada tarash.', en: 'Essential oils, 3 steamed hot towels & straight-razor glide.', ru: 'Аромамасла, 3 распаривающих полотенца и бритье опасной бритвой.' }
-      },
-      {
-        id: 'h3',
-        title: { uz: 'Usta Soqol Arxitekturasi', en: 'Master Beard Sculpt & Line-up', ru: 'Архитектура и моделирование бороды' },
-        duration: { uz: '30 daqiqa', en: '30 mins', ru: '30 минут' },
-        desc: { uz: 'Soqolni qisqartirish, aniq chiziqlar, namlantiruvchi balzam va uqalash.', en: 'Beard tapering, sharp foil edges, organic balm treatment.', ru: 'Филировка бороды, четкие контуры шейвером и бальзам.' }
-      },
-      {
-        id: 'h4',
-        title: { uz: 'WO&MAN Dual Erkaklar To\'plami', en: 'The WO&MAN Signature Dual Package', ru: 'Комплекс WO&MAN Dual (Стрижка + Бритье)' },
-        duration: { uz: '75 daqiqa', en: '75 mins', ru: '75 минут' },
-        desc: { uz: 'Soch turmagi + Qirollik tarash rituali + bosh terisi massaji.', en: 'Haircut + Royal hot towel shave + scalp massage.', ru: 'Авторская стрижка + королевское бритье + массаж головы.' }
-      }
+      { id: 'h1',  price: 60000,  title: { uz: 'Soch olish', en: 'Haircut', ru: 'Стрижка' } },
+      { id: 'h2',  price: 100000, title: { uz: 'Soch + soqol', en: 'Haircut + beard', ru: 'Стрижка + борода' } },
+      { id: 'h3',  price: 50000,  title: { uz: 'Bolalar soch olishi', en: "Kids' haircut", ru: 'Детская стрижка' } },
+      { id: 'h4',  price: 50000,  title: { uz: 'Ukladka', en: 'Styling', ru: 'Укладка' } },
+      { id: 'h5',  price: 50000,  title: { uz: "Soch bo'yash", en: 'Hair colouring', ru: 'Окрашивание волос' } },
+      { id: 'h6',  price: 40000,  title: { uz: 'Soqol', en: 'Beard', ru: 'Борода' } },
+      { id: 'h7',  price: 30000,  title: { uz: 'Vosk', en: 'Waxing', ru: 'Воск' } },
+      { id: 'h8',  price: 40000,  title: { uz: 'Yuz maskasi', en: 'Face mask', ru: 'Маска для лица' } },
+      { id: 'h9',  price: 50000,  title: { uz: 'Bosh massaji', en: 'Head massage', ru: 'Массаж головы' } },
+      { id: 'h10', price: 400000, title: { uz: 'Kuyov obrazi', en: 'Groom look', ru: 'Образ жениха' } }
     ],
     femme: [
-      {
-        id: 'f1',
-        title: { uz: 'Kutyur Soch Turmagi & Ukladka', en: 'Haute Couture Cut & Signature Blowout', ru: 'Кутюрная стрижка и укладка' },
-        duration: { uz: '60 daqiqa', en: '60 mins', ru: '60 минут' },
-        desc: { uz: 'Arxitekturaviy kesish, chuqur konditsionerlash va fen ukladkasi.', en: 'Architectural haircut, deep conditioning & editorial finish.', ru: 'Геометрическая стрижка, глубокое питание и брашинг-укладка.' }
-      },
-      {
-        id: 'f2',
-        title: { uz: 'Hajmli Balayaj & Glos', en: 'Dimensional Balayage & Gloss Toners', ru: 'Сложный авторский балаяж и глянец' },
-        duration: { uz: '150 daqiqa', en: '150 mins', ru: '150 минут' },
-        desc: { uz: 'Qo\'lda chizilgan quyosh nurlari effekti, maxsus tonlar.', en: 'Hand-painted sun-kissed dimension & custom gloss.', ru: 'Ручная растяжка цвета, безаммиачный глянец и защита связей.' }
-      },
-      {
-        id: 'f3',
-        title: { uz: 'Ipak Keratin Infuziya Spasi', en: 'Keratin Silk Infusion Treatment', ru: 'Шелковое кератиновое спа-восстановление' },
-        duration: { uz: '120 daqiqa', en: '120 mins', ru: '120 минут' },
-        desc: { uz: 'Sochlarning jingalakligini yo\'qotish, 4 oygacha oyna kabi porlash.', en: 'Frizz-free smoothness, mirror shine up to 4 months.', ru: 'Абсолютная гладкость, зеркальный блеск без пушистости.' }
-      },
-      {
-        id: 'f4',
-        title: { uz: 'Botanika Bosh Teri Spasi', en: 'Botanical Hair & Scalp Spa Therapy', ru: 'Ботаническое спа для волос и кожи головы' },
-        duration: { uz: '45 daqiqa', en: '45 mins', ru: '45 минут' },
-        desc: { uz: 'Bug\'li oziqlantiruvchi niqob, lavandali akupressura massaji.', en: 'Steam infusion mask, lavender scalp acupressure massage.', ru: 'Паровая терапия, маска на травах и точечный массаж.' }
-      }
+      { id: 'f1', price: null, title: { uz: 'Soch turmagi va ukladka', en: 'Haircut & blow-dry', ru: 'Стрижка и укладка' } },
+      { id: 'f2', price: null, title: { uz: 'Balayaj', en: 'Balayage', ru: 'Балаяж' } },
+      { id: 'f3', price: null, title: { uz: 'Keratin', en: 'Keratin treatment', ru: 'Кератин' } },
+      { id: 'f4', price: null, title: { uz: 'Soch parvarishi', en: 'Hair care', ru: 'Уход за волосами' } }
     ]
   };
+
+  function formatPrice(price, lang = currentLang) {
+    if (price == null) {
+      return { uz: "Narxini so'rang", en: 'Price on request', ru: 'Цена по запросу' }[lang] || "Narxini so'rang";
+    }
+    const grouped = String(price).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    return `${grouped} ${{ uz: "so'm", en: 'UZS', ru: 'сум' }[lang] || "so'm"}`;
+  }
+
+  function serviceTitle(srv, lang = currentLang) {
+    return srv.title[lang] || srv.title.uz;
+  }
+
+  // Home page pills (first 3 services of each studio) and the full "Xizmatlar" window
+  function renderServiceLists() {
+    [['homme', 'heroPillsHomme'], ['femme', 'heroPillsFemme']].forEach(([salon, id]) => {
+      const box = document.getElementById(id);
+      if (!box) return;
+      box.innerHTML = servicesCatalog[salon].slice(0, 3).map(srv => `
+        <div class="service-pill badge-${salon}-pill">
+          <span>${esc(serviceTitle(srv))}${srv.price != null ? ` • ${esc(formatPrice(srv.price))}` : ''}</span>
+        </div>`).join('');
+    });
+
+    [['homme', 'menuListHomme'], ['femme', 'menuListFemme']].forEach(([salon, id]) => {
+      const box = document.getElementById(id);
+      if (!box) return;
+      box.innerHTML = servicesCatalog[salon].map(srv => `
+        <div class="service-card-select">
+          <div class="service-info"><h5>${esc(serviceTitle(srv))}</h5></div>
+          <div class="service-price-tag">${esc(formatPrice(srv.price))}</div>
+        </div>`).join('');
+    });
+  }
 
   const defaultSlots = ['10:00 AM', '11:30 AM', '1:00 PM', '2:30 PM', '4:00 PM', '5:30 PM', '7:00 PM'];
 
@@ -353,18 +356,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const card = document.createElement('div');
       card.className = `service-card-select ${idx === 0 ? 'selected' : ''}`;
       
-      const title = srv.title[currentLang] || srv.title.en;
-      const duration = srv.duration[currentLang] || srv.duration.en;
-      const desc = srv.desc[currentLang] || srv.desc.en;
-
       card.innerHTML = `
         <div class="service-info">
-          <h5>${title}</h5>
-          <span>⏱ ${duration} • ${desc}</span>
+          <h5>${esc(serviceTitle(srv))}</h5>
         </div>
-        <div class="service-price-tag" style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">
-          ${duration}
-        </div>
+        <div class="service-price-tag">${esc(formatPrice(srv.price))}</div>
       `;
 
       card.addEventListener('click', () => {
@@ -508,7 +504,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!selectedTimeSlot) { alert(uiText('pickSlot')); return; }
       if (!name || !phone) { alert(uiText('needInfo')); return; }
 
-      const srvTitle = selectedService ? (selectedService.title[currentLang] || selectedService.title.en) : '';
+      const srvTitle = selectedService
+        ? (selectedService.price != null
+            ? `${serviceTitle(selectedService, 'uz')} — ${formatPrice(selectedService.price, 'uz')}`
+            : serviceTitle(selectedService, 'uz'))
+        : '';
       const payload = {
         salon: selectedSalon,
         serviceId: selectedService ? selectedService.id : '',
@@ -679,6 +679,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderBookingServices(selectedSalon);
     renderBookingSpecialists(selectedSalon);
+    renderServiceLists();
     applySalonConfig();
   }
 

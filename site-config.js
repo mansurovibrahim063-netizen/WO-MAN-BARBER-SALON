@@ -8,14 +8,14 @@
  */
 window.SALON_CONFIG = {
   // Telefon, masalan: "+998 90 123 45 67"
-  phone: "",
+  phone: "+998 97 977 59 94",
 
   // Salonning Telegram username'i, @ belgisisiz. Masalan: "woman_studio"
   // (Bu mijozlar yozadigan akkaunt. Ustalar boti emas.)
   telegram: "",
 
   // Instagram username, @ belgisisiz. Masalan: "woman.studio"
-  instagram: "",
+  instagram: "wo_man_yangiyol",
 
   // Manzil (har bir tilda)
   address: {

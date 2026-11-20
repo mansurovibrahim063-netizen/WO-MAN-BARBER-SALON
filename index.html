@@ -235,18 +235,8 @@
           Benuqson feydlar, an'anaviy qaynoq sochiqli xavfli ustara tarashlari va soqol arxitekturasi. Mukammallikni qadrlovchi zamonaviy erkaklar uchun.
         </p>
 
-        <!-- Service Duration Quick Pills (NO PRICES) -->
-        <div class="services-pills">
-          <div class="service-pill badge-homme-pill">
-            <span data-i18n="homme_pill_1">Klassik & Skin Feyd • 45 daq</span>
-          </div>
-          <div class="service-pill badge-homme-pill">
-            <span data-i18n="homme_pill_2">Qirollik Tarash Rituali • 40 daq</span>
-          </div>
-          <div class="service-pill badge-homme-pill">
-            <span data-i18n="homme_pill_3">Soqol Arxitekturasi • 30 daq</span>
-          </div>
-        </div>
+        <!-- Top services with prices (filled from servicesCatalog in app.js) -->
+        <div class="services-pills" id="heroPillsHomme"></div>
 
         <!-- Call to Action Buttons -->
         <div class="panel-actions">
@@ -310,18 +300,8 @@
           Hajmli balayaj, mualliflik parvarishi va qizil yo'lakcha darajasidagi uslub. Tabiiy yorug'lik va organik premium mahsulotlar uyg'unligi.
         </p>
 
-        <!-- Service Duration Quick Pills (NO PRICES) -->
-        <div class="services-pills">
-          <div class="service-pill badge-femme-pill">
-            <span data-i18n="femme_pill_1">Balayaj & Glos • 150 daq</span>
-          </div>
-          <div class="service-pill badge-femme-pill">
-            <span data-i18n="femme_pill_2">Kutyur Ukladka • 60 daq</span>
-          </div>
-          <div class="service-pill badge-femme-pill">
-            <span data-i18n="femme_pill_3">Ipak Keratin Spasi • 120 daq</span>
-          </div>
-        </div>
+        <!-- Top services with prices (filled from servicesCatalog in app.js) -->
+        <div class="services-pills" id="heroPillsFemme"></div>
 
         <!-- Call to Action Buttons -->
         <div class="panel-actions">
@@ -681,7 +661,7 @@
   </footer>
 
   <!-- ==========================================================================
-       MODAL 1: INTERACTIVE TIME-SLOT BOOKING DRAWER (NO PRICES)
+       MODAL 1: INTERACTIVE TIME-SLOT BOOKING DRAWER
        ========================================================================== -->
   <div class="modal-backdrop booking-modal" id="bookingModal">
     <div class="modal-container" role="dialog" aria-modal="true" aria-labelledby="bookingModalTitle">
@@ -756,7 +736,7 @@
   </div>
 
   <!-- ==========================================================================
-       MODAL 2: FULL SERVICE MENU MODAL (NO PRICES)
+       MODAL 2: FULL SERVICE MENU WITH PRICES
        ========================================================================== -->
   <div class="modal-backdrop" id="menuModal">
     <div class="modal-container" style="max-width: 780px;">
@@ -775,32 +755,7 @@
       <div class="modal-body">
         <!-- Homme Full Menu -->
         <div id="menuContentHomme">
-          <div class="service-select-grid">
-            <div class="service-card-select">
-              <div class="service-info">
-                <h5>Executive Precision Cut & Fade</h5>
-                <span>⏱ 45 daqiqa • Maslahatlashuv, ustarali feyd, bo'yinga qaynoq sochiq va pomada bilan ukladka.</span>
-              </div>
-            </div>
-            <div class="service-card-select">
-              <div class="service-info">
-                <h5>Royal Hot Towel Shave Ritual</h5>
-                <span>⏱ 40 daqiqa • Yog'li ekstraktlar, 3 bosqichli bug'li sochiq va xavfli ustarada mukammal tarash.</span>
-              </div>
-            </div>
-            <div class="service-card-select">
-              <div class="service-info">
-                <h5>Master Beard Sculpt & Foil Line-up</h5>
-                <span>⏱ 30 daqiqa • Soqolni qisqartirish, aniq chiziqlar, namlantiruvchi balzam va uqalash.</span>
-              </div>
-            </div>
-            <div class="service-card-select">
-              <div class="service-info">
-                <h5>The WO&amp;MAN Dual Package (Cut + Shave + Facial)</h5>
-                <span>⏱ 75 daqiqa • Soch turmagi + Qirollik tarash rituali + bosh terisini tozalovchi massaj.</span>
-              </div>
-            </div>
-          </div>
+          <div class="service-select-grid" id="menuListHomme"></div>
           <button class="btn-panel btn-homme-primary" style="margin-top: 1.5rem; width: 100%; justify-content: center;" data-book-service data-salon="homme" data-i18n="btn_book_this_service">
             Ushbu xizmatga vaqt tanlash
           </button>
@@ -808,32 +763,7 @@
 
         <!-- Femme Full Menu -->
         <div id="menuContentFemme" style="display: none;">
-          <div class="service-select-grid">
-            <div class="service-card-select">
-              <div class="service-info">
-                <h5>Haute Couture Cut & Signature Blowout</h5>
-                <span>⏱ 60 daqiqa • Arxitekturaviy quruq va nam kesish, fen bilan ukladka.</span>
-              </div>
-            </div>
-            <div class="service-card-select">
-              <div class="service-info">
-                <h5>Dimensional Balayage & Custom Gloss</h5>
-                <span>⏱ 150 daqiqa • Quyosh nuri jilolari, maxsus tayyorlangan porlovchi tonlar.</span>
-              </div>
-            </div>
-            <div class="service-card-select">
-              <div class="service-info">
-                <h5>Brazilian Keratin Silk Infusion</h5>
-                <span>⏱ 120 daqiqa • Sochlarning jingalakligini yo'qotish, 4 oygacha oyna kabi porlash.</span>
-              </div>
-            </div>
-            <div class="service-card-select">
-              <div class="service-info">
-                <h5>Botanical Scalp Spa & Steam Therapy</h5>
-                <span>⏱ 45 daqiqa • Bug'li oziqlantiruvchi niqob, lavandali akupressura massaji.</span>
-              </div>
-            </div>
-          </div>
+          <div class="service-select-grid" id="menuListFemme"></div>
           <button class="btn-panel btn-femme-primary" style="margin-top: 1.5rem; width: 100%; justify-content: center;" data-book-service data-salon="femme" data-i18n="btn_book_this_service">
             Ushbu xizmatga vaqt tanlash
           </button>
