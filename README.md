@@ -20,7 +20,15 @@ Keyin brauzerda oching:
 - Sayt: <http://localhost:8000>
 - Admin panel: <http://localhost:8000/admin.html>
 
-**Admin paroli** birinchi ishga tushirishda terminalda **bir marta** ko'rsatiladi (`ADMIN PAROLI: ...`). Uni yozib qo'ying. O'z parolingizni qo'ymoqchi bo'lsangiz:
+**Admin paroli** birinchi ishga tushirishda terminalda **bir marta** ko'rsatiladi (`ADMIN PAROLI: ...`). Uni yozib qo'ying.
+
+O'z parolingizni o'rnatish yoki unutilgan parolni almashtirish uchun buni **bir marta** bajaring, keyin serverni odatdagidek ishga tushiring:
+
+```bash
+python server.py --parol yangi-parolingiz
+```
+
+Yoki parolni faqat shu safar uchun berib ishga tushirish:
 
 ```bash
 WOMAN_ADMIN_PASSWORD="sizning-parolingiz" python server.py

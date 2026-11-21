@@ -9,6 +9,7 @@ One process that:
   * protects the admin panel and its data with a password.
 
 Run:   python server.py          then open http://localhost:8000
+Set the admin password:   python server.py --parol <new-password>
 Pure Python 3 standard library, no installs needed.
 
 Environment variables (all optional):
@@ -95,6 +96,37 @@ def setup_admin_password():
     salt = secrets.token_hex(16)
     storage.update_config(admin_pw_salt=salt, admin_pw_hash=_hash(password, salt))
     return password
+
+
+MIN_PASSWORD_LENGTH = 6
+
+
+def set_admin_password(password):
+    """Store a new admin password (hashed) in data/bot_config.json."""
+    salt = secrets.token_hex(16)
+    storage.update_config(admin_pw_salt=salt, admin_pw_hash=_hash(password, salt))
+
+
+def set_password_command(args):
+    """python server.py --parol [new-password]  (asks for it when not given)."""
+    import getpass
+    storage.ensure_data_dir()
+    if args:
+        password = args[0]
+    else:
+        password = getpass.getpass("Yangi admin parol / Новый пароль: ")
+        if getpass.getpass("Yana bir marta / Ещё раз: ") != password:
+            print("Parollar bir xil emas. / Пароли не совпадают.")
+            return 1
+    password = password.strip()
+    if len(password) < MIN_PASSWORD_LENGTH:
+        print(f"Parol kamida {MIN_PASSWORD_LENGTH} ta belgidan iborat bo'lishi kerak.")
+        return 1
+    set_admin_password(password)
+    print("✅ Yangi admin parol saqlandi. Endi serverni ishga tushiring: python server.py")
+    if os.environ.get("WOMAN_ADMIN_PASSWORD"):
+        print("⚠️ WOMAN_ADMIN_PASSWORD o'rnatilgan: u bu paroldan ustun turadi. Uni olib tashlang.")
+    return 0
 
 
 def check_password(password):
@@ -554,4 +586,7 @@ def main():
 
 
 if __name__ == "__main__":
+    import sys
+    if len(sys.argv) > 1 and sys.argv[1] in ("--parol", "--password"):
+        sys.exit(set_password_command(sys.argv[2:]))
     main()

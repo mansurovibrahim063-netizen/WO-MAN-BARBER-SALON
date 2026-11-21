@@ -160,12 +160,32 @@ def test_old_sample_staff_is_replaced():
     assert_true("Dilnoza" in names, "masters added in the admin panel are kept")
 
 
+def test_set_password_command():
+    print("\n--- Test 6: python server.py --parol sets the admin password ---")
+    import subprocess
+    tmp = tempfile.mkdtemp(prefix="woman-pw-")
+    env = dict(os.environ, WOMAN_DATA_DIR=tmp)
+    env.pop("WOMAN_ADMIN_PASSWORD", None)
+    run = subprocess.run([sys.executable, os.path.join(DIR, "server.py"), "--parol", "test-parol-777"],
+                         cwd=DIR, capture_output=True, text=True, env=env, timeout=30)
+    assert_true(run.returncode == 0, f"command exits cleanly ({run.returncode}) {run.stderr[-200:]}")
+    check = "import server; print(server.check_password('test-parol-777'), server.check_password('wrong'))"
+    out = subprocess.run([sys.executable, "-c", check], cwd=DIR, capture_output=True, text=True, env=env).stdout.split()
+    assert_true(out == ["True", "False"], f"new password works, others don't {out}")
+    with open(os.path.join(tmp, "bot_config.json"), encoding="utf-8") as f:
+        assert_true("test-parol-777" not in f.read(), "password is stored only as a hash")
+    short = subprocess.run([sys.executable, os.path.join(DIR, "server.py"), "--parol", "123"],
+                           cwd=DIR, capture_output=True, text=True, env=env, timeout=30)
+    assert_true(short.returncode != 0, "too-short password is refused")
+
+
 if __name__ == "__main__":
     test_file_integrity()
     test_html_components()
     test_translations()
     test_bot_logic()
     test_old_sample_staff_is_replaced()
+    test_set_password_command()
     print("\n=======================================================")
     print("ALL TESTS PASSED")
     print("=======================================================")
