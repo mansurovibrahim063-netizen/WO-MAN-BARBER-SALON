@@ -216,10 +216,14 @@ document.addEventListener('DOMContentLoaded', () => {
   let specialistsLoadFailed = false;
   const busyByDate = {};   // { 'YYYY-MM-DD': { specialistId: ['10:00 AM', ...] } }
 
+  let notServedByServer = location.protocol === 'file:';
+
   async function loadSpecialists() {
     try {
       const res = await fetch('/api/public/specialists', { cache: 'no-store' });
-      if (!res.ok) throw new Error(res.status);
+      // server.py answers with JSON; GitHub Pages / "Go Live" / file servers answer with an HTML error page
+      notServedByServer = location.protocol === 'file:' || !(res.headers.get('content-type') || '').includes('application/json');
+      if (!res.ok || notServedByServer) throw new Error(res.status);
       specialists = await res.json();
       specialistsLoadFailed = false;
     } catch (e) {
@@ -343,7 +347,7 @@ document.addEventListener('DOMContentLoaded', () => {
       pickStaff: { uz: 'Iltimos, ustani tanlang!', ru: 'Пожалуйста, выберите мастера!' },
       needInfo: { uz: 'Iltimos, ismingiz va telefon raqamingizni kiriting!', ru: 'Пожалуйста, введите имя и номер!' },
       sending: { uz: 'Yuborilmoqda...', ru: 'Отправка...' },
-      openViaServer: { uz: "Sayt fayl sifatida ochilgan, shuning uchun ustalar va yozilish ishlamaydi. Loyiha papkasida `python server.py` ni ishga tushiring va brauzerda http://localhost:8000 ni oching.", ru: "Сайт открыт как файл, поэтому мастера и запись не работают. Запустите `python server.py` в папке проекта и откройте в браузере http://localhost:8000." },
+      openViaServer: { uz: "Sayt server.py orqali ochilmagan (masalan GitHub sahifasi, \"Go Live\" yoki fayl sifatida), shuning uchun ustalar va yozilish ishlamaydi. Loyiha papkasida `python server.py` ni ishga tushiring va brauzerda http://localhost:8000 ni oching.", ru: "Сайт открыт не через server.py (например, через GitHub, \"Go Live\" или как файл), поэтому мастера и запись не работают. Запустите `python server.py` в папке проекта и откройте в браузере http://localhost:8000." },
       netError: { uz: "Ulanishda xatolik. Internetni tekshirib, qayta urinib ko'ring.", ru: 'Ошибка соединения. Проверьте интернет и попробуйте снова.' }
     };
     return (t[key] && (t[key][currentLang] || t[key].uz)) || key;
@@ -386,7 +390,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (list.length === 0) {
       selectedSpecialist = null;
-      const msg = !specialistsLoadFailed ? uiText('noStaff') : (location.protocol === 'file:' ? uiText('openViaServer') : uiText('loadFailed'));
+      const msg = !specialistsLoadFailed ? uiText('noStaff') : (notServedByServer ? uiText('openViaServer') : uiText('loadFailed'));
       specialistSelectList.innerHTML = `<p style="font-size: 0.8rem; color: var(--text-muted); padding: 10px;">${esc(msg)}</p>`;
       renderTimeSlots();
       return;
@@ -741,7 +745,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Opened by double-clicking index.html: nothing can load without server.py, so say how to open it
   function renderServerHint() {
     let hint = document.getElementById('serverHint');
-    if (location.protocol !== 'file:') { if (hint) hint.remove(); return; }
+    if (!notServedByServer) { if (hint) hint.remove(); return; }
     if (!hint) {
       hint = document.createElement('div');
       hint.id = 'serverHint';

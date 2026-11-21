@@ -100,6 +100,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnExportJSON = document.getElementById('btnExportJSON');
 
   // --- Server API ---
+  const NOT_SERVER_MSG = "Admin panel server.py orqali ochilmagan (masalan GitHub sahifasi, \"Go Live\" yoki fayl sifatida). " +
+    "Kompyuterda loyiha papkasida terminalda `python server.py` ni ishga tushiring va brauzerda http://localhost:8000/admin.html ni oching.";
+
+  // Shown on the login card before the password is typed, so nobody guesses passwords against a page that can't check them
+  async function checkServer() {
+    try {
+      const res = await fetch('/api/public/specialists', { cache: 'no-store' });
+      if ((res.headers.get('content-type') || '').includes('application/json')) return true;
+    } catch (e) {}
+    if (loginError) loginError.textContent = NOT_SERVER_MSG;
+    return false;
+  }
+
   async function api(method, path, body) {
     const headers = { 'Content-Type': 'application/json' };
     if (authToken) headers.Authorization = `Bearer ${authToken}`;
@@ -107,8 +120,11 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       res = await fetch(path, { method, headers, body: body ? JSON.stringify(body) : undefined, cache: 'no-store' });
     } catch (e) {
-      throw new Error("Server bilan aloqa yo'q. server.py ishlayotganini tekshiring.");
+      throw new Error(NOT_SERVER_MSG);
     }
+    // Our server always answers /api/* with JSON. Anything else (e.g. "405" from
+    // GitHub Pages, VS Code "Go Live" or a plain file server) means server.py isn't serving this page.
+    if (!(res.headers.get('content-type') || '').includes('application/json')) throw new Error(NOT_SERVER_MSG);
     const data = await res.json().catch(() => ({}));
     if (res.status === 401 && path !== '/api/admin/login') {
       setToken(null);
@@ -771,8 +787,9 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Start ---
   applyLanguage(currentLang);
   if (authToken) {
-    loadAll().then(startAutoRefresh).catch(() => showLogin());
+    loadAll().then(startAutoRefresh).catch(() => { showLogin(); checkServer(); });
   } else {
     showLogin();
+    checkServer();
   }
 });
